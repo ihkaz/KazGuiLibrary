@@ -1667,11 +1667,11 @@ local button=create('TextButton',{AutoButtonColor=false,BackgroundTransparency=1
 ,Size=UDim2.new(1,0,0,34),Text='',Children={create('UICorner',{CornerRadius=UDim
 .new(0,7)})}})Theme:Bind(button,'BackgroundColor3','AccentSoft')button.Parent=
 self.SidebarList local icon=create('ImageLabel',{BackgroundTransparency=1,Image=
-Icons.Resolve(tab.IconName),Position=UDim2.fromOffset(10,8),Size=toIconSize(self
-.IconSize,18)})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=button local
-label=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamMedium,
-Position=UDim2.fromOffset(36,0),Size=UDim2.new(1,-42,1,0),Text=tab.Title,
-TextSize=13,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(label,
+Icons.Resolve(tab.IconName),Position=UDim2.fromOffset(10,8),Size=UDim2.
+fromOffset(18,18)})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=button
+local label=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.
+GothamMedium,Position=UDim2.fromOffset(36,0),Size=UDim2.new(1,-42,1,0),Text=tab.
+Title,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(label,
 'TextColor3','Muted')label.Parent=button local page=create('ScrollingFrame',{
 AutomaticCanvasSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
 BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2.fromOffset(14,14),
@@ -1694,16 +1694,16 @@ PaddingTop=UDim.new(0,withBackground and 6 or 0)}),create('TextButton',{Name=
 'Header',AutoButtonColor=false,BackgroundTransparency=1,Size=UDim2.new(1,0,0,28)
 ,Text='',Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
 Image=withIcon and Icons.Resolve(sectionData.Icon or'folder')or'',Position=UDim2
-.fromOffset(0,5),Size=toIconSize(sectionData.IconSize or self.IconSize,16),
-Visible=withIcon}),create('TextLabel',{Name='Title',BackgroundTransparency=1,
-Font=Enum.Font.GothamSemibold,Position=UDim2.fromOffset(sectionTextOffset,0),
-Size=UDim2.new(1,-(sectionTextOffset+28),1,0),Text=sectionData.Title or'Section'
-,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=13,TextXAlignment=Enum.
-TextXAlignment.Left}),create('ImageLabel',{Name='Arrow',AnchorPoint=Vector2.new(
-1,0.5),BackgroundTransparency=1,Image=Icons.Resolve('chevron-right'),Position=
-UDim2.new(1,-2,0.5,0),Rotation=90,Size=UDim2.fromOffset(16,16)})}}),create(
-'Frame',{Name='Items',AutomaticSize=Enum.AutomaticSize.Y,BackgroundTransparency=
-1,Position=UDim2.fromOffset(0,32),Size=UDim2.new(1,0,0,0),Children={create(
+.fromOffset(0,5),Size=toIconSize(sectionData.IconSize,16),Visible=withIcon}),
+create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamSemibold,Position=UDim2.fromOffset(sectionTextOffset,0),Size=UDim2.new(1,-
+(sectionTextOffset+28),1,0),Text=sectionData.Title or'Section',TextTruncate=Enum
+.TextTruncate.AtEnd,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left}),
+create('ImageLabel',{Name='Arrow',AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve('chevron-right'),Position=UDim2.
+new(1,-2,0.5,0),Rotation=90,Size=UDim2.fromOffset(16,16)})}}),create('Frame',{
+Name='Items',AutomaticSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
+Position=UDim2.fromOffset(0,32),Size=UDim2.new(1,0,0,0),Children={create(
 'UIListLayout',{Padding=UDim.new(0,8),SortOrder=Enum.SortOrder.LayoutOrder})}})}
 })if withBackground then Theme:Bind(section,'BackgroundColor3','Surface')Theme:
 Bind(section.UIStroke,'Color','Stroke')else section.UIStroke.Transparency=1 end

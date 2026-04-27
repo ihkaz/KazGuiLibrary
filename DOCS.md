@@ -95,7 +95,7 @@ Parameters:
 | `Author` | `string` | `"v1.0"` | Text shown on the right side of the topbar. |
 | `Version` | `string` | `"v1.0"` | Alias used when `Author` is not provided. |
 | `Icon` | `string` / asset id | `"layout"` | Window icon. Accepts Lucide icon names, numeric asset ids, or `rbxassetid://...`. |
-| `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Global icon size used by window, tab, and section icons. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Topbar window icon size only. |
 | `OpenButtonIcon` | `string` / asset id | `Icon` | Image-only button icon shown when the window is hidden. |
 | `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
 | `Theme` | `string` / table | current theme | Initial theme for the library. |
@@ -368,7 +368,7 @@ Parameters:
 | `Title` | `string` | `"Section"` | Header title. |
 | `Icon` | `string` / asset id | `"folder"` | Header icon. |
 | `WithIcon` | `boolean` | `false` | Shows the header icon when true. |
-| `IconSize` | `number` / `Vector2` / `UDim2` | window `IconSize` | Overrides icon size for this section. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Overrides icon size for this section. |
 | `Default` | `boolean` | `true` | Initial expanded state. |
 | `WithBackground` | `boolean` | `true` | Enables the section background, stroke, and inner padding. |
 
