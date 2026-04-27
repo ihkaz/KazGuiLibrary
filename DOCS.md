@@ -24,6 +24,7 @@ local Window = KazGui:CreateWindow({
 	Author = "v1.0",
 	Icon = "layout-dashboard",
 	OpenButtonIcon = "sparkles",
+	IconSize = 18,
 	Theme = "Midnight",
 	Size = UDim2.fromOffset(620, 390),
 	MinSize = Vector2.new(460, 300),
@@ -40,6 +41,7 @@ local Main = Window:Tab({
 local Combat = Main:Section({
 	Title = "Combat",
 	Icon = "swords",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -93,6 +95,7 @@ Parameters:
 | `Author` | `string` | `"v1.0"` | Text shown on the right side of the topbar. |
 | `Version` | `string` | `"v1.0"` | Alias used when `Author` is not provided. |
 | `Icon` | `string` / asset id | `"layout"` | Window icon. Accepts Lucide icon names, numeric asset ids, or `rbxassetid://...`. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Global icon size used by window, tab, and section icons. |
 | `OpenButtonIcon` | `string` / asset id | `Icon` | Image-only button icon shown when the window is hidden. |
 | `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
 | `Theme` | `string` / table | current theme | Initial theme for the library. |
@@ -347,6 +350,7 @@ Creates a collapsible section and returns a `Section` object.
 local Movement = Player:Section({
 	Title = "Movement",
 	Icon = "footprints",
+	WithIcon = true,
 	Default = true,
 	WithBackground = true,
 })
@@ -358,6 +362,8 @@ Parameters:
 | --- | --- | --- | --- |
 | `Title` | `string` | `"Section"` | Header title. |
 | `Icon` | `string` / asset id | `"folder"` | Header icon. |
+| `WithIcon` | `boolean` | `false` | Shows the header icon when true. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | window `IconSize` | Overrides icon size for this section. |
 | `Default` | `boolean` | `true` | Initial expanded state. |
 | `WithBackground` | `boolean` | `true` | Enables the section background, stroke, and inner padding. |
 
@@ -449,6 +455,7 @@ local Button = Main:Button({
 	Title = "Run Feature",
 	Desc = "Execute selected action.",
 	Icon = "zap",
+	WithIcon = true,
 	Locked = false,
 	Callback = function()
 		print("clicked")
@@ -462,7 +469,9 @@ Parameters:
 | --- | --- | --- | --- |
 | `Title` | `string` | `"Button"` | Button title and autosave-safe object name. |
 | `Desc` | `string` | `nil` | Optional secondary text. |
-| `Icon` | `string` / asset id | `"zap"` | Icon shown on the right. |
+| `Icon` | `string` / asset id | `"zap"` | Icon shown on the right when `WithIcon` is true. |
+| `WithIcon` | `boolean` | `false` | Enables the button icon. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Button icon size. |
 | `Locked` | `boolean` | `false` | Prevents clicks when true. |
 | `Callback` | `function()` | empty function | Fired when clicked while unlocked. |
 
@@ -472,6 +481,8 @@ Methods:
 | --- | --- | --- |
 | `SetTitle` | `text: string` | Updates title text. |
 | `SetDesc` | `text: string?` | Updates or hides description text. |
+| `SetIcon` | `icon: string?` | Updates the button icon. |
+| `SetWithIcon` | `value: boolean` | Shows or hides the button icon. |
 | `Lock` | none | Disables interaction. |
 | `Unlock` | none | Enables interaction. |
 | `Destroy` | none | Removes the component. |
@@ -485,6 +496,7 @@ local Label = Main:Label({
 	Title = "Dashboard",
 	Desc = "Optional supporting text.",
 	Icon = "info",
+	WithIcon = true,
 	TextSize = 14,
 	ColorKey = "Text",
 	IconColorKey = "Accent",
@@ -497,7 +509,9 @@ Parameters:
 | --- | --- | --- | --- |
 | `Title` | `string` | `"Label"` | Main label text. |
 | `Desc` | `string` | `nil` | Optional secondary text. |
-| `Icon` | `string` / asset id | `nil` | Optional icon before the title. |
+| `Icon` | `string` / asset id | `nil` | Icon shown before the title when `WithIcon` is true. |
+| `WithIcon` | `boolean` | `false` | Enables the label icon. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Label icon size. |
 | `TextSize` | `number` | `14` | Title font size. |
 | `ColorKey` | `string` | `"Text"` | Theme color key used for title text. |
 | `IconColorKey` | `string` | `"Accent"` | Theme color key used for the icon. |
@@ -509,6 +523,7 @@ Methods:
 | `SetTitle` | `text: string` | Updates title text. |
 | `SetDesc` | `text: string?` | Updates or hides description text. |
 | `SetIcon` | `icon: string?` | Updates or removes the icon. |
+| `SetWithIcon` | `value: boolean` | Shows or hides the label icon. |
 | `Destroy` | none | Removes the label. |
 
 ### Divider

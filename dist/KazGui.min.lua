@@ -1261,120 +1261,130 @@ end return tween end function __KAZGUI_MODULES.f():typeof(__modImpl())local v=
 __KAZGUI_MODULES.cache.f if not v then v={c=__modImpl()}__KAZGUI_MODULES.cache.f
 =v end return v.c end end do local function __modImpl()local create=
 __KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Icons=__KAZGUI_MODULES
-.d()local tween=__KAZGUI_MODULES.f()local Controls={}local function
-tableToString(values)if typeof(values)~='table'then return tostring(values or'')
-end if#values==0 then return''end return table.concat(values,', ')end
-local function bindCard(card)Theme:Bind(card,'BackgroundColor3','Surface')Theme:
-Bind(card.UIStroke,'Color','Stroke')end local function makeCard(title,desc)local
-card=create('ImageButton',{AutoButtonColor=false,BackgroundTransparency=0,Size=
-UDim2.new(1,0,0,desc and desc~=''and 62 or 48),Children={create('UICorner',{
-CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1}),create('TextLabel'
-,{Name='Title',BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=
-UDim2.fromOffset(14,9),Size=UDim2.new(1,-28,0,20),Text=title or'Element',
-TextSize=14,TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name=
-'Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.
-fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,
-TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme
-:Bind(card.Title,'TextColor3','Text')Theme:Bind(card.Description,'TextColor3',
-'Muted')bindCard(card)card.MouseEnter:Connect(function()tween(card.UIStroke,{
-Color=Theme:Get('Accent')})end)card.MouseLeave:Connect(function()tween(card.
-UIStroke,{Color=Theme:Get('Stroke')})end)return card end function Controls.Label
-(parent,data)data=data or{}local state={Title=data.Title or'Label',Desc=data.
-Desc,Icon=data.Icon}local hasIcon=state.Icon~=nil and state.Icon~=''local
-textOffset=hasIcon and 26 or 2 local label=create('Frame',{
-BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc~=''and
-44 or 26),Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
-Image=hasIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.fromOffset(2,3),
-Size=UDim2.fromOffset(16,16),Visible=hasIcon}),create('TextLabel',{Name='Title',
-BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
-fromOffset(textOffset,0),Size=UDim2.new(1,-textOffset-2,0,22),Text=state.Title,
-TextSize=data.TextSize or 14,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment
-=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description',
-BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(
-textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),Text=state.Desc or'',
-TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
-TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=''})}})Theme:Bind(
-label.Icon,'ImageColor3',data.IconColorKey or'Accent')Theme:Bind(label.Title,
-'TextColor3',data.ColorKey or'Text')Theme:Bind(label.Description,'TextColor3',
-'Muted')label.Parent=parent function state:SetIcon(icon)self.Icon=icon hasIcon=
-icon~=nil and icon~=''textOffset=hasIcon and 26 or 2 label.Icon.Image=hasIcon
-and Icons.Resolve(icon)or''label.Icon.Visible=hasIcon label.Title.Position=UDim2
-.fromOffset(textOffset,0)label.Title.Size=UDim2.new(1,-textOffset-2,0,22)label.
-Description.Position=UDim2.fromOffset(textOffset,22)label.Description.Size=UDim2
-.new(1,-textOffset-2,0,18)end function state:SetTitle(text)self.Title=text label
-.Title.Text=text end function state:SetDesc(text)self.Desc=text label.
-Description.Text=text or''label.Description.Visible=text~=nil and text~=''label.
-Size=UDim2.new(1,0,0,text and text~=''and 44 or 26)end function state:Destroy()
-label:Destroy()end return state end function Controls.Divider(parent,data)data=
-data or{}local state={}local divider=create('Frame',{BackgroundTransparency=1,
-Size=UDim2.new(1,0,0,data.Spacing or 14),Children={create('Frame',{Name='Line',
-AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=0,Position=UDim2.new(0,0,
-0.5,0),Size=UDim2.new(1,0,0,1)})}})Theme:Bind(divider.Line,'BackgroundColor3',
-'Stroke')divider.Parent=parent function state:Destroy()divider:Destroy()end
-return state end function Controls.Button(parent,data)data=data or{}local state=
-{Title=data.Title or'Button',Desc=data.Desc,Locked=data.Locked or false,Callback
-=data.Callback or function()end}local card=makeCard(state.Title,state.Desc)card.
-Parent=parent card.Name=state.Title local icon=create('ImageLabel',{AnchorPoint=
-Vector2.new(1,0.5),BackgroundTransparency=1,Image=Icons.Resolve(data.Icon or
-'zap'),Position=UDim2.new(1,-14,0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(
-icon,'ImageColor3','Muted')icon.Parent=card card.MouseButton1Click:Connect(
-function()if not state.Locked then state.Callback()end end)function state:
-SetTitle(text)self.Title=text card.Title.Text=text end function state:SetDesc(
-text)self.Desc=text card.Description.Text=text card.Description.Visible=text~=
-nil and text~=''end function state:Lock()self.Locked=true card.Active=false end
-function state:Unlock()self.Locked=false card.Active=true end function state:
-Destroy()card:Destroy()end return state end function Controls.Toggle(parent,data
-,config)data=data or{}local state={Title=data.Title or'Toggle',Desc=data.Desc,
-State=data.Default or data.Value or false,Locked=data.Locked or false,Callback=
-data.Callback or function()end}if config then state.State=config:Get(state.Title
-,state.State)end local card=makeCard(state.Title,state.Desc)card.Parent=parent
-card.Name=state.Title local track=create('Frame',{AnchorPoint=Vector2.new(1,0.5)
-,Position=UDim2.new(1,-14,0.5,0),Size=UDim2.fromOffset(42,22),Children={create(
-'UICorner',{CornerRadius=UDim.new(1,0)}),create('Frame',{Name='Knob',AnchorPoint
-=Vector2.new(0,0.5),Position=UDim2.new(0,3,0.5,0),Size=UDim2.fromOffset(16,16),
-Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}})}})Theme:Bind(track.
-Knob,'BackgroundColor3','Text')track.Parent=card local function paint(animated)
-local goal=state.State and UDim2.new(1,-19,0.5,0)or UDim2.new(0,3,0.5,0)local
-color=state.State and Theme:Get('Accent')or Theme:Get('SurfaceAlt')if animated
-then tween(track.Knob,{Position=goal})tween(track,{BackgroundColor3=color})else
-track.Knob.Position=goal track.BackgroundColor3=color end end card.
-MouseButton1Click:Connect(function()if state.Locked then return end state:Set(
-not state.State)end)function state:Set(value)self.State=value paint(true)if
-config then config:Set(self.Title,self.State)end self.Callback(self.State)end
-function state:SetTitle(text)self.Title=text card.Title.Text=text end function
-state:SetDesc(text)card.Description.Text=text or''card.Description.Visible=text
-~=nil and text~=''end function state:Lock()self.Locked=true end function state:
-Unlock()self.Locked=false end local themeWatcher=Theme:Watch(function()if card.
-Parent==nil then return false end paint(false)return true end)function state:
-Destroy()themeWatcher:Disconnect()card:Destroy()end state.Callback(state.State)
-return state end function Controls.Slider(parent,data,config)data=data or{}data.
-Value=data.Value or{}local min=data.Value and data.Value.Min or data.Min or 0
-local max=data.Value and data.Value.Max or data.Max or 100 local default=data.
-Value and data.Value.Default or data.Default or min local step=data.Step or 1
-local state={Title=data.Title or'Slider',Desc=data.Desc,Value=config and config:
-Get(data.Title or'Slider',default)or default,Locked=data.Locked or false,
-Callback=data.Callback or function()end}local card=makeCard(state.Title,state.
-Desc)card.Size=UDim2.new(1,0,0,76)card.Parent=parent card.Name=state.Title local
-valueLabel=create('TextLabel',{AnchorPoint=Vector2.new(1,0),
-BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2.new(1,-14,0,
-10),Size=UDim2.fromOffset(72,18),Text=tostring(state.Value),TextSize=13,
-TextXAlignment=Enum.TextXAlignment.Right})Theme:Bind(valueLabel,'TextColor3',
-'Accent')valueLabel.Parent=card local bar=create('Frame',{BackgroundTransparency
-=0,Position=UDim2.new(0,14,1,-24),Size=UDim2.new(1,-28,0,6),Children={create(
-'UICorner',{CornerRadius=UDim.new(1,0)}),create('Frame',{Name='Fill',Size=UDim2.
-fromScale(0,1),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}),
-create('TextButton',{Name='Hitbox',BackgroundTransparency=1,Position=UDim2.
-fromOffset(0,-9),Size=UDim2.new(1,0,0,24),Text=''})}})Theme:Bind(bar,
-'BackgroundColor3','SurfaceAlt')Theme:Bind(bar.Fill,'BackgroundColor3','Accent')
-bar.Parent=card local dragging=false local inputService=game:GetService(
-'UserInputService')local function round(value)return math.clamp(math.round(value
-/step)*step,min,max)end local function paint(value)local percent=(value-min)/(
-max-min)valueLabel.Text=tostring(value)tween(bar.Fill,{Size=UDim2.fromScale(
-percent,1)})end local function updateFromX(x)local percent=math.clamp((x-bar.
-AbsolutePosition.X)/bar.AbsoluteSize.X,0,1)state:Set(round(min+((max-min)*
-percent)))end bar.Hitbox.MouseButton1Down:Connect(function()if state.Locked then
-return end dragging=true updateFromX(game:GetService('Players').LocalPlayer:
-GetMouse().X)end)inputService.InputChanged:Connect(function(input)if dragging
+.d()local tween=__KAZGUI_MODULES.f()local Controls={}local function toIconSize(
+value,defaultSize)if typeof(value)=='UDim2'then return value elseif typeof(value
+)=='Vector2'then return UDim2.fromOffset(value.X,value.Y)elseif typeof(value)==
+'number'then return UDim2.fromOffset(value,value)end return UDim2.fromOffset(
+defaultSize,defaultSize)end local function tableToString(values)if typeof(values
+)~='table'then return tostring(values or'')end if#values==0 then return''end
+return table.concat(values,', ')end local function bindCard(card)Theme:Bind(card
+,'BackgroundColor3','Surface')Theme:Bind(card.UIStroke,'Color','Stroke')end
+local function makeCard(title,desc)local card=create('ImageButton',{
+AutoButtonColor=false,BackgroundTransparency=0,Size=UDim2.new(1,0,0,desc and
+desc~=''and 62 or 48),Children={create('UICorner',{CornerRadius=UDim.new(0,8)}),
+create('UIStroke',{Thickness=1}),create('TextLabel',{Name='Title',
+BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2.fromOffset(
+14,9),Size=UDim2.new(1,-28,0,20),Text=title or'Element',TextSize=14,
+TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description'
+,BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(14,31)
+,Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,TextXAlignment=Enum.
+TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme:Bind(card.Title,
+'TextColor3','Text')Theme:Bind(card.Description,'TextColor3','Muted')bindCard(
+card)card.MouseEnter:Connect(function()tween(card.UIStroke,{Color=Theme:Get(
+'Accent')})end)card.MouseLeave:Connect(function()tween(card.UIStroke,{Color=
+Theme:Get('Stroke')})end)return card end function Controls.Label(parent,data)
+data=data or{}local state={Title=data.Title or'Label',Desc=data.Desc,Icon=data.
+Icon,WithIcon=data.WithIcon==true}local hasIcon=state.WithIcon and state.Icon~=
+nil and state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=create(
+'Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc
+~=''and 44 or 26),Children={create('ImageLabel',{Name='Icon',
+BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
+Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=hasIcon
+}),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
+textOffset-2,0,22),Text=state.Title,TextSize=data.TextSize or 14,TextTruncate=
+Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left}),create(
+'TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,
+Position=UDim2.fromOffset(textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),
+Text=state.Desc or'',TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,
+TextXAlignment=Enum.TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=
+''})}})Theme:Bind(label.Icon,'ImageColor3',data.IconColorKey or'Accent')Theme:
+Bind(label.Title,'TextColor3',data.ColorKey or'Text')Theme:Bind(label.
+Description,'TextColor3','Muted')label.Parent=parent function state:SetIcon(icon
+)self.Icon=icon hasIcon=self.WithIcon and icon~=nil and icon~=''textOffset=
+hasIcon and 26 or 2 label.Icon.Image=hasIcon and Icons.Resolve(icon)or''label.
+Icon.Visible=hasIcon label.Title.Position=UDim2.fromOffset(textOffset,0)label.
+Title.Size=UDim2.new(1,-textOffset-2,0,22)label.Description.Position=UDim2.
+fromOffset(textOffset,22)label.Description.Size=UDim2.new(1,-textOffset-2,0,18)
+end function state:SetWithIcon(value)self.WithIcon=value==true self:SetIcon(self
+.Icon)end function state:SetTitle(text)self.Title=text label.Title.Text=text end
+function state:SetDesc(text)self.Desc=text label.Description.Text=text or''label
+.Description.Visible=text~=nil and text~=''label.Size=UDim2.new(1,0,0,text and
+text~=''and 44 or 26)end function state:Destroy()label:Destroy()end return state
+end function Controls.Divider(parent,data)data=data or{}local state={}local
+divider=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.
+Spacing or 14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,
+0.5),BackgroundTransparency=0,Position=UDim2.new(0,0,0.5,0),Size=UDim2.new(1,0,0
+,1)})}})Theme:Bind(divider.Line,'BackgroundColor3','Stroke')divider.Parent=
+parent function state:Destroy()divider:Destroy()end return state end function
+Controls.Button(parent,data)data=data or{}local state={Title=data.Title or
+'Button',Desc=data.Desc,Icon=data.Icon or'zap',WithIcon=data.WithIcon==true,
+Locked=data.Locked or false,Callback=data.Callback or function()end}local card=
+makeCard(state.Title,state.Desc)card.Parent=parent card.Name=state.Title local
+icon=create('ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=1,Image=state.WithIcon and Icons.Resolve(state.Icon)or'',
+Position=UDim2.new(1,-14,0.5,0),Size=toIconSize(data.IconSize,18),Visible=state.
+WithIcon})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=card card.
+MouseButton1Click:Connect(function()if not state.Locked then state.Callback()end
+end)function state:SetTitle(text)self.Title=text card.Title.Text=text end
+function state:SetDesc(text)self.Desc=text card.Description.Text=text card.
+Description.Visible=text~=nil and text~=''end function state:SetIcon(icon)icon=
+icon or'zap'self.Icon=icon card.Icon.Image=self.WithIcon and Icons.Resolve(icon)
+or''card.Icon.Visible=self.WithIcon end function state:SetWithIcon(value)self.
+WithIcon=value==true self:SetIcon(self.Icon)end function state:Lock()self.Locked
+=true card.Active=false end function state:Unlock()self.Locked=false card.Active
+=true end function state:Destroy()card:Destroy()end return state end function
+Controls.Toggle(parent,data,config)data=data or{}local state={Title=data.Title
+or'Toggle',Desc=data.Desc,State=data.Default or data.Value or false,Locked=data.
+Locked or false,Callback=data.Callback or function()end}if config then state.
+State=config:Get(state.Title,state.State)end local card=makeCard(state.Title,
+state.Desc)card.Parent=parent card.Name=state.Title local track=create('Frame',{
+AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-14,0.5,0),Size=UDim2.
+fromOffset(42,22),Children={create('UICorner',{CornerRadius=UDim.new(1,0)}),
+create('Frame',{Name='Knob',AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,
+3,0.5,0),Size=UDim2.fromOffset(16,16),Children={create('UICorner',{CornerRadius=
+UDim.new(1,0)})}})}})Theme:Bind(track.Knob,'BackgroundColor3','Text')track.
+Parent=card local function paint(animated)local goal=state.State and UDim2.new(1
+,-19,0.5,0)or UDim2.new(0,3,0.5,0)local color=state.State and Theme:Get('Accent'
+)or Theme:Get('SurfaceAlt')if animated then tween(track.Knob,{Position=goal})
+tween(track,{BackgroundColor3=color})else track.Knob.Position=goal track.
+BackgroundColor3=color end end card.MouseButton1Click:Connect(function()if state
+.Locked then return end state:Set(not state.State)end)function state:Set(value)
+self.State=value paint(true)if config then config:Set(self.Title,self.State)end
+self.Callback(self.State)end function state:SetTitle(text)self.Title=text card.
+Title.Text=text end function state:SetDesc(text)card.Description.Text=text or''
+card.Description.Visible=text~=nil and text~=''end function state:Lock()self.
+Locked=true end function state:Unlock()self.Locked=false end local themeWatcher=
+Theme:Watch(function()if card.Parent==nil then return false end paint(false)
+return true end)function state:Destroy()themeWatcher:Disconnect()card:Destroy()
+end state.Callback(state.State)return state end function Controls.Slider(parent,
+data,config)data=data or{}data.Value=data.Value or{}local min=data.Value and
+data.Value.Min or data.Min or 0 local max=data.Value and data.Value.Max or data.
+Max or 100 local default=data.Value and data.Value.Default or data.Default or
+min local step=data.Step or 1 local state={Title=data.Title or'Slider',Desc=data
+.Desc,Value=config and config:Get(data.Title or'Slider',default)or default,
+Locked=data.Locked or false,Callback=data.Callback or function()end}local card=
+makeCard(state.Title,state.Desc)card.Size=UDim2.new(1,0,0,76)card.Parent=parent
+card.Name=state.Title local valueLabel=create('TextLabel',{AnchorPoint=Vector2.
+new(1,0),BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2.
+new(1,-14,0,10),Size=UDim2.fromOffset(72,18),Text=tostring(state.Value),TextSize
+=13,TextXAlignment=Enum.TextXAlignment.Right})Theme:Bind(valueLabel,'TextColor3'
+,'Accent')valueLabel.Parent=card local bar=create('Frame',{
+BackgroundTransparency=0,Position=UDim2.new(0,14,1,-24),Size=UDim2.new(1,-28,0,6
+),Children={create('UICorner',{CornerRadius=UDim.new(1,0)}),create('Frame',{Name
+='Fill',Size=UDim2.fromScale(0,1),Children={create('UICorner',{CornerRadius=UDim
+.new(1,0)})}}),create('TextButton',{Name='Hitbox',BackgroundTransparency=1,
+Position=UDim2.fromOffset(0,-9),Size=UDim2.new(1,0,0,24),Text=''})}})Theme:Bind(
+bar,'BackgroundColor3','SurfaceAlt')Theme:Bind(bar.Fill,'BackgroundColor3',
+'Accent')bar.Parent=card local dragging=false local inputService=game:
+GetService('UserInputService')local function round(value)return math.clamp(math.
+round(value/step)*step,min,max)end local function paint(value)local percent=(
+value-min)/(max-min)valueLabel.Text=tostring(value)tween(bar.Fill,{Size=UDim2.
+fromScale(percent,1)})end local function updateFromX(x)local percent=math.clamp(
+(x-bar.AbsolutePosition.X)/bar.AbsoluteSize.X,0,1)state:Set(round(min+((max-min)
+*percent)))end bar.Hitbox.MouseButton1Down:Connect(function()if state.Locked
+then return end dragging=true updateFromX(game:GetService('Players').LocalPlayer
+:GetMouse().X)end)inputService.InputChanged:Connect(function(input)if dragging
 and input.UserInputType==Enum.UserInputType.MouseMovement then updateFromX(input
 .Position.X)end end)inputService.InputEnded:Connect(function(input)if input.
 UserInputType==Enum.UserInputType.MouseButton1 then dragging=false end end)
@@ -1441,58 +1451,62 @@ __KAZGUI_MODULES.cache.g=v end return v.c end end do local function __modImpl()
 local create=__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Icons=
 __KAZGUI_MODULES.d()local Exploit=__KAZGUI_MODULES.e()local tween=
 __KAZGUI_MODULES.f()local Controls=__KAZGUI_MODULES.g()local Window={}Window.
-__index=Window local function createSignal()local callbacks={}return{Connect=
-function(_,callback)table.insert(callbacks,callback)return{Disconnect=function()
-local index=table.find(callbacks,callback)if index then table.remove(callbacks,
-index)end end}end,Fire=function(_,...)for _,callback in ipairs(callbacks)do
-callback(...)end end,Clear=function()table.clear(callbacks)end}end
-local function makeConfig(path,autoSave)local store=Exploit.ReadJson(path)or{}
-return{Get=function(_,key,default)if store[key]==nil then store[key]=default end
-return store[key]end,Set=function(_,key,value)store[key]=value if autoSave then
-Exploit.WriteJson(path,store)end end}end local function draggable(topbar,object)
-local inputService=game:GetService('UserInputService')local dragging=false local
-dragStart local startPosition local dragInput local enabled=true topbar.
-InputBegan:Connect(function(input)if enabled and(input.UserInputType==Enum.
-UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch)then
-dragging=true dragStart=input.Position startPosition=object.Position input.
-Changed:Connect(function()if input.UserInputState==Enum.UserInputState.End then
-dragging=false end end)end end)topbar.InputChanged:Connect(function(input)if
-enabled and(input.UserInputType==Enum.UserInputType.MouseMovement or input.
-UserInputType==Enum.UserInputType.Touch)then dragInput=input end end)
-inputService.InputChanged:Connect(function(input)if dragging and input==
-dragInput then local delta=input.Position-dragStart object.Position=UDim2.new(
-startPosition.X.Scale,startPosition.X.Offset+delta.X,startPosition.Y.Scale,
-startPosition.Y.Offset+delta.Y)end end)return{SetAllowDragging=function(_,value)
-enabled=value end}end local function resizable(handle,object,minSize)local
-inputService=game:GetService('UserInputService')local resizing=false local
-resizeInput local startPosition local startSize handle.InputBegan:Connect(
-function(input)if input.UserInputType==Enum.UserInputType.MouseButton1 or input.
-UserInputType==Enum.UserInputType.Touch then resizing=true resizeInput=input
-startPosition=input.Position startSize=object.AbsoluteSize if object.AnchorPoint
-~=Vector2.new(0,0)then object.Position=UDim2.fromOffset(object.AbsolutePosition.
-X,object.AbsolutePosition.Y)object.AnchorPoint=Vector2.new(0,0)end input.Changed
-:Connect(function()if input.UserInputState==Enum.UserInputState.End then
-resizing=false end end)end end)handle.InputChanged:Connect(function(input)if
-input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==
-Enum.UserInputType.Touch then resizeInput=input end end)inputService.
-InputChanged:Connect(function(input)if resizing and input==resizeInput then
-local delta=input.Position-startPosition local width=math.max(minSize.X,
-startSize.X+delta.X)local height=math.max(minSize.Y,startSize.Y+delta.Y)object.
-Size=UDim2.fromOffset(width,height)end end)end function Window.new(library,data)
-local self=setmetatable({},Window)self.Library=library self.Title=data.Title or
-'KazGui'self.Author=data.Author or data.Version or'v1.0'self.Icon=data.Icon or
-'layout'self.OpenButtonIcon=data.OpenButtonIcon or data.OpenIcon or(data.
-OpenButton and data.OpenButton.Icon)or self.Icon self.Size=data.Size or UDim2.
-fromOffset(620,390)self.MinSize=data.MinSize or Vector2.new(460,300)self.
-ToggleKey=data.ToggleKey or Enum.KeyCode.RightShift self.AutoSave=data.AutoSave
-~=false self.Config=makeConfig(data.FileSaveName or(self.Title..'.json'),self.
-AutoSave)self.Tabs={}self.TabObjects={}self.SelectedTab=nil self.Destroyed=false
-self.Signals={Open=createSignal(),Close=createSignal(),Destroy=createSignal()}if
-data.OnOpen then self.Signals.Open:Connect(data.OnOpen)end if data.OnClose then
-self.Signals.Close:Connect(data.OnClose)end if data.OnDestroy then self.Signals.
-Destroy:Connect(data.OnDestroy)end if data.Theme then Theme:Set(data.Theme)end
-local gui=create('ScreenGui',{Name='KazGui',ResetOnSpawn=false,ZIndexBehavior=
-Enum.ZIndexBehavior.Sibling})Exploit.Protect(gui)self.Gui=gui local main=create(
+__index=Window local function toIconSize(value,defaultSize)if typeof(value)==
+'UDim2'then return value elseif typeof(value)=='Vector2'then return UDim2.
+fromOffset(value.X,value.Y)elseif typeof(value)=='number'then return UDim2.
+fromOffset(value,value)end return UDim2.fromOffset(defaultSize,defaultSize)end
+local function createSignal()local callbacks={}return{Connect=function(_,
+callback)table.insert(callbacks,callback)return{Disconnect=function()local index
+=table.find(callbacks,callback)if index then table.remove(callbacks,index)end
+end}end,Fire=function(_,...)for _,callback in ipairs(callbacks)do callback(...)
+end end,Clear=function()table.clear(callbacks)end}end local function makeConfig(
+path,autoSave)local store=Exploit.ReadJson(path)or{}return{Get=function(_,key,
+default)if store[key]==nil then store[key]=default end return store[key]end,Set=
+function(_,key,value)store[key]=value if autoSave then Exploit.WriteJson(path,
+store)end end}end local function draggable(topbar,object)local inputService=game
+:GetService('UserInputService')local dragging=false local dragStart local
+startPosition local dragInput local enabled=true topbar.InputBegan:Connect(
+function(input)if enabled and(input.UserInputType==Enum.UserInputType.
+MouseButton1 or input.UserInputType==Enum.UserInputType.Touch)then dragging=true
+dragStart=input.Position startPosition=object.Position input.Changed:Connect(
+function()if input.UserInputState==Enum.UserInputState.End then dragging=false
+end end)end end)topbar.InputChanged:Connect(function(input)if enabled and(input.
+UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.
+UserInputType.Touch)then dragInput=input end end)inputService.InputChanged:
+Connect(function(input)if dragging and input==dragInput then local delta=input.
+Position-dragStart object.Position=UDim2.new(startPosition.X.Scale,startPosition
+.X.Offset+delta.X,startPosition.Y.Scale,startPosition.Y.Offset+delta.Y)end end)
+return{SetAllowDragging=function(_,value)enabled=value end}end local function
+resizable(handle,object,minSize)local inputService=game:GetService(
+'UserInputService')local resizing=false local resizeInput local startPosition
+local startSize handle.InputBegan:Connect(function(input)if input.UserInputType
+==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.
+Touch then resizing=true resizeInput=input startPosition=input.Position
+startSize=object.AbsoluteSize if object.AnchorPoint~=Vector2.new(0,0)then object
+.Position=UDim2.fromOffset(object.AbsolutePosition.X,object.AbsolutePosition.Y)
+object.AnchorPoint=Vector2.new(0,0)end input.Changed:Connect(function()if input.
+UserInputState==Enum.UserInputState.End then resizing=false end end)end end)
+handle.InputChanged:Connect(function(input)if input.UserInputType==Enum.
+UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch
+then resizeInput=input end end)inputService.InputChanged:Connect(function(input)
+if resizing and input==resizeInput then local delta=input.Position-startPosition
+local width=math.max(minSize.X,startSize.X+delta.X)local height=math.max(minSize
+.Y,startSize.Y+delta.Y)object.Size=UDim2.fromOffset(width,height)end end)end
+function Window.new(library,data)local self=setmetatable({},Window)self.Library=
+library self.Title=data.Title or'KazGui'self.Author=data.Author or data.Version
+or'v1.0'self.Icon=data.Icon or'layout'self.IconSize=data.IconSize or 18 self.
+OpenButtonIcon=data.OpenButtonIcon or data.OpenIcon or(data.OpenButton and data.
+OpenButton.Icon)or self.Icon self.Size=data.Size or UDim2.fromOffset(620,390)
+self.MinSize=data.MinSize or Vector2.new(460,300)self.ToggleKey=data.ToggleKey
+or Enum.KeyCode.RightShift self.AutoSave=data.AutoSave~=false self.Config=
+makeConfig(data.FileSaveName or(self.Title..'.json'),self.AutoSave)self.Tabs={}
+self.TabObjects={}self.SelectedTab=nil self.Destroyed=false self.Signals={Open=
+createSignal(),Close=createSignal(),Destroy=createSignal()}if data.OnOpen then
+self.Signals.Open:Connect(data.OnOpen)end if data.OnClose then self.Signals.
+Close:Connect(data.OnClose)end if data.OnDestroy then self.Signals.Destroy:
+Connect(data.OnDestroy)end if data.Theme then Theme:Set(data.Theme)end local gui
+=create('ScreenGui',{Name='KazGui',ResetOnSpawn=false,ZIndexBehavior=Enum.
+ZIndexBehavior.Sibling})Exploit.Protect(gui)self.Gui=gui local main=create(
 'Frame',{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size
 =self.Size,Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),create(
 'UIStroke',{Thickness=1})}})Theme:Bind(main,'BackgroundColor3','Background')
@@ -1507,27 +1521,28 @@ CornerRadius=UDim.new(0,10)}),create('Frame',{Name='CornerFix',AnchorPoint=
 Vector2.new(0,1),BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,
 0,0,10)})}})Theme:Bind(topbar,'BackgroundColor3','Topbar')Theme:Bind(topbar.
 CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar
-local brandIcon=create('ImageLabel',{BackgroundTransparency=1,Image=Icons.
-Resolve(self.Icon),ImageColor3=Color3.fromRGB(255,255,255),Position=UDim2.
-fromOffset(13,12),Size=UDim2.fromOffset(20,20)})brandIcon.Parent=topbar local
-title=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamSemibold
-,Position=UDim2.fromOffset(42,0),Size=UDim2.new(1,-210,0,44),Text=self.Title,
-TextTruncate=Enum.TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.
-TextXAlignment.Left})Theme:Bind(title,'TextColor3','Text')title.Parent=topbar
-local version=create('TextLabel',{AnchorPoint=Vector2.new(1,0.5),
-BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.new(1,-76,0.5,0),
-Size=UDim2.fromOffset(92,20),Text=self.Author,TextTruncate=Enum.TextTruncate.
-AtEnd,TextSize=12,TextXAlignment=Enum.TextXAlignment.Right})Theme:Bind(version,
-'TextColor3','Muted')version.Parent=topbar local close=create('ImageButton',{
+local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=Color3.
+fromRGB(255,255,255),Position=UDim2.new(0,13,0.5,0),Size=toIconSize(self.
+IconSize,18)})brandIcon.Parent=topbar local title=create('TextLabel',{
+BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+fromOffset(42,0),Size=UDim2.new(1,-210,0,44),Text=self.Title,TextTruncate=Enum.
+TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.TextXAlignment.Left})Theme:
+Bind(title,'TextColor3','Text')title.Parent=topbar local version=create(
+'TextLabel',{AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=1,Font=Enum.
+Font.Gotham,Position=UDim2.new(1,-76,0.5,0),Size=UDim2.fromOffset(92,20),Text=
+self.Author,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=12,TextXAlignment=Enum
+.TextXAlignment.Right})Theme:Bind(version,'TextColor3','Muted')version.Parent=
+topbar local close=create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),
+AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve('x'),Position
+=UDim2.new(1,-12,0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(close,
+'ImageColor3','Muted')close.Parent=topbar local hide=create('ImageButton',{
 AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,BackgroundTransparency=1,
-Image=Icons.Resolve('x'),Position=UDim2.new(1,-12,0.5,0),Size=UDim2.fromOffset(
-18,18)})Theme:Bind(close,'ImageColor3','Muted')close.Parent=topbar local hide=
-create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,
-BackgroundTransparency=1,Image=Icons.Resolve('minus'),Position=UDim2.new(1,-44,
-0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(hide,'ImageColor3','Muted')hide.
-Parent=topbar self.Sidebar=create('Frame',{Name='Sidebar',BackgroundTransparency
-=0,Position=UDim2.fromOffset(0,44),Size=UDim2.new(0,150,1,-44),Children={create(
-'UICorner',{CornerRadius=UDim.new(0,10)}),create('Frame',{Name='AntiCornerTop',
+Image=Icons.Resolve('minus'),Position=UDim2.new(1,-44,0.5,0),Size=UDim2.
+fromOffset(18,18)})Theme:Bind(hide,'ImageColor3','Muted')hide.Parent=topbar self
+.Sidebar=create('Frame',{Name='Sidebar',BackgroundTransparency=0,Position=UDim2.
+fromOffset(0,44),Size=UDim2.new(0,150,1,-44),Children={create('UICorner',{
+CornerRadius=UDim.new(0,10)}),create('Frame',{Name='AntiCornerTop',
 BorderSizePixel=0,Size=UDim2.new(1,0,0,10)}),create('Frame',{Name=
 'AntiCornerRight',AnchorPoint=Vector2.new(1,0),BorderSizePixel=0,Position=UDim2.
 new(1,0,0,0),Size=UDim2.new(0,10,1,0)})}})Theme:Bind(self.Sidebar,
@@ -1647,11 +1662,11 @@ local button=create('TextButton',{AutoButtonColor=false,BackgroundTransparency=1
 ,Size=UDim2.new(1,0,0,34),Text='',Children={create('UICorner',{CornerRadius=UDim
 .new(0,7)})}})Theme:Bind(button,'BackgroundColor3','AccentSoft')button.Parent=
 self.SidebarList local icon=create('ImageLabel',{BackgroundTransparency=1,Image=
-Icons.Resolve(tab.IconName),Position=UDim2.fromOffset(10,8),Size=UDim2.
-fromOffset(18,18)})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=button
-local label=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.
-GothamMedium,Position=UDim2.fromOffset(36,0),Size=UDim2.new(1,-42,1,0),Text=tab.
-Title,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(label,
+Icons.Resolve(tab.IconName),Position=UDim2.fromOffset(10,8),Size=toIconSize(self
+.IconSize,18)})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=button local
+label=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamMedium,
+Position=UDim2.fromOffset(36,0),Size=UDim2.new(1,-42,1,0),Text=tab.Title,
+TextSize=13,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(label,
 'TextColor3','Muted')label.Parent=button local page=create('ScrollingFrame',{
 AutomaticCanvasSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
 BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2.fromOffset(14,14),
@@ -1663,20 +1678,22 @@ PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.new(0,2),PaddingRight=UDim.new(0,6)
 Config=self.Config self.TabObjects[tab]={SidebarButton=button,Icon=icon,Label=
 label,Page=page}button.MouseButton1Click:Connect(function()self:SelectTab(tab)
 end)function tab:Section(sectionData)sectionData=sectionData or{}local
-withBackground=sectionData.WithBackground~=false local section=create('Frame',{
-BackgroundTransparency=withBackground and 0 or 1,AutomaticSize=Enum.
-AutomaticSize.Y,Size=UDim2.new(1,0,0,0),Children={create('UICorner',{
+withBackground=sectionData.WithBackground~=false local withIcon=sectionData.
+WithIcon==true local sectionTextOffset=withIcon and 24 or 0 local section=
+create('Frame',{BackgroundTransparency=withBackground and 0 or 1,AutomaticSize=
+Enum.AutomaticSize.Y,Size=UDim2.new(1,0,0,0),Children={create('UICorner',{
 CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1}),create('UIPadding'
 ,{PaddingBottom=UDim.new(0,withBackground and 10 or 0),PaddingLeft=UDim.new(0,
 withBackground and 10 or 0),PaddingRight=UDim.new(0,withBackground and 10 or 0),
 PaddingTop=UDim.new(0,withBackground and 6 or 0)}),create('TextButton',{Name=
 'Header',AutoButtonColor=false,BackgroundTransparency=1,Size=UDim2.new(1,0,0,28)
 ,Text='',Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
-Image=Icons.Resolve(sectionData.Icon or'folder'),Position=UDim2.fromOffset(0,5),
-Size=UDim2.fromOffset(16,16)}),create('TextLabel',{Name='Title',
-BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
-fromOffset(24,0),Size=UDim2.new(1,-52,1,0),Text=sectionData.Title or'Section',
-TextTruncate=Enum.TextTruncate.AtEnd,TextSize=13,TextXAlignment=Enum.
+Image=withIcon and Icons.Resolve(sectionData.Icon or'folder')or'',Position=UDim2
+.fromOffset(0,5),Size=toIconSize(sectionData.IconSize or self.IconSize,16),
+Visible=withIcon}),create('TextLabel',{Name='Title',BackgroundTransparency=1,
+Font=Enum.Font.GothamSemibold,Position=UDim2.fromOffset(sectionTextOffset,0),
+Size=UDim2.new(1,-(sectionTextOffset+28),1,0),Text=sectionData.Title or'Section'
+,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=13,TextXAlignment=Enum.
 TextXAlignment.Left}),create('ImageLabel',{Name='Arrow',AnchorPoint=Vector2.new(
 1,0.5),BackgroundTransparency=1,Image=Icons.Resolve('chevron-right'),Position=
 UDim2.new(1,-2,0.5,0),Rotation=90,Size=UDim2.fromOffset(16,16)})}}),create(

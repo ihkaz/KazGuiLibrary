@@ -2,9 +2,10 @@ local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/
 
 local Window = KazGui:CreateWindow({
 	Title = "Kaz Development",
-	Author = "iHkaz",
+	Author = "",
 	Icon = "rbxassetid://80490914601117",
 	OpenButtonIcon = "rbxassetid://102844189283504",
+	IconSize = 18,
 	Theme = "Midnight",
 	Size = UDim2.fromOffset(620, 390),
 	MinSize = Vector2.new(460, 300),
@@ -48,6 +49,7 @@ Main:Label({
 	Title = "Dashboard",
 	Desc = "Direct tab label without a section.",
 	Icon = "layout-dashboard",
+	WithIcon = true,
 })
 
 Main:Divider()
@@ -55,6 +57,7 @@ Main:Divider()
 local Combat = Main:Section({
 	Title = "Combat",
 	Icon = "swords",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -62,6 +65,7 @@ local RunButton = Combat:Button({
 	Title = "Run Feature",
 	Desc = "Execute selected action",
 	Icon = "zap",
+	WithIcon = true,
 	Callback = function()
 		Window:Notify({
 			Title = "KazGui",
@@ -84,7 +88,8 @@ local AutoFarm = Combat:Toggle({
 Combat:Button({
 	Title = "Confirm Action",
 	Desc = "Open a dialog with multiple buttons.",
-		Icon = "message-square-warning",
+	Icon = "message-square-warning",
+	WithIcon = true,
 	Callback = function()
 		Window:Dialog({
 			Title = "Confirm",
@@ -112,6 +117,7 @@ Combat:Button({
 local Info = Main:Section({
 	Title = "Info",
 	Icon = "info",
+	WithIcon = true,
 	Default = true,
 	WithBackground = false,
 })
@@ -120,6 +126,7 @@ Info:Label({
 	Title = "Plain section",
 	Desc = "Label and divider also work inside sections.",
 	Icon = "info",
+	WithIcon = true,
 })
 
 Info:Divider()
@@ -138,6 +145,7 @@ Info:Input({
 local Movement = Player:Section({
 	Title = "Movement",
 	Icon = "footprints",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -172,6 +180,7 @@ local JumpPower = Movement:Slider({
 local Presets = Player:Section({
 	Title = "Presets",
 	Icon = "list-checks",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -221,6 +230,7 @@ Presets:Button({
 	Title = "Refresh Presets",
 	Desc = "Replace dropdown values at runtime.",
 	Icon = "refresh-cw",
+	WithIcon = true,
 	Callback = function()
 		PresetDropdown:Refresh({ "Default", "Fast", "High Jump", "Balanced" })
 		Window:Notify({
@@ -235,6 +245,7 @@ Presets:Button({
 local Appearance = Settings:Section({
 	Title = "Appearance",
 	Icon = "palette",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -252,27 +263,29 @@ Appearance:Button({
 	Title = "Custom Theme",
 	Desc = "Apply a runtime custom theme table.",
 	Icon = "palette",
+	WithIcon = true,
 	Callback = function()
-KazGui:SetTheme({
-    Name = "Custom",
-    Background = Color3.fromRGB(10, 6, 18),
-    Topbar = Color3.fromRGB(20, 12, 35),
-    Sidebar = Color3.fromRGB(15, 9, 28),
-    Surface = Color3.fromRGB(34, 18, 60),
-    SurfaceAlt = Color3.fromRGB(52, 28, 90),
-    Stroke = Color3.fromRGB(100, 50, 160),
-    Text = Color3.fromRGB(230, 220, 255),
-    Muted = Color3.fromRGB(140, 110, 180),
-    Accent = Color3.fromRGB(180, 80, 255),
-    AccentSoft = Color3.fromRGB(60, 20, 90),
-    Danger = Color3.fromRGB(200, 80, 60),
-})
+		KazGui:SetTheme({
+			Name = "Custom",
+			Background = Color3.fromRGB(10, 6, 18),
+			Topbar = Color3.fromRGB(20, 12, 35),
+			Sidebar = Color3.fromRGB(15, 9, 28),
+			Surface = Color3.fromRGB(34, 18, 60),
+			SurfaceAlt = Color3.fromRGB(52, 28, 90),
+			Stroke = Color3.fromRGB(100, 50, 160),
+			Text = Color3.fromRGB(230, 220, 255),
+			Muted = Color3.fromRGB(140, 110, 180),
+			Accent = Color3.fromRGB(180, 80, 255),
+			AccentSoft = Color3.fromRGB(60, 20, 90),
+			Danger = Color3.fromRGB(200, 80, 60),
+		})
 	end,
 })
 
 local Controls = Settings:Section({
 	Title = "Control Methods",
 	Icon = "sliders-horizontal",
+	WithIcon = true,
 	Default = true,
 })
 
@@ -280,6 +293,7 @@ Controls:Button({
 	Title = "Set Values",
 	Desc = "Call object methods returned by components.",
 	Icon = "sliders-horizontal",
+	WithIcon = true,
 	Callback = function()
 		RunButton:SetTitle("Run Feature")
 		RunButton:SetDesc("Updated from Set Values.")
@@ -293,6 +307,7 @@ Controls:Button({
 	Title = "Lock Toggle",
 	Desc = "Lock Auto Farm for three seconds.",
 	Icon = "lock-keyhole",
+	WithIcon = true,
 	Callback = function()
 		AutoFarm:Lock()
 		task.delay(3, function()
@@ -305,6 +320,7 @@ Controls:Button({
 	Title = "Collapse Combat",
 	Desc = "Use Section:Close and Section:Open.",
 	Icon = "panel-top-close",
+	WithIcon = true,
 	Callback = function()
 		Combat:Close()
 		task.delay(2, function()
@@ -317,6 +333,7 @@ Controls:Button({
 	Title = "Go To Player Tab",
 	Desc = "Select tab by index.",
 	Icon = "user-round",
+	WithIcon = true,
 	Callback = function()
 		Window:SelectTab(2)
 	end,
