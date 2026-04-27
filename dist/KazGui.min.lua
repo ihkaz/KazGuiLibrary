@@ -1311,59 +1311,64 @@ end function state:SetWithIcon(value)self.WithIcon=value==true self:SetIcon(self
 function state:SetDesc(text)self.Desc=text label.Description.Text=text or''label
 .Description.Visible=text~=nil and text~=''label.Size=UDim2.new(1,0,0,text and
 text~=''and 44 or 26)end function state:Destroy()label:Destroy()end return state
-end function Controls.Divider(parent,data)data=data or{}local state={}local
-divider=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.
-Spacing or 14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,
-0.5),BackgroundTransparency=0,Position=UDim2.new(0,0,0.5,0),Size=UDim2.new(1,0,0
-,1)})}})Theme:Bind(divider.Line,'BackgroundColor3','Stroke')divider.Parent=
-parent function state:Destroy()divider:Destroy()end return state end function
-Controls.Button(parent,data)data=data or{}local state={Title=data.Title or
-'Button',Desc=data.Desc,Icon=data.Icon or'zap',WithIcon=data.WithIcon==true,
-Locked=data.Locked or false,Callback=data.Callback or function()end}local card=
-makeCard(state.Title,state.Desc)card.Parent=parent card.Name=state.Title local
-icon=create('ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(1,0.5),
-BackgroundTransparency=1,Image=state.WithIcon and Icons.Resolve(state.Icon)or'',
-Position=UDim2.new(1,-14,0.5,0),Size=toIconSize(data.IconSize,18),Visible=state.
-WithIcon})Theme:Bind(icon,'ImageColor3','Muted')icon.Parent=card card.
-MouseButton1Click:Connect(function()if not state.Locked then state.Callback()end
-end)function state:SetTitle(text)self.Title=text card.Title.Text=text end
-function state:SetDesc(text)self.Desc=text card.Description.Text=text card.
-Description.Visible=text~=nil and text~=''end function state:SetIcon(icon)icon=
-icon or'zap'self.Icon=icon card.Icon.Image=self.WithIcon and Icons.Resolve(icon)
-or''card.Icon.Visible=self.WithIcon end function state:SetWithIcon(value)self.
-WithIcon=value==true self:SetIcon(self.Icon)end function state:Lock()self.Locked
-=true card.Active=false end function state:Unlock()self.Locked=false card.Active
-=true end function state:Destroy()card:Destroy()end return state end function
-Controls.Toggle(parent,data,config)data=data or{}local state={Title=data.Title
-or'Toggle',Desc=data.Desc,State=data.Default or data.Value or false,Locked=data.
-Locked or false,Callback=data.Callback or function()end}if config then state.
-State=config:Get(state.Title,state.State)end local card=makeCard(state.Title,
-state.Desc)card.Parent=parent card.Name=state.Title local track=create('Frame',{
-AnchorPoint=Vector2.new(1,0.5),Position=UDim2.new(1,-14,0.5,0),Size=UDim2.
-fromOffset(42,22),Children={create('UICorner',{CornerRadius=UDim.new(1,0)}),
-create('Frame',{Name='Knob',AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,
-3,0.5,0),Size=UDim2.fromOffset(16,16),Children={create('UICorner',{CornerRadius=
-UDim.new(1,0)})}})}})Theme:Bind(track.Knob,'BackgroundColor3','Text')track.
-Parent=card local function paint(animated)local goal=state.State and UDim2.new(1
-,-19,0.5,0)or UDim2.new(0,3,0.5,0)local color=state.State and Theme:Get('Accent'
-)or Theme:Get('SurfaceAlt')if animated then tween(track.Knob,{Position=goal})
-tween(track,{BackgroundColor3=color})else track.Knob.Position=goal track.
-BackgroundColor3=color end end card.MouseButton1Click:Connect(function()if state
-.Locked then return end state:Set(not state.State)end)function state:Set(value)
-self.State=value paint(true)if config then config:Set(self.Title,self.State)end
-self.Callback(self.State)end function state:SetTitle(text)self.Title=text card.
-Title.Text=text end function state:SetDesc(text)card.Description.Text=text or''
-card.Description.Visible=text~=nil and text~=''end function state:Lock()self.
-Locked=true end function state:Unlock()self.Locked=false end local themeWatcher=
-Theme:Watch(function()if card.Parent==nil then return false end paint(false)
-return true end)function state:Destroy()themeWatcher:Disconnect()card:Destroy()
-end state.Callback(state.State)return state end function Controls.Slider(parent,
-data,config)data=data or{}data.Value=data.Value or{}local min=data.Value and
-data.Value.Min or data.Min or 0 local max=data.Value and data.Value.Max or data.
-Max or 100 local default=data.Value and data.Value.Default or data.Default or
-min local step=data.Step or 1 local state={Title=data.Title or'Slider',Desc=data
-.Desc,Value=config and config:Get(data.Title or'Slider',default)or default,
-Locked=data.Locked or false,Callback=data.Callback or function()end}local card=
+end function Controls.Divider(parent,data)data=data or{}local state={ColorKey=
+data.ColorKey or'Stroke'}local divider=create('Frame',{BackgroundTransparency=1,
+Size=UDim2.new(1,0,0,data.Spacing or 14),Children={create('Frame',{Name='Line',
+AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=data.Transparency or 0,
+Position=UDim2.new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 1)})}})
+divider.Parent=parent local themeWatcher=Theme:Watch(function()if divider.Parent
+==nil then return false end divider.Line.BackgroundColor3=Theme:Get(state.
+ColorKey)or Theme:Get('Stroke')return true end)function state:SetColorKey(
+colorKey)self.ColorKey=colorKey or'Stroke'divider.Line.BackgroundColor3=Theme:
+Get(self.ColorKey)or Theme:Get('Stroke')end function state:Destroy()themeWatcher
+:Disconnect()divider:Destroy()end return state end function Controls.Button(
+parent,data)data=data or{}local state={Title=data.Title or'Button',Desc=data.
+Desc,Icon=data.Icon or'zap',WithIcon=data.WithIcon==true,Locked=data.Locked or
+false,Callback=data.Callback or function()end}local card=makeCard(state.Title,
+state.Desc)card.Parent=parent card.Name=state.Title local icon=create(
+'ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=
+1,Image=state.WithIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.new(1,-
+14,0.5,0),Size=toIconSize(data.IconSize,18),Visible=state.WithIcon})Theme:Bind(
+icon,'ImageColor3','Muted')icon.Parent=card card.MouseButton1Click:Connect(
+function()if not state.Locked then state.Callback()end end)function state:
+SetTitle(text)self.Title=text card.Title.Text=text end function state:SetDesc(
+text)self.Desc=text card.Description.Text=text card.Description.Visible=text~=
+nil and text~=''end function state:SetIcon(icon)icon=icon or'zap'self.Icon=icon
+card.Icon.Image=self.WithIcon and Icons.Resolve(icon)or''card.Icon.Visible=self.
+WithIcon end function state:SetWithIcon(value)self.WithIcon=value==true self:
+SetIcon(self.Icon)end function state:Lock()self.Locked=true card.Active=false
+end function state:Unlock()self.Locked=false card.Active=true end function state
+:Destroy()card:Destroy()end return state end function Controls.Toggle(parent,
+data,config)data=data or{}local state={Title=data.Title or'Toggle',Desc=data.
+Desc,State=data.Default or data.Value or false,Locked=data.Locked or false,
+Callback=data.Callback or function()end}if config then state.State=config:Get(
+state.Title,state.State)end local card=makeCard(state.Title,state.Desc)card.
+Parent=parent card.Name=state.Title local track=create('Frame',{AnchorPoint=
+Vector2.new(1,0.5),Position=UDim2.new(1,-14,0.5,0),Size=UDim2.fromOffset(42,22),
+Children={create('UICorner',{CornerRadius=UDim.new(1,0)}),create('Frame',{Name=
+'Knob',AnchorPoint=Vector2.new(0,0.5),Position=UDim2.new(0,3,0.5,0),Size=UDim2.
+fromOffset(16,16),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}})}}
+)Theme:Bind(track.Knob,'BackgroundColor3','Text')track.Parent=card
+local function paint(animated)local goal=state.State and UDim2.new(1,-19,0.5,0)
+or UDim2.new(0,3,0.5,0)local color=state.State and Theme:Get('Accent')or Theme:
+Get('SurfaceAlt')if animated then tween(track.Knob,{Position=goal})tween(track,{
+BackgroundColor3=color})else track.Knob.Position=goal track.BackgroundColor3=
+color end end card.MouseButton1Click:Connect(function()if state.Locked then
+return end state:Set(not state.State)end)function state:Set(value)self.State=
+value paint(true)if config then config:Set(self.Title,self.State)end self.
+Callback(self.State)end function state:SetTitle(text)self.Title=text card.Title.
+Text=text end function state:SetDesc(text)card.Description.Text=text or''card.
+Description.Visible=text~=nil and text~=''end function state:Lock()self.Locked=
+true end function state:Unlock()self.Locked=false end local themeWatcher=Theme:
+Watch(function()if card.Parent==nil then return false end paint(false)return
+true end)function state:Destroy()themeWatcher:Disconnect()card:Destroy()end
+state.Callback(state.State)return state end function Controls.Slider(parent,data
+,config)data=data or{}data.Value=data.Value or{}local min=data.Value and data.
+Value.Min or data.Min or 0 local max=data.Value and data.Value.Max or data.Max
+or 100 local default=data.Value and data.Value.Default or data.Default or min
+local step=data.Step or 1 local state={Title=data.Title or'Slider',Desc=data.
+Desc,Value=config and config:Get(data.Title or'Slider',default)or default,Locked
+=data.Locked or false,Callback=data.Callback or function()end}local card=
 makeCard(state.Title,state.Desc)card.Size=UDim2.new(1,0,0,76)card.Parent=parent
 card.Name=state.Title local valueLabel=create('TextLabel',{AnchorPoint=Vector2.
 new(1,0),BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2.
@@ -1734,51 +1739,57 @@ function tab:Input(inputData)return Controls.Input(self.Parent,inputData,self.
 Config)end function tab:Dropdown(dropdownData)return Controls.Dropdown(self.
 Parent,dropdownData,self.Config,self.Window)end table.insert(self.Tabs,tab)if
 not self.SelectedTab then self:SelectTab(tab)end return tab end function Window:
-Divider()local line=create('Frame',{BackgroundTransparency=0,Size=UDim2.new(1,0,
-0,1)})Theme:Bind(line,'BackgroundColor3','Stroke')line.Parent=self.SidebarList
-or self.Sidebar end function Window:Dialog(data)local overlay=create('Frame',{
-BackgroundTransparency=0.35,Size=UDim2.fromScale(1,1),ZIndex=40})Theme:Bind(
-overlay,'BackgroundColor3','Background')overlay.Parent=self.Main local box=
-create('Frame',{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,
-0.5),Size=UDim2.fromOffset(320,160),ZIndex=41,Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('UIStroke',{Thickness=1}),create(
-'TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.GothamSemibold
-,Position=UDim2.fromOffset(16,14),Size=UDim2.new(1,-32,0,24),Text=data.Title or
-'Dialog',TextSize=15,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=42}),create(
-'TextLabel',{Name='Content',BackgroundTransparency=1,Font=Enum.Font.Gotham,
-Position=UDim2.fromOffset(16,44),Size=UDim2.new(1,-32,0,56),Text=data.Content or
-'',TextSize=13,TextWrapped=true,TextXAlignment=Enum.TextXAlignment.Left,
-TextYAlignment=Enum.TextYAlignment.Top,ZIndex=42})}})Theme:Bind(box,
-'BackgroundColor3','Surface')Theme:Bind(box.UIStroke,'Color','Stroke')Theme:
-Bind(box.Title,'TextColor3','Text')Theme:Bind(box.Content,'TextColor3','Muted')
-box.Parent=overlay local buttons=data.Buttons or{{Title='Ok'}}for index,info in
-ipairs(buttons)do local btn=create('TextButton',{AutoButtonColor=false,Font=Enum
-.Font.GothamMedium,Position=UDim2.new(1,-16-((#buttons-index+1)*90),1,-44),Size=
-UDim2.fromOffset(82,30),Text=info.Title or'Button',TextSize=13,ZIndex=42,
-Children={create('UICorner',{CornerRadius=UDim.new(0,7)})}})Theme:Bind(btn,
-'BackgroundColor3',index==#buttons and'Accent'or'SurfaceAlt')Theme:Bind(btn,
-'TextColor3','Text')btn.Parent=box btn.MouseButton1Click:Connect(function()if
-info.Callback then info.Callback()end overlay:Destroy()end)end end function
-Window:Notify(data)return self.Library:Notify(data)end return Window end
-function __KAZGUI_MODULES.h():typeof(__modImpl())local v=__KAZGUI_MODULES.cache.
-h if not v then v={c=__modImpl()}__KAZGUI_MODULES.cache.h=v end return v.c end
-end end local create=__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local
-Window=__KAZGUI_MODULES.h()local Icons=__KAZGUI_MODULES.d()local tween=
-__KAZGUI_MODULES.f()local KazGui={Version='0.1.0',Themes=Theme.Palettes,Windows=
-{}}function KazGui:SetTheme(theme)local applied=Theme:Set(theme)if not applied
-then return false end for _,window in ipairs(self.Windows)do if window.
-RefreshThemeState then window:RefreshThemeState()end end return true end
-function KazGui:CreateWindow(data)local window=Window.new(self,data or{})table.
-insert(self.Windows,window)return window end function KazGui:Notify(data)local
-target=self.Windows[#self.Windows]local parent=target and target.Main or nil if
-not parent then return{Close=function()end}end local notif=create('Frame',{
-AnchorPoint=Vector2.new(1,0),Position=UDim2.new(1,-14,0,58),Size=UDim2.
-fromOffset(260,72),ZIndex=50,Children={create('UICorner',{CornerRadius=UDim.new(
-0,9)}),create('UIStroke',{Thickness=1})}})Theme:Bind(notif,'BackgroundColor3',
-'Surface')Theme:Bind(notif.UIStroke,'Color','Stroke')notif.Parent=parent local
-icon=create('ImageLabel',{BackgroundTransparency=1,Image=Icons.Resolve(data.Icon
-or'sparkles'),Position=UDim2.fromOffset(12,14),Size=UDim2.fromOffset(20,20),
-ZIndex=51})Theme:Bind(icon,'ImageColor3','Accent')icon.Parent=notif local title=
+Divider(data)data=data or{}local state={ColorKey=data.ColorKey or'Stroke'}local
+line=create('Frame',{BackgroundTransparency=data.Transparency or 0,Size=UDim2.
+new(1,0,0,data.Thickness or 1)})line.Parent=self.SidebarList or self.Sidebar
+local themeWatcher=Theme:Watch(function()if line.Parent==nil then return false
+end line.BackgroundColor3=Theme:Get(state.ColorKey)or Theme:Get('Stroke')return
+true end)function state:SetColorKey(colorKey)self.ColorKey=colorKey or'Stroke'
+line.BackgroundColor3=Theme:Get(self.ColorKey)or Theme:Get('Stroke')end function
+state:Destroy()themeWatcher:Disconnect()line:Destroy()end return state end
+function Window:Dialog(data)local overlay=create('Frame',{BackgroundTransparency
+=0.35,Size=UDim2.fromScale(1,1),ZIndex=40})Theme:Bind(overlay,'BackgroundColor3'
+,'Background')overlay.Parent=self.Main local box=create('Frame',{AnchorPoint=
+Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(320
+,160),ZIndex=41,Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),
+create('UIStroke',{Thickness=1}),create('TextLabel',{Name='Title',
+BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+fromOffset(16,14),Size=UDim2.new(1,-32,0,24),Text=data.Title or'Dialog',TextSize
+=15,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=42}),create('TextLabel',{Name
+='Content',BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.
+fromOffset(16,44),Size=UDim2.new(1,-32,0,56),Text=data.Content or'',TextSize=13,
+TextWrapped=true,TextXAlignment=Enum.TextXAlignment.Left,TextYAlignment=Enum.
+TextYAlignment.Top,ZIndex=42})}})Theme:Bind(box,'BackgroundColor3','Surface')
+Theme:Bind(box.UIStroke,'Color','Stroke')Theme:Bind(box.Title,'TextColor3',
+'Text')Theme:Bind(box.Content,'TextColor3','Muted')box.Parent=overlay local
+buttons=data.Buttons or{{Title='Ok'}}for index,info in ipairs(buttons)do local
+btn=create('TextButton',{AutoButtonColor=false,Font=Enum.Font.GothamMedium,
+Position=UDim2.new(1,-16-((#buttons-index+1)*90),1,-44),Size=UDim2.fromOffset(82
+,30),Text=info.Title or'Button',TextSize=13,ZIndex=42,Children={create(
+'UICorner',{CornerRadius=UDim.new(0,7)})}})Theme:Bind(btn,'BackgroundColor3',
+index==#buttons and'Accent'or'SurfaceAlt')Theme:Bind(btn,'TextColor3','Text')btn
+.Parent=box btn.MouseButton1Click:Connect(function()if info.Callback then info.
+Callback()end overlay:Destroy()end)end end function Window:Notify(data)return
+self.Library:Notify(data)end return Window end function __KAZGUI_MODULES.h():
+typeof(__modImpl())local v=__KAZGUI_MODULES.cache.h if not v then v={c=
+__modImpl()}__KAZGUI_MODULES.cache.h=v end return v.c end end end local create=
+__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Window=
+__KAZGUI_MODULES.h()local Icons=__KAZGUI_MODULES.d()local tween=__KAZGUI_MODULES
+.f()local KazGui={Version='0.1.0',Themes=Theme.Palettes,Windows={}}function
+KazGui:SetTheme(theme)local applied=Theme:Set(theme)if not applied then return
+false end for _,window in ipairs(self.Windows)do if window.RefreshThemeState
+then window:RefreshThemeState()end end return true end function KazGui:
+CreateWindow(data)local window=Window.new(self,data or{})table.insert(self.
+Windows,window)return window end function KazGui:Notify(data)local target=self.
+Windows[#self.Windows]local parent=target and target.Main or nil if not parent
+then return{Close=function()end}end local notif=create('Frame',{AnchorPoint=
+Vector2.new(1,0),Position=UDim2.new(1,-14,0,58),Size=UDim2.fromOffset(260,72),
+ZIndex=50,Children={create('UICorner',{CornerRadius=UDim.new(0,9)}),create(
+'UIStroke',{Thickness=1})}})Theme:Bind(notif,'BackgroundColor3','Surface')Theme:
+Bind(notif.UIStroke,'Color','Stroke')notif.Parent=parent local icon=create(
+'ImageLabel',{BackgroundTransparency=1,Image=Icons.Resolve(data.Icon or
+'sparkles'),Position=UDim2.fromOffset(12,14),Size=UDim2.fromOffset(20,20),ZIndex
+=51})Theme:Bind(icon,'ImageColor3','Accent')icon.Parent=notif local title=
 create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,
 Position=UDim2.fromOffset(40,10),Size=UDim2.new(1,-52,0,22),Text=data.Title or
 'Notification',TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=51})

@@ -288,6 +288,11 @@ Adds a thin divider line to the sidebar.
 
 ```lua
 Window:Divider()
+Window:Divider({
+	ColorKey = "Stroke",
+	Thickness = 1,
+	Transparency = 0,
+})
 ```
 
 ### `Window:Dialog(data)`
@@ -533,6 +538,9 @@ Creates a themed separator line.
 ```lua
 local Divider = Main:Divider({
 	Spacing = 18,
+	ColorKey = "Stroke",
+	Thickness = 1,
+	Transparency = 0,
 })
 ```
 
@@ -541,11 +549,15 @@ Parameters:
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
 | `Spacing` | `number` | `14` | Divider container height. |
+| `ColorKey` | `string` | `"Stroke"` | Theme color key used for the divider line. |
+| `Thickness` | `number` | `1` | Divider line height. |
+| `Transparency` | `number` | `0` | Divider line transparency. |
 
 Methods:
 
 | Method | Parameters | Description |
 | --- | --- | --- |
+| `SetColorKey` | `colorKey: string` | Changes which theme color key the divider uses. |
 | `Destroy` | none | Removes the divider. |
 
 ### Toggle
