@@ -1,16 +1,14 @@
 # KazGui Documentation
 
-KazGui is a Roblox Luau GUI library for executor environments. It provides a compact window layout, theme support, Lucide icons, saved component state, searchable dropdowns, multi-select dropdowns, notifications, dialogs, draggable windows, image-only open buttons, and resize support.
+KazGui is a Roblox Luau GUI library for executor environments. It provides draggable and resizable windows, theme support, Lucide icons, tabs, sections, common controls, searchable dropdowns, multi-select dropdowns, dialogs, notifications, and optional config autosave.
 
 ## Loader
-
-Use the raw loader:
 
 ```lua
 local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/main/dist/KazGui.min.lua"))()
 ```
 
-For cache-safe testing, use a commit URL:
+For cache-safe testing, load a specific commit:
 
 ```lua
 local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/<commit>/dist/KazGui.min.lua"))()
@@ -41,81 +39,111 @@ local Main = Window:Tab({
 
 local Combat = Main:Section({
 	Title = "Combat",
+	Icon = "swords",
 	Default = true,
 })
 
 Combat:Toggle({
 	Title = "Auto Farm",
-	Desc = "Saved automatically.",
+	Desc = "Saved automatically when AutoSave is enabled.",
 	Default = false,
 	Callback = function(value)
-		print(value)
+		print("Auto Farm:", value)
 	end,
 })
 ```
 
-## Window
+## Object Flow
+
+KazGui uses a simple object chain:
+
+```text
+KazGui -> Window -> Tab -> Section -> Component
+```
+
+Components can be created directly inside a tab or inside a section:
+
+```lua
+Main:Button({...})
+
+local Settings = Main:Section({...})
+Settings:Dropdown({...})
+```
+
+All component constructors return a control object. Store it if you want to update, lock, unlock, or destroy the component later.
+
+## Library API
 
 ### `KazGui:CreateWindow(data)`
 
-Creates a window and returns a `Window` object.
+Creates a new window and returns a `Window` object.
 
 ```lua
 local Window = KazGui:CreateWindow({
 	Title = "KazHub",
-	Author = "v1.0",
-	Icon = "layout-dashboard",
-	OpenButtonIcon = "sparkles",
 	Theme = "Midnight",
-	Size = UDim2.fromOffset(620, 390),
-	MinSize = Vector2.new(460, 300),
-	ToggleKey = Enum.KeyCode.RightShift,
-	AutoSave = true,
-	FileSaveName = "KazHub.json",
 })
 ```
 
-Fields:
+Parameters:
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `Title` | `string` | `"KazGui"` | Window title. Long titles truncate safely. |
-| `Author` / `Version` | `string` | `"v1.0"` | Text shown on the right side of the topbar. |
-| `Icon` | `string` / asset id | `"layout"` | Window icon. Supports Lucide names and Roblox asset ids. |
-| `OpenButtonIcon` / `OpenIcon` | `string` / asset id | `Icon` | Image-only open button icon shown when window is hidden. |
-| `Theme` | `string` / table | `"Midnight"` | Initial theme. |
+| `Title` | `string` | `"KazGui"` | Window title shown in the topbar. Long text truncates safely. |
+| `Author` | `string` | `"v1.0"` | Text shown on the right side of the topbar. |
+| `Version` | `string` | `"v1.0"` | Alias used when `Author` is not provided. |
+| `Icon` | `string` / asset id | `"layout"` | Window icon. Accepts Lucide icon names, numeric asset ids, or `rbxassetid://...`. |
+| `OpenButtonIcon` | `string` / asset id | `Icon` | Image-only button icon shown when the window is hidden. |
+| `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
+| `Theme` | `string` / table | current theme | Initial theme for the library. |
 | `Size` | `UDim2` | `UDim2.fromOffset(620, 390)` | Initial window size. |
-| `MinSize` | `Vector2` | `Vector2.new(460, 300)` | Minimum resize size. |
-| `ToggleKey` | `Enum.KeyCode` | `RightShift` | Keyboard key to hide/open the window. |
-| `AutoSave` | `boolean` | `true` | Saves supported component values using executor file APIs. |
-| `FileSaveName` | `string` | `"<Title>.json"` | Config file path/name. |
-| `OnOpen` | `function` | `nil` | Optional callback fired when the window opens. |
-| `OnClose` | `function` | `nil` | Optional callback fired when the window hides or is destroyed while visible. |
-| `OnDestroy` | `function` | `nil` | Optional callback fired before the window GUI is destroyed. |
+| `MinSize` | `Vector2` | `Vector2.new(460, 300)` | Minimum size for user resizing. |
+| `ToggleKey` | `Enum.KeyCode` | `Enum.KeyCode.RightShift` | Keyboard key used to hide or show the window. |
+| `AutoSave` | `boolean` | `true` | Enables config writes for supported controls when file APIs exist. |
+| `FileSaveName` | `string` | `"<Title>.json"` | File path/name used for saved values. |
+| `OnOpen` | `function(window)` | `nil` | Optional callback fired when the window becomes visible. |
+| `OnClose` | `function(window)` | `nil` | Optional callback fired when the window is hidden or destroyed while visible. |
+| `OnDestroy` | `function(window)` | `nil` | Optional callback fired before the window GUI is destroyed. |
 
-### Window Methods
+### `KazGui:SetTheme(theme)`
+
+Applies a built-in theme name or custom theme table to all active windows.
 
 ```lua
-Window:Toggle()              -- toggles visibility
-Window:Toggle(true)          -- shows window
-Window:Toggle(false)         -- hides window and shows open button
-Window:Open()
-Window:Close()
-Window:Destroy()
-Window:OnOpen(function(window) end)
-Window:OnClose(function(window) end)
-Window:OnDestroy(function(window) end)
-Window:SetToggleKey(Enum.KeyCode.RightControl)
-Window:SetTheme("Emerald")
-Window:SelectTab(2)
-Window:Divider()
-Window:Dialog({...})
-Window:Notify({...})
+KazGui:SetTheme("Emerald")
 ```
 
-## Tabs
+Returns `true` when the theme is applied, otherwise `false`.
 
-Tabs appear in the left sidebar.
+### `KazGui:Notify(data)`
+
+Shows a notification on the most recently created active window.
+
+```lua
+KazGui:Notify({
+	Title = "KazGui",
+	Content = "Loaded successfully.",
+	Icon = "bell",
+	Duration = 3,
+})
+```
+
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Notification"` | Notification title. |
+| `Content` | `string` | `""` | Notification body text. |
+| `Icon` | `string` / asset id | `"sparkles"` | Notification icon. |
+| `Duration` | `number` | `5` | Auto-close delay in seconds. |
+
+Returns an object with `:Close()`.
+
+## Window API
+
+### `Window:Tab(data)`
+
+Creates a sidebar tab and returns a `Tab` object.
 
 ```lua
 local Player = Window:Tab({
@@ -124,16 +152,196 @@ local Player = Window:Tab({
 })
 ```
 
-Fields:
+Parameters:
 
-| Field | Type | Description |
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Tab"` | Sidebar tab label. |
+| `Icon` | `string` / asset id | `"circle"` | Sidebar tab icon. |
+
+### `Window:Toggle(state)`
+
+Toggles window visibility. Hidden windows show the image-only open button.
+
+```lua
+Window:Toggle()
+Window:Toggle(true)
+Window:Toggle(false)
+```
+
+Parameters:
+
+| Parameter | Type | Description |
 | --- | --- | --- |
-| `Title` | `string` | Tab label. |
-| `Icon` | `string` / asset id | Lucide icon name or asset id. |
+| `state` | `boolean?` | `true` opens, `false` hides, `nil` toggles the current state. |
 
-## Sections
+Returns `true` when the request is handled, otherwise `false` if the window has been destroyed.
 
-Sections group components and can collapse/expand.
+### `Window:Open()`
+
+Shows the window.
+
+```lua
+Window:Open()
+```
+
+Equivalent to `Window:Toggle(true)`.
+
+### `Window:Close()`
+
+Hides the window and shows the open button.
+
+```lua
+Window:Close()
+```
+
+Equivalent to `Window:Toggle(false)`.
+
+### `Window:Destroy()`
+
+Destroys the window GUI and removes the window from `KazGui.Windows`.
+
+```lua
+Window:Destroy()
+```
+
+This also disconnects the toggle-key listener, removes the dropdown overlay, clears lifecycle callbacks, and prevents future theme refresh work for that window.
+
+### `Window:OnOpen(callback)`
+
+Registers a callback fired when the window becomes visible.
+
+```lua
+local connection = Window:OnOpen(function(window)
+	print("opened", window.Title)
+end)
+
+connection:Disconnect()
+```
+
+### `Window:OnClose(callback)`
+
+Registers a callback fired when the window is hidden. If `Window:Destroy()` is called while visible, close callbacks fire before destroy callbacks.
+
+```lua
+Window:OnClose(function(window)
+	print("closed", window.Title)
+end)
+```
+
+### `Window:OnDestroy(callback)`
+
+Registers a callback fired before the GUI is destroyed.
+
+```lua
+Window:OnDestroy(function(window)
+	print("destroyed", window.Title)
+end)
+```
+
+### `Window:SetToggleKey(key)`
+
+Changes the keyboard shortcut used to hide or show the window.
+
+```lua
+Window:SetToggleKey(Enum.KeyCode.RightControl)
+Window:SetToggleKey("RightControl")
+```
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `key` | `Enum.KeyCode` / `string` | New toggle key. String values are resolved through `Enum.KeyCode`. |
+
+### `Window:SetTheme(theme)`
+
+Applies a theme and refreshes active windows.
+
+```lua
+Window:SetTheme("Rose")
+```
+
+Returns `true` when applied, otherwise `false`.
+
+### `Window:SelectTab(target)`
+
+Selects a tab by object or numeric index.
+
+```lua
+Window:SelectTab(2)
+Window:SelectTab(Player)
+```
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `target` | `number` / `Tab` | Tab index or tab object returned by `Window:Tab()`. |
+
+### `Window:Divider()`
+
+Adds a thin divider line to the sidebar.
+
+```lua
+Window:Divider()
+```
+
+### `Window:Dialog(data)`
+
+Shows a modal dialog inside the window.
+
+```lua
+Window:Dialog({
+	Title = "Confirm",
+	Content = "Run selected action?",
+	Buttons = {
+		{ Title = "Cancel" },
+		{
+			Title = "Run",
+			Callback = function()
+				print("confirmed")
+			end,
+		},
+	},
+})
+```
+
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Dialog"` | Dialog title. |
+| `Content` | `string` | `""` | Dialog body text. |
+| `Buttons` | `{ table }` | `{ { Title = "Ok" } }` | Button definitions shown at the bottom of the dialog. |
+
+Button fields:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Button"` | Button label. |
+| `Callback` | `function()` | `nil` | Fired before the dialog closes. |
+
+### `Window:Notify(data)`
+
+Shows a notification on this window. This forwards to `KazGui:Notify(data)`.
+
+```lua
+Window:Notify({
+	Title = "Saved",
+	Content = "Settings updated.",
+	Icon = "circle-check",
+	Duration = 2,
+})
+```
+
+## Tab API
+
+Tabs can contain sections or components directly.
+
+### `Tab:Section(data)`
+
+Creates a collapsible section and returns a `Section` object.
 
 ```lua
 local Movement = Player:Section({
@@ -142,32 +350,99 @@ local Movement = Player:Section({
 	Default = true,
 	WithBackground = true,
 })
-
-Movement:Close()
-Movement:Open()
-Movement:SetState(false)
-Movement:SetTitle("New Title")
 ```
 
-Components can be added directly to a tab or to a section:
-
-```lua
-Player:Button({...})
-Movement:Slider({...})
-```
-
-Sections render as framed background groups with a Lucide icon before the title by default. Set `WithBackground = false` for a plain section header without the section card background.
+Parameters:
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `Title` | `string` | `"Section"` | Section header text. |
-| `Icon` | `string` / asset id | `"folder"` | Header icon before the title. |
-| `Default` | `boolean` | `true` | Initial expanded/collapsed state. |
-| `WithBackground` | `boolean` | `true` | Enables section background, stroke, and inner padding. |
+| `Title` | `string` | `"Section"` | Header title. |
+| `Icon` | `string` / asset id | `"folder"` | Header icon. |
+| `Default` | `boolean` | `true` | Initial expanded state. |
+| `WithBackground` | `boolean` | `true` | Enables the section background, stroke, and inner padding. |
+
+### `Tab:SetParent(parent)`
+
+Changes where new components created by this tab are inserted.
+
+```lua
+Tab:SetParent(customFrame)
+```
+
+Use this only when you intentionally manage layout yourself.
+
+### `Tab:ResetParent()`
+
+Resets component insertion back to the tab page.
+
+```lua
+Tab:ResetParent()
+```
+
+### Component constructors
+
+Tabs support the same component constructors as sections:
+
+```lua
+Tab:Button({...})
+Tab:Label({...})
+Tab:Divider({...})
+Tab:Toggle({...})
+Tab:Slider({...})
+Tab:Input({...})
+Tab:Dropdown({...})
+```
+
+## Section API
+
+Sections group components and can be collapsed.
+
+```lua
+local Section = Main:Section({
+	Title = "General",
+	Icon = "settings",
+})
+```
+
+### Section methods
+
+```lua
+Section:SetTitle("New Title")
+Section:SetState(false)
+Section:Open()
+Section:Close()
+Section:Destroy()
+```
+
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `SetTitle` | `text: string` | Updates the section header title. |
+| `SetState` | `value: boolean` | Expands or collapses the section. |
+| `Open` | none | Expands the section. |
+| `Close` | none | Collapses the section. |
+| `Destroy` | none | Removes the section and its components. |
+
+### Component constructors
+
+Sections support:
+
+```lua
+Section:Button({...})
+Section:Label({...})
+Section:Divider({...})
+Section:Toggle({...})
+Section:Slider({...})
+Section:Input({...})
+Section:Dropdown({...})
+```
 
 ## Components
 
+Every component accepts `Title` and most visual components accept `Desc`. Components that store values use `Title` as the autosave key.
+
 ### Button
+
+Creates a clickable action card.
 
 ```lua
 local Button = Main:Button({
@@ -181,56 +456,86 @@ local Button = Main:Button({
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Button"` | Button title and autosave-safe object name. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Icon` | `string` / asset id | `"zap"` | Icon shown on the right. |
+| `Locked` | `boolean` | `false` | Prevents clicks when true. |
+| `Callback` | `function()` | empty function | Fired when clicked while unlocked. |
+
 Methods:
 
-```lua
-Button:SetTitle("New Title")
-Button:SetDesc("New description")
-Button:Lock()
-Button:Unlock()
-Button:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `Lock` | none | Disables interaction. |
+| `Unlock` | none | Enables interaction. |
+| `Destroy` | none | Removes the component. |
 
 ### Label
 
-Labels add static text to a tab or section.
+Creates static text with an optional icon.
 
 ```lua
 local Label = Main:Label({
 	Title = "Dashboard",
 	Desc = "Optional supporting text.",
 	Icon = "info",
+	TextSize = 14,
+	ColorKey = "Text",
+	IconColorKey = "Accent",
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Label"` | Main label text. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Icon` | `string` / asset id | `nil` | Optional icon before the title. |
+| `TextSize` | `number` | `14` | Title font size. |
+| `ColorKey` | `string` | `"Text"` | Theme color key used for title text. |
+| `IconColorKey` | `string` | `"Accent"` | Theme color key used for the icon. |
+
 Methods:
 
-```lua
-Label:SetTitle("New title")
-Label:SetDesc("New description")
-Label:SetIcon("circle-check")
-Label:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `SetIcon` | `icon: string?` | Updates or removes the icon. |
+| `Destroy` | none | Removes the label. |
 
 ### Divider
 
-Dividers add a thin themed separator line.
+Creates a themed separator line.
 
 ```lua
-local Divider = Main:Divider()
-
-Main:Divider({
+local Divider = Main:Divider({
 	Spacing = 18,
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Spacing` | `number` | `14` | Divider container height. |
+
 Methods:
 
-```lua
-Divider:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `Destroy` | none | Removes the divider. |
 
 ### Toggle
+
+Creates a boolean switch.
 
 ```lua
 local Toggle = Main:Toggle({
@@ -243,16 +548,31 @@ local Toggle = Main:Toggle({
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Toggle"` | Toggle title and autosave key. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Default` | `boolean` | `false` | Initial value when config has no saved value. |
+| `Value` | `boolean` | `false` | Alias-style initial value when `Default` is not used. |
+| `Locked` | `boolean` | `false` | Prevents user interaction when true. |
+| `Callback` | `function(value: boolean)` | empty function | Fired on creation and whenever value changes. |
+
 Methods:
 
-```lua
-Toggle:Set(true)
-Toggle:Lock()
-Toggle:Unlock()
-Toggle:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `Set` | `value: boolean` | Updates the value, saves config, and fires callback. |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `Lock` | none | Prevents toggling. |
+| `Unlock` | none | Allows toggling. |
+| `Destroy` | none | Removes the toggle. |
 
 ### Slider
+
+Creates a numeric slider.
 
 ```lua
 local Slider = Main:Slider({
@@ -270,16 +590,36 @@ local Slider = Main:Slider({
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Slider"` | Slider title and autosave key. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Value.Min` | `number` | `0` | Minimum value. |
+| `Value.Max` | `number` | `100` | Maximum value. |
+| `Value.Default` | `number` | `Min` | Initial value when config has no saved value. |
+| `Min` | `number` | `0` | Alternative top-level minimum value. |
+| `Max` | `number` | `100` | Alternative top-level maximum value. |
+| `Default` | `number` | `Min` | Alternative top-level default value. |
+| `Step` | `number` | `1` | Increment used when rounding slider values. |
+| `Locked` | `boolean` | `false` | Prevents dragging when true. |
+| `Callback` | `function(value: number)` | empty function | Fired on creation and whenever value changes. |
+
 Methods:
 
-```lua
-Slider:Set(32)
-Slider:Lock()
-Slider:Unlock()
-Slider:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `Set` | `value: number` | Rounds, clamps, saves config, and fires callback. |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `Lock` | none | Prevents dragging. |
+| `Unlock` | none | Allows dragging. |
+| `Destroy` | none | Removes the slider. |
 
 ### Input
+
+Creates a text input.
 
 ```lua
 local Input = Main:Input({
@@ -294,21 +634,36 @@ local Input = Main:Input({
 })
 ```
 
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Input"` | Input title and autosave key. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Default` | `string` | `""` | Initial text when config has no saved value. |
+| `Value` | `string` | `""` | Alias-style initial text when `Default` is not used. |
+| `Placeholder` | `string` | `""` | Placeholder text shown when empty. |
+| `ClearTextOnFocus` | `boolean` | `false` | Roblox `TextBox.ClearTextOnFocus` behavior. |
+| `Locked` | `boolean` | `false` | Prevents editing when locked after creation. |
+| `Callback` | `function(text: string)` | empty function | Fired on creation and after focus is lost or `Set` is called. |
+
 Methods:
 
-```lua
-Input:Set("new text")
-Input:SetPlaceholder("placeholder")
-Input:Lock()
-Input:Unlock()
-Input:Destroy()
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `Set` | `text: string` | Updates text, saves config, and fires callback. |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `SetPlaceholder` | `text: string` | Updates placeholder text. |
+| `Lock` | none | Makes the text box read-only. |
+| `Unlock` | none | Allows editing. |
+| `Destroy` | none | Removes the input. |
 
 ### Dropdown
 
-Dropdowns open in a compact overlay above the window content. The content scroll remains vertical and does not resize when dropdowns open.
+Creates a searchable dropdown. Dropdowns open in a top-level overlay so components below do not cover the option list.
 
-Single-select dropdown:
+Single-select:
 
 ```lua
 local Preset = Main:Dropdown({
@@ -323,7 +678,7 @@ local Preset = Main:Dropdown({
 })
 ```
 
-Multi-select dropdown:
+Multi-select:
 
 ```lua
 local Utilities = Main:Dropdown({
@@ -340,65 +695,32 @@ local Utilities = Main:Dropdown({
 })
 ```
 
-Methods:
-
-```lua
-Preset:Select("Fast")
-Preset:Refresh({ "Default", "Fast", "Legit" })
-Preset:Lock()
-Preset:Unlock()
-Preset:Destroy()
-```
-
-Fields:
+Parameters:
 
 | Field | Type | Default | Description |
 | --- | --- | --- | --- |
-| `Values` | `{ string }` | `{}` | Dropdown options. |
-| `Default` / `Value` | `string` / table | first option | Initial selected value. |
-| `Multi` | `boolean` | `false` | Allows multiple selected options. |
-| `AllowNone` | `boolean` | `true` | Allows clearing all values in multi mode. |
-| `Search` | `boolean` | `true` | Enables search box in popup. |
+| `Title` | `string` | `"Dropdown"` | Dropdown title and autosave key. |
+| `Desc` | `string` | `nil` | Optional secondary text. |
+| `Values` | `{ string }` | `{}` | Available options. |
+| `Default` | `string` / `{ string }` | first option | Initial selected value when config has no saved value. |
+| `Value` | `string` / `{ string }` | first option | Alias-style initial value when `Default` is not used. |
+| `Multi` | `boolean` | `false` | Allows selecting more than one option. |
+| `AllowNone` | `boolean` | `true` | In multi mode, allows all options to be cleared. |
+| `Search` | `boolean` | `true` | Shows the search input in the dropdown overlay. |
+| `Locked` | `boolean` | `false` | Prevents opening while true. |
+| `Callback` | `function(value)` | empty function | Fired on creation and whenever selection changes. Multi mode passes a table. |
 
-## Dialogs
+Methods:
 
-```lua
-Window:Dialog({
-	Title = "Confirm",
-	Content = "Run this action?",
-	Buttons = {
-		{ Title = "Cancel" },
-		{
-			Title = "Run",
-			Callback = function()
-				print("confirmed")
-			end,
-		},
-	},
-})
-```
-
-## Notifications
-
-```lua
-Window:Notify({
-	Title = "KazGui",
-	Content = "Action completed.",
-	Icon = "sparkles",
-	Duration = 3,
-})
-```
-
-You can also call:
-
-```lua
-KazGui:Notify({
-	Title = "Global",
-	Content = "Uses the most recent window.",
-	Icon = "bell",
-	Duration = 3,
-})
-```
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `Select` | `value: string` | Selects a value. In multi mode it toggles that value. |
+| `Refresh` | `newValues: { string }` | Replaces the option list. |
+| `SetTitle` | `text: string` | Updates title text. |
+| `SetDesc` | `text: string?` | Updates or hides description text. |
+| `Lock` | none | Prevents opening. |
+| `Unlock` | none | Allows opening. |
+| `Destroy` | none | Removes the dropdown. |
 
 ## Themes
 
@@ -410,7 +732,7 @@ KazGui:SetTheme("Emerald")
 KazGui:SetTheme("Rose")
 ```
 
-Custom theme:
+Custom themes can provide any subset of the theme keys. Missing keys fall back to `Midnight`.
 
 ```lua
 KazGui:SetTheme({
@@ -429,11 +751,27 @@ KazGui:SetTheme({
 })
 ```
 
+Theme keys:
+
+| Key | Used for |
+| --- | --- |
+| `Background` | Window background and overlays. |
+| `Topbar` | Window topbar. |
+| `Sidebar` | Left navigation sidebar. |
+| `Surface` | Cards, sections, dialogs, and notifications. |
+| `SurfaceAlt` | Secondary surfaces such as input fields and inactive toggle tracks. |
+| `Stroke` | Borders and divider lines. |
+| `Text` | Primary text and active toggle knobs. |
+| `Muted` | Secondary text and inactive icons. |
+| `Accent` | Active state, highlights, and primary action color. |
+| `AccentSoft` | Selected tab background. |
+| `Danger` | Reserved danger color. |
+
 ## Icons
 
-KazGui supports:
+Icon fields accept:
 
-1. Lucide icon names from the embedded Footagesus Lucide map:
+1. Lucide icon names from the embedded icon map:
    ```lua
    Icon = "house"
    Icon = "settings-2"
@@ -446,7 +784,28 @@ KazGui supports:
    Icon = "123456789"
    ```
 
-Window and open-button icons use the original image color. Component and tab icons follow theme colors.
+Window and open-button icons keep their original image color. Component, tab, section, notification, and label icons use theme colors.
+
+## Autosave
+
+Autosave uses common executor file APIs when available:
+
+| API | Purpose |
+| --- | --- |
+| `isfile` | Checks whether the config file exists. |
+| `readfile` | Reads saved config. |
+| `writefile` | Writes updated config. |
+
+Saved controls:
+
+| Component | Saved value |
+| --- | --- |
+| `Toggle` | boolean |
+| `Slider` | number |
+| `Input` | string |
+| `Dropdown` | string or table in multi mode |
+
+Config keys use each component `Title`. Keep titles stable if you want saved values to persist across updates.
 
 ## Executor APIs
 
@@ -459,7 +818,7 @@ KazGui uses common executor APIs when available:
 | `cloneref` | Safer CoreGui reference when available. |
 | `isfile`, `readfile`, `writefile` | Config autosave. |
 
-If file APIs are unavailable, UI still works but config saving is skipped.
+If file APIs are unavailable, the UI still works but config saving is skipped.
 
 ## Troubleshooting
 
@@ -471,14 +830,18 @@ Some executors cache `game:HttpGet`. Use a commit URL while testing:
 local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/<commit>/dist/KazGui.min.lua"))()
 ```
 
+### Theme does not update after closing and loading again
+
+Use the current lifecycle API. The close button calls `Window:Destroy()`, which removes the window from active windows and disconnects the toggle-key listener. If you destroy a window manually, call `Window:Destroy()` instead of destroying the `ScreenGui` instance directly.
+
 ### Horizontal scroll appears
 
 KazGui sets content scrolling to `Enum.ScrollingDirection.Y`. If horizontal movement still appears, confirm you are loading the latest version.
 
 ### Dropdown appears behind components
 
-Dropdowns are rendered in a top-level overlay. If this happens, update to a build after `Improve dropdowns and icons`.
+Dropdowns render in a top-level overlay. If this happens, confirm you are loading the latest version.
 
 ### Title overlaps author/version
 
-Topbar title uses `TextTruncate.AtEnd` and author/version is anchored near the right controls. Update to the latest build if overlap appears.
+Topbar title uses `TextTruncate.AtEnd` and author/version is anchored near the right controls. Confirm you are loading the latest version if overlap appears.
