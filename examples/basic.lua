@@ -2,7 +2,7 @@ local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/
 
 local Window = KazGui:CreateWindow({
 	Title = "Kaz Development",
-	Author = "",
+	Author = "iHkaz",
 	Icon = "rbxassetid://80490914601117",
 	OpenButtonIcon = "rbxassetid://102844189283504",
 	Theme = "Midnight",
