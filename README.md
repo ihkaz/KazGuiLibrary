@@ -1,15 +1,14 @@
-# KazGui Distribution
+# KazGui
 
-Public distribution files for KazGui.
+Roblox Luau GUI library for executor environments.
 
 ## Loader
 
 ```lua
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/kazui-dist/main/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/main/dist/KazGui.min.lua"))()
 ```
 
-## Files
+## Links
 
-- `dist/KazGui.min.lua`: bundled minified library.
-- `examples/basic.lua`: complete usage example.
-- `DOCS.md`: API documentation.
+- [Documentation](DOCS.md)
+- [Basic example](examples/basic.lua)

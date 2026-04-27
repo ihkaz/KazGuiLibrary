@@ -1,4 +1,4 @@
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazUI/main/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/main/dist/KazGui.min.lua"))()
 
 local Window = KazGui:CreateWindow({
 	Title = "Kaz Development",

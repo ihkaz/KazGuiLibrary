@@ -1,25 +1,25 @@
-# KazUI Documentation
+# KazGui Documentation
 
-KazUI is a bundled Roblox Luau GUI library for executor environments. It provides a compact window layout, theme support, Lucide icons, saved component state, searchable dropdowns, multi-select dropdowns, notifications, dialogs, draggable windows, image-only open buttons, and resize support.
+KazGui is a Roblox Luau GUI library for executor environments. It provides a compact window layout, theme support, Lucide icons, saved component state, searchable dropdowns, multi-select dropdowns, notifications, dialogs, draggable windows, image-only open buttons, and resize support.
 
 ## Loader
 
-Use the minified raw build:
+Use the raw loader:
 
 ```lua
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazUI/main/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/main/dist/KazGui.min.lua"))()
 ```
 
 For cache-safe testing, use a commit URL:
 
 ```lua
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazUI/<commit>/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/<commit>/dist/KazGui.min.lua"))()
 ```
 
 ## Quick Start
 
 ```lua
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazUI/main/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/main/dist/KazGui.min.lua"))()
 
 local Window = KazGui:CreateWindow({
 	Title = "KazHub",
@@ -420,7 +420,7 @@ KazGui:SetTheme({
 
 ## Icons
 
-KazUI supports:
+KazGui supports:
 
 1. Lucide icon names from the embedded Footagesus Lucide map:
    ```lua
@@ -437,25 +437,9 @@ KazUI supports:
 
 Window and open-button icons use the original image color. Component and tab icons follow theme colors.
 
-## Build
-
-Darklua is included locally:
-
-```bash
-npm run build
-```
-
-Output:
-
-```text
-dist/KazGui.min.lua
-```
-
-The repo intentionally keeps only the minified bundle in `dist/`.
-
 ## Executor APIs
 
-KazUI uses common executor APIs when available:
+KazGui uses common executor APIs when available:
 
 | API | Purpose |
 | --- | --- |
@@ -473,12 +457,12 @@ If file APIs are unavailable, UI still works but config saving is skipped.
 Some executors cache `game:HttpGet`. Use a commit URL while testing:
 
 ```lua
-local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazUI/<commit>/dist/KazGui.min.lua"))()
+local KazGui = loadstring(game:HttpGet("https://raw.githubusercontent.com/ihkaz/KazGuiLibrary/<commit>/dist/KazGui.min.lua"))()
 ```
 
 ### Horizontal scroll appears
 
-KazUI sets content scrolling to `Enum.ScrollingDirection.Y`. If horizontal movement still appears, confirm you are loading the latest bundle.
+KazGui sets content scrolling to `Enum.ScrollingDirection.Y`. If horizontal movement still appears, confirm you are loading the latest version.
 
 ### Dropdown appears behind components
 
