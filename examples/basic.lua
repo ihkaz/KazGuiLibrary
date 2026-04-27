@@ -35,6 +35,7 @@ Window:Divider()
 Main:Label({
 	Title = "Dashboard",
 	Desc = "Direct tab label without a section.",
+	Icon = "layout-dashboard",
 })
 
 Main:Divider()
@@ -106,6 +107,7 @@ local Info = Main:Section({
 Info:Label({
 	Title = "Plain section",
 	Desc = "Label and divider also work inside sections.",
+	Icon = "info",
 })
 
 Info:Divider()

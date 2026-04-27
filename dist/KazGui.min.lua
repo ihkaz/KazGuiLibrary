@@ -1280,44 +1280,54 @@ TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme
 Color=Theme:Get('Accent')})end)card.MouseLeave:Connect(function()tween(card.
 UIStroke,{Color=Theme:Get('Stroke')})end)return card end function Controls.Label
 (parent,data)data=data or{}local state={Title=data.Title or'Label',Desc=data.
-Desc}local label=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,
-state.Desc and state.Desc~=''and 44 or 26),Children={create('TextLabel',{Name=
-'Title',BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
-fromOffset(2,0),Size=UDim2.new(1,-4,0,22),Text=state.Title,TextSize=data.
-TextSize or 14,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
-TextXAlignment.Left}),create('TextLabel',{Name='Description',
-BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(2,22),
-Size=UDim2.new(1,-4,0,18),Text=state.Desc or'',TextSize=12,TextTruncate=Enum.
-TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left,Visible=state.Desc~=
-nil and state.Desc~=''})}})Theme:Bind(label.Title,'TextColor3',data.ColorKey or
-'Text')Theme:Bind(label.Description,'TextColor3','Muted')label.Parent=parent
-function state:SetTitle(text)self.Title=text label.Title.Text=text end function
-state:SetDesc(text)self.Desc=text label.Description.Text=text or''label.
-Description.Visible=text~=nil and text~=''label.Size=UDim2.new(1,0,0,text and
-text~=''and 44 or 26)end function state:Destroy()label:Destroy()end return state
-end function Controls.Divider(parent,data)data=data or{}local state={}local
-divider=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.
-Spacing or 14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,
-0.5),BackgroundTransparency=0,Position=UDim2.new(0,0,0.5,0),Size=UDim2.new(1,0,0
-,1)})}})Theme:Bind(divider.Line,'BackgroundColor3','Stroke')divider.Parent=
-parent function state:Destroy()divider:Destroy()end return state end function
-Controls.Button(parent,data)data=data or{}local state={Title=data.Title or
-'Button',Desc=data.Desc,Locked=data.Locked or false,Callback=data.Callback or
-function()end}local card=makeCard(state.Title,state.Desc)card.Parent=parent card
-.Name=state.Title local icon=create('ImageLabel',{AnchorPoint=Vector2.new(1,0.5)
-,BackgroundTransparency=1,Image=Icons.Resolve(data.Icon or'zap'),Position=UDim2.
-new(1,-14,0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(icon,'ImageColor3',
-'Muted')icon.Parent=card card.MouseButton1Click:Connect(function()if not state.
-Locked then state.Callback()end end)function state:SetTitle(text)self.Title=text
-card.Title.Text=text end function state:SetDesc(text)self.Desc=text card.
-Description.Text=text card.Description.Visible=text~=nil and text~=''end
-function state:Lock()self.Locked=true card.Active=false end function state:
-Unlock()self.Locked=false card.Active=true end function state:Destroy()card:
-Destroy()end return state end function Controls.Toggle(parent,data,config)data=
-data or{}local state={Title=data.Title or'Toggle',Desc=data.Desc,State=data.
-Default or data.Value or false,Locked=data.Locked or false,Callback=data.
-Callback or function()end}if config then state.State=config:Get(state.Title,
-state.State)end local card=makeCard(state.Title,state.Desc)card.Parent=parent
+Desc,Icon=data.Icon}local hasIcon=state.Icon~=nil and state.Icon~=''local
+textOffset=hasIcon and 26 or 2 local label=create('Frame',{
+BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc~=''and
+44 or 26),Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
+Image=hasIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.fromOffset(2,3),
+Size=UDim2.fromOffset(16,16),Visible=hasIcon}),create('TextLabel',{Name='Title',
+BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+fromOffset(textOffset,0),Size=UDim2.new(1,-textOffset-2,0,22),Text=state.Title,
+TextSize=data.TextSize or 14,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment
+=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description',
+BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(
+textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),Text=state.Desc or'',
+TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
+TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=''})}})Theme:Bind(
+label.Icon,'ImageColor3',data.IconColorKey or'Accent')Theme:Bind(label.Title,
+'TextColor3',data.ColorKey or'Text')Theme:Bind(label.Description,'TextColor3',
+'Muted')label.Parent=parent function state:SetIcon(icon)self.Icon=icon hasIcon=
+icon~=nil and icon~=''textOffset=hasIcon and 26 or 2 label.Icon.Image=hasIcon
+and Icons.Resolve(icon)or''label.Icon.Visible=hasIcon label.Title.Position=UDim2
+.fromOffset(textOffset,0)label.Title.Size=UDim2.new(1,-textOffset-2,0,22)label.
+Description.Position=UDim2.fromOffset(textOffset,22)label.Description.Size=UDim2
+.new(1,-textOffset-2,0,18)end function state:SetTitle(text)self.Title=text label
+.Title.Text=text end function state:SetDesc(text)self.Desc=text label.
+Description.Text=text or''label.Description.Visible=text~=nil and text~=''label.
+Size=UDim2.new(1,0,0,text and text~=''and 44 or 26)end function state:Destroy()
+label:Destroy()end return state end function Controls.Divider(parent,data)data=
+data or{}local state={}local divider=create('Frame',{BackgroundTransparency=1,
+Size=UDim2.new(1,0,0,data.Spacing or 14),Children={create('Frame',{Name='Line',
+AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=0,Position=UDim2.new(0,0,
+0.5,0),Size=UDim2.new(1,0,0,1)})}})Theme:Bind(divider.Line,'BackgroundColor3',
+'Stroke')divider.Parent=parent function state:Destroy()divider:Destroy()end
+return state end function Controls.Button(parent,data)data=data or{}local state=
+{Title=data.Title or'Button',Desc=data.Desc,Locked=data.Locked or false,Callback
+=data.Callback or function()end}local card=makeCard(state.Title,state.Desc)card.
+Parent=parent card.Name=state.Title local icon=create('ImageLabel',{AnchorPoint=
+Vector2.new(1,0.5),BackgroundTransparency=1,Image=Icons.Resolve(data.Icon or
+'zap'),Position=UDim2.new(1,-14,0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(
+icon,'ImageColor3','Muted')icon.Parent=card card.MouseButton1Click:Connect(
+function()if not state.Locked then state.Callback()end end)function state:
+SetTitle(text)self.Title=text card.Title.Text=text end function state:SetDesc(
+text)self.Desc=text card.Description.Text=text card.Description.Visible=text~=
+nil and text~=''end function state:Lock()self.Locked=true card.Active=false end
+function state:Unlock()self.Locked=false card.Active=true end function state:
+Destroy()card:Destroy()end return state end function Controls.Toggle(parent,data
+,config)data=data or{}local state={Title=data.Title or'Toggle',Desc=data.Desc,
+State=data.Default or data.Value or false,Locked=data.Locked or false,Callback=
+data.Callback or function()end}if config then state.State=config:Get(state.Title
+,state.State)end local card=makeCard(state.Title,state.Desc)card.Parent=parent
 card.Name=state.Title local track=create('Frame',{AnchorPoint=Vector2.new(1,0.5)
 ,Position=UDim2.new(1,-14,0.5,0),Size=UDim2.fromOffset(42,22),Children={create(
 'UICorner',{CornerRadius=UDim.new(1,0)}),create('Frame',{Name='Knob',AnchorPoint

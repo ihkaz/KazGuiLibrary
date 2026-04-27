@@ -190,6 +190,7 @@ Labels add static text to a tab or section.
 local Label = Main:Label({
 	Title = "Dashboard",
 	Desc = "Optional supporting text.",
+	Icon = "info",
 })
 ```
 
@@ -198,6 +199,7 @@ Methods:
 ```lua
 Label:SetTitle("New title")
 Label:SetDesc("New description")
+Label:SetIcon("circle-check")
 Label:Destroy()
 ```
 
