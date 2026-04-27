@@ -89,6 +89,9 @@ Fields:
 | `ToggleKey` | `Enum.KeyCode` | `RightShift` | Keyboard key to hide/open the window. |
 | `AutoSave` | `boolean` | `true` | Saves supported component values using executor file APIs. |
 | `FileSaveName` | `string` | `"<Title>.json"` | Config file path/name. |
+| `OnOpen` | `function` | `nil` | Optional callback fired when the window opens. |
+| `OnClose` | `function` | `nil` | Optional callback fired when the window hides or is destroyed while visible. |
+| `OnDestroy` | `function` | `nil` | Optional callback fired before the window GUI is destroyed. |
 
 ### Window Methods
 
@@ -96,6 +99,12 @@ Fields:
 Window:Toggle()              -- toggles visibility
 Window:Toggle(true)          -- shows window
 Window:Toggle(false)         -- hides window and shows open button
+Window:Open()
+Window:Close()
+Window:Destroy()
+Window:OnOpen(function(window) end)
+Window:OnClose(function(window) end)
+Window:OnDestroy(function(window) end)
 Window:SetToggleKey(Enum.KeyCode.RightControl)
 Window:SetTheme("Emerald")
 Window:SelectTab(2)

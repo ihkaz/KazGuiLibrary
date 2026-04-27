@@ -1441,22 +1441,27 @@ __KAZGUI_MODULES.cache.g=v end return v.c end end do local function __modImpl()
 local create=__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Icons=
 __KAZGUI_MODULES.d()local Exploit=__KAZGUI_MODULES.e()local tween=
 __KAZGUI_MODULES.f()local Controls=__KAZGUI_MODULES.g()local Window={}Window.
-__index=Window local function makeConfig(path,autoSave)local store=Exploit.
-ReadJson(path)or{}return{Get=function(_,key,default)if store[key]==nil then
-store[key]=default end return store[key]end,Set=function(_,key,value)store[key]=
-value if autoSave then Exploit.WriteJson(path,store)end end}end local function
-draggable(topbar,object)local inputService=game:GetService('UserInputService')
-local dragging=false local dragStart local startPosition local dragInput local
-enabled=true topbar.InputBegan:Connect(function(input)if enabled and(input.
-UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.
-UserInputType.Touch)then dragging=true dragStart=input.Position startPosition=
-object.Position input.Changed:Connect(function()if input.UserInputState==Enum.
-UserInputState.End then dragging=false end end)end end)topbar.InputChanged:
-Connect(function(input)if enabled and(input.UserInputType==Enum.UserInputType.
-MouseMovement or input.UserInputType==Enum.UserInputType.Touch)then dragInput=
-input end end)inputService.InputChanged:Connect(function(input)if dragging and
-input==dragInput then local delta=input.Position-dragStart object.Position=UDim2
-.new(startPosition.X.Scale,startPosition.X.Offset+delta.X,startPosition.Y.Scale,
+__index=Window local function createSignal()local callbacks={}return{Connect=
+function(_,callback)table.insert(callbacks,callback)return{Disconnect=function()
+local index=table.find(callbacks,callback)if index then table.remove(callbacks,
+index)end end}end,Fire=function(_,...)for _,callback in ipairs(callbacks)do
+callback(...)end end,Clear=function()table.clear(callbacks)end}end
+local function makeConfig(path,autoSave)local store=Exploit.ReadJson(path)or{}
+return{Get=function(_,key,default)if store[key]==nil then store[key]=default end
+return store[key]end,Set=function(_,key,value)store[key]=value if autoSave then
+Exploit.WriteJson(path,store)end end}end local function draggable(topbar,object)
+local inputService=game:GetService('UserInputService')local dragging=false local
+dragStart local startPosition local dragInput local enabled=true topbar.
+InputBegan:Connect(function(input)if enabled and(input.UserInputType==Enum.
+UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch)then
+dragging=true dragStart=input.Position startPosition=object.Position input.
+Changed:Connect(function()if input.UserInputState==Enum.UserInputState.End then
+dragging=false end end)end end)topbar.InputChanged:Connect(function(input)if
+enabled and(input.UserInputType==Enum.UserInputType.MouseMovement or input.
+UserInputType==Enum.UserInputType.Touch)then dragInput=input end end)
+inputService.InputChanged:Connect(function(input)if dragging and input==
+dragInput then local delta=input.Position-dragStart object.Position=UDim2.new(
+startPosition.X.Scale,startPosition.X.Offset+delta.X,startPosition.Y.Scale,
 startPosition.Y.Offset+delta.Y)end end)return{SetAllowDragging=function(_,value)
 enabled=value end}end local function resizable(handle,object,minSize)local
 inputService=game:GetService('UserInputService')local resizing=false local
@@ -1481,45 +1486,48 @@ OpenButton and data.OpenButton.Icon)or self.Icon self.Size=data.Size or UDim2.
 fromOffset(620,390)self.MinSize=data.MinSize or Vector2.new(460,300)self.
 ToggleKey=data.ToggleKey or Enum.KeyCode.RightShift self.AutoSave=data.AutoSave
 ~=false self.Config=makeConfig(data.FileSaveName or(self.Title..'.json'),self.
-AutoSave)self.Tabs={}self.TabObjects={}self.SelectedTab=nil if data.Theme then
-Theme:Set(data.Theme)end local gui=create('ScreenGui',{Name='KazGui',
-ResetOnSpawn=false,ZIndexBehavior=Enum.ZIndexBehavior.Sibling})Exploit.Protect(
-gui)self.Gui=gui local main=create('Frame',{AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),Size=self.Size,Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('UIStroke',{Thickness=1})}})Theme:Bind(main
-,'BackgroundColor3','Background')Theme:Bind(main.UIStroke,'Color','Stroke')main.
-Parent=gui self.Main=main local openButton=create('ImageButton',{Name=
-'OpenButton',AnchorPoint=Vector2.new(0,0.5),AutoButtonColor=false,
-BackgroundTransparency=1,Image=Icons.Resolve(self.OpenButtonIcon),ImageColor3=
-Color3.fromRGB(255,255,255),Position=UDim2.new(0,24,0.5,0),Size=UDim2.
-fromOffset(54,54),Visible=false})openButton.Parent=gui self.OpenButton=
-openButton local topbar=create('Frame',{Name='Topbar',BackgroundTransparency=0,
-Size=UDim2.new(1,0,0,44),Children={create('UICorner',{CornerRadius=UDim.new(0,10
-)}),create('Frame',{Name='CornerFix',AnchorPoint=Vector2.new(0,1),
-BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,0,0,10)})}})Theme
-:Bind(topbar,'BackgroundColor3','Topbar')Theme:Bind(topbar.CornerFix,
-'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar local
-brandIcon=create('ImageLabel',{BackgroundTransparency=1,Image=Icons.Resolve(self
-.Icon),ImageColor3=Color3.fromRGB(255,255,255),Position=UDim2.fromOffset(13,12),
-Size=UDim2.fromOffset(20,20)})brandIcon.Parent=topbar local title=create(
-'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=
-UDim2.fromOffset(42,0),Size=UDim2.new(1,-210,0,44),Text=self.Title,TextTruncate=
-Enum.TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.TextXAlignment.Left})
-Theme:Bind(title,'TextColor3','Text')title.Parent=topbar local version=create(
-'TextLabel',{AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=1,Font=Enum.
-Font.Gotham,Position=UDim2.new(1,-76,0.5,0),Size=UDim2.fromOffset(92,20),Text=
-self.Author,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=12,TextXAlignment=Enum
-.TextXAlignment.Right})Theme:Bind(version,'TextColor3','Muted')version.Parent=
-topbar local close=create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),
-AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve('x'),Position
-=UDim2.new(1,-12,0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(close,
-'ImageColor3','Muted')close.Parent=topbar local hide=create('ImageButton',{
+AutoSave)self.Tabs={}self.TabObjects={}self.SelectedTab=nil self.Destroyed=false
+self.Signals={Open=createSignal(),Close=createSignal(),Destroy=createSignal()}if
+data.OnOpen then self.Signals.Open:Connect(data.OnOpen)end if data.OnClose then
+self.Signals.Close:Connect(data.OnClose)end if data.OnDestroy then self.Signals.
+Destroy:Connect(data.OnDestroy)end if data.Theme then Theme:Set(data.Theme)end
+local gui=create('ScreenGui',{Name='KazGui',ResetOnSpawn=false,ZIndexBehavior=
+Enum.ZIndexBehavior.Sibling})Exploit.Protect(gui)self.Gui=gui local main=create(
+'Frame',{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size
+=self.Size,Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),create(
+'UIStroke',{Thickness=1})}})Theme:Bind(main,'BackgroundColor3','Background')
+Theme:Bind(main.UIStroke,'Color','Stroke')main.Parent=gui self.Main=main local
+openButton=create('ImageButton',{Name='OpenButton',AnchorPoint=Vector2.new(0,0.5
+),AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve(self.
+OpenButtonIcon),ImageColor3=Color3.fromRGB(255,255,255),Position=UDim2.new(0,24,
+0.5,0),Size=UDim2.fromOffset(54,54),Visible=false})openButton.Parent=gui self.
+OpenButton=openButton local topbar=create('Frame',{Name='Topbar',
+BackgroundTransparency=0,Size=UDim2.new(1,0,0,44),Children={create('UICorner',{
+CornerRadius=UDim.new(0,10)}),create('Frame',{Name='CornerFix',AnchorPoint=
+Vector2.new(0,1),BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,
+0,0,10)})}})Theme:Bind(topbar,'BackgroundColor3','Topbar')Theme:Bind(topbar.
+CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar
+local brandIcon=create('ImageLabel',{BackgroundTransparency=1,Image=Icons.
+Resolve(self.Icon),ImageColor3=Color3.fromRGB(255,255,255),Position=UDim2.
+fromOffset(13,12),Size=UDim2.fromOffset(20,20)})brandIcon.Parent=topbar local
+title=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamSemibold
+,Position=UDim2.fromOffset(42,0),Size=UDim2.new(1,-210,0,44),Text=self.Title,
+TextTruncate=Enum.TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.
+TextXAlignment.Left})Theme:Bind(title,'TextColor3','Text')title.Parent=topbar
+local version=create('TextLabel',{AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.new(1,-76,0.5,0),
+Size=UDim2.fromOffset(92,20),Text=self.Author,TextTruncate=Enum.TextTruncate.
+AtEnd,TextSize=12,TextXAlignment=Enum.TextXAlignment.Right})Theme:Bind(version,
+'TextColor3','Muted')version.Parent=topbar local close=create('ImageButton',{
 AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,BackgroundTransparency=1,
-Image=Icons.Resolve('minus'),Position=UDim2.new(1,-44,0.5,0),Size=UDim2.
-fromOffset(18,18)})Theme:Bind(hide,'ImageColor3','Muted')hide.Parent=topbar self
-.Sidebar=create('Frame',{Name='Sidebar',BackgroundTransparency=0,Position=UDim2.
-fromOffset(0,44),Size=UDim2.new(0,150,1,-44),Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('Frame',{Name='AntiCornerTop',
+Image=Icons.Resolve('x'),Position=UDim2.new(1,-12,0.5,0),Size=UDim2.fromOffset(
+18,18)})Theme:Bind(close,'ImageColor3','Muted')close.Parent=topbar local hide=
+create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,
+BackgroundTransparency=1,Image=Icons.Resolve('minus'),Position=UDim2.new(1,-44,
+0.5,0),Size=UDim2.fromOffset(18,18)})Theme:Bind(hide,'ImageColor3','Muted')hide.
+Parent=topbar self.Sidebar=create('Frame',{Name='Sidebar',BackgroundTransparency
+=0,Position=UDim2.fromOffset(0,44),Size=UDim2.new(0,150,1,-44),Children={create(
+'UICorner',{CornerRadius=UDim.new(0,10)}),create('Frame',{Name='AntiCornerTop',
 BorderSizePixel=0,Size=UDim2.new(1,0,0,10)}),create('Frame',{Name=
 'AntiCornerRight',AnchorPoint=Vector2.new(1,0),BorderSizePixel=0,Position=UDim2.
 new(1,0,0,0),Size=UDim2.new(0,10,1,0)})}})Theme:Bind(self.Sidebar,
@@ -1538,40 +1546,55 @@ false,BackgroundTransparency=1,Position=UDim2.new(1,-4,1,-4),Size=UDim2.
 fromOffset(22,22),Text='',ZIndex=30})resizeHandle.Parent=main resizable(
 resizeHandle,main,self.MinSize)hide.MouseButton1Click:Connect(function()self:
 Toggle(false)end)openButton.MouseButton1Click:Connect(function()self:Toggle(true
-)end)close.MouseButton1Click:Connect(function()gui:Destroy()end)game:GetService(
-'UserInputService').InputBegan:Connect(function(input,processed)if not processed
-and input.KeyCode==self.ToggleKey then self:Toggle()end end)return self end
-function Window:Toggle(state)if state==nil then state=not self.Main.Visible end
-self.Main.Visible=state if self.OpenButton then self.OpenButton.Visible=not
-state end end function Window:SetToggleKey(key)self.ToggleKey=typeof(key)==
-'string'and Enum.KeyCode[key]or key end function Window:SetTheme(theme)if Theme:
-Set(theme)then if self.Library and self.Library.Windows then for _,window in
-ipairs(self.Library.Windows)do if window.RefreshThemeState then window:
-RefreshThemeState()end end else self:RefreshThemeState()end return true end
-return false end function Window:RefreshThemeState()if self.SelectedTab then
-self:SelectTab(self.SelectedTab)end end function Window:SelectTab(target)local
-tab=typeof(target)=='number'and self.Tabs[target]or target if not tab then
-return end for _,tabItem in ipairs(self.Tabs)do local item=self.TabObjects[
-tabItem]local selected=tabItem==tab local iconColor=selected and Theme:Get(
-'Accent')or Theme:Get('Muted')local textColor=selected and Theme:Get('Text')or
-Theme:Get('Muted')if item and typeof(item.Page)=='Instance'then item.Page.
-Visible=selected end if item and typeof(item.SidebarButton)=='Instance'then item
-.SidebarButton.BackgroundTransparency=selected and 0 or 1 end if item and
-typeof(item.Icon)=='Instance'then item.Icon.ImageColor3=iconColor end if item
-and typeof(item.Label)=='Instance'then item.Label.TextColor3=textColor end end
-self.SelectedTab=tab end function Window:ShowDropdown(dropdown)if self.
-DropdownOverlay then self.DropdownOverlay:Destroy()self.DropdownOverlay=nil end
-local values=dropdown.Values or{}local itemHeight=30 local searchHeight=dropdown
-.Search~=false and 34 or 0 local listHeight=math.min(math.max(#values,1)*
-itemHeight,180)local panelHeight=58+searchHeight+listHeight local overlay=
-create('TextButton',{Name='DropdownOverlay',AutoButtonColor=false,
-BackgroundTransparency=0.45,Size=UDim2.fromScale(1,1),Text='',ZIndex=60})Theme:
-Bind(overlay,'BackgroundColor3','Background')overlay.Parent=self.Main self.
-DropdownOverlay=overlay local panel=create('Frame',{Name='Panel',AnchorPoint=
-Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(330
-,panelHeight),ZIndex=61,Children={create('UICorner',{CornerRadius=UDim.new(0,9)}
-),create('UIStroke',{Thickness=1}),create('TextLabel',{Name='Title',
-BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+)end)close.MouseButton1Click:Connect(function()self:Destroy()end)self.
+ToggleConnection=game:GetService('UserInputService').InputBegan:Connect(function
+(input,processed)if not processed and input.KeyCode==self.ToggleKey then self:
+Toggle()end end)return self end function Window:Toggle(state)if self.Destroyed
+then return false end if state==nil then state=not self.Main.Visible end local
+changed=self.Main.Visible~=state self.Main.Visible=state if self.OpenButton then
+self.OpenButton.Visible=not state end if changed then if state then self.Signals
+.Open:Fire(self)else self.Signals.Close:Fire(self)end end return true end
+function Window:Open()return self:Toggle(true)end function Window:Close()return
+self:Toggle(false)end function Window:OnOpen(callback)return self.Signals.Open:
+Connect(callback)end function Window:OnClose(callback)return self.Signals.Close:
+Connect(callback)end function Window:OnDestroy(callback)return self.Signals.
+Destroy:Connect(callback)end function Window:Destroy()if self.Destroyed then
+return false end if self.Main and self.Main.Visible then self.Signals.Close:
+Fire(self)end self.Destroyed=true self.Signals.Destroy:Fire(self)if self.
+ToggleConnection then self.ToggleConnection:Disconnect()self.ToggleConnection=
+nil end if self.Library and self.Library.Windows then local index=table.find(
+self.Library.Windows,self)if index then table.remove(self.Library.Windows,index)
+end end if self.DropdownOverlay then self.DropdownOverlay:Destroy()self.
+DropdownOverlay=nil end if self.Gui then self.Gui:Destroy()end self.Signals.Open
+:Clear()self.Signals.Close:Clear()self.Signals.Destroy:Clear()return true end
+function Window:SetToggleKey(key)self.ToggleKey=typeof(key)=='string'and Enum.
+KeyCode[key]or key end function Window:SetTheme(theme)if Theme:Set(theme)then if
+self.Library and self.Library.Windows then for _,window in ipairs(self.Library.
+Windows)do if window.RefreshThemeState then window:RefreshThemeState()end end
+else self:RefreshThemeState()end return true end return false end function
+Window:RefreshThemeState()if self.SelectedTab then self:SelectTab(self.
+SelectedTab)end end function Window:SelectTab(target)local tab=typeof(target)==
+'number'and self.Tabs[target]or target if not tab then return end for _,tabItem
+in ipairs(self.Tabs)do local item=self.TabObjects[tabItem]local selected=tabItem
+==tab local iconColor=selected and Theme:Get('Accent')or Theme:Get('Muted')local
+textColor=selected and Theme:Get('Text')or Theme:Get('Muted')if item and typeof(
+item.Page)=='Instance'then item.Page.Visible=selected end if item and typeof(
+item.SidebarButton)=='Instance'then item.SidebarButton.BackgroundTransparency=
+selected and 0 or 1 end if item and typeof(item.Icon)=='Instance'then item.Icon.
+ImageColor3=iconColor end if item and typeof(item.Label)=='Instance'then item.
+Label.TextColor3=textColor end end self.SelectedTab=tab end function Window:
+ShowDropdown(dropdown)if self.DropdownOverlay then self.DropdownOverlay:Destroy(
+)self.DropdownOverlay=nil end local values=dropdown.Values or{}local itemHeight=
+30 local searchHeight=dropdown.Search~=false and 34 or 0 local listHeight=math.
+min(math.max(#values,1)*itemHeight,180)local panelHeight=58+searchHeight+
+listHeight local overlay=create('TextButton',{Name='DropdownOverlay',
+AutoButtonColor=false,BackgroundTransparency=0.45,Size=UDim2.fromScale(1,1),Text
+='',ZIndex=60})Theme:Bind(overlay,'BackgroundColor3','Background')overlay.Parent
+=self.Main self.DropdownOverlay=overlay local panel=create('Frame',{Name='Panel'
+,AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.
+fromOffset(330,panelHeight),ZIndex=61,Children={create('UICorner',{CornerRadius=
+UDim.new(0,9)}),create('UIStroke',{Thickness=1}),create('TextLabel',{Name=
+'Title',BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
 fromOffset(14,10),Size=UDim2.new(1,-56,0,26),Text=dropdown.Title or'Dropdown',
 TextSize=15,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=62}),create(
 'ImageButton',{Name='Close',AnchorPoint=Vector2.new(1,0),AutoButtonColor=false,

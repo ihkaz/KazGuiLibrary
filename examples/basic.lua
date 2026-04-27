@@ -15,6 +15,18 @@ local Window = KazGui:CreateWindow({
 
 Window:SetToggleKey(Enum.KeyCode.RightShift)
 
+Window:OnOpen(function()
+	print("Window opened")
+end)
+
+Window:OnClose(function()
+	print("Window closed")
+end)
+
+Window:OnDestroy(function()
+	print("Window destroyed")
+end)
+
 local Main = Window:Tab({
 	Title = "Main",
 	Icon = "house",
