@@ -96,7 +96,12 @@ Parameters:
 | `Version` | `string` | `"v1.0"` | Alias used when `Author` is not provided. |
 | `Icon` | `string` / asset id | `"layout"` | Window icon. Accepts Lucide icon names, numeric asset ids, or `rbxassetid://...`. |
 | `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Topbar window icon size only. |
+| `IconThemed` | `boolean` | `true` | When true, the window icon follows the theme. Set false to keep the image color. |
+| `IconColorKey` | `string` | `"Accent"` | Theme key used when `IconThemed` is true. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 | `OpenButtonIcon` | `string` / asset id | `Icon` | Image-only button icon shown when the window is hidden. |
+| `OpenButtonIconThemed` | `boolean` | `true` | When true, the open button icon follows the theme. |
+| `OpenButtonIconColorKey` | `string` | `"Accent"` | Theme key used for the open button icon. |
 | `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
 | `Theme` | `string` / table | current theme | Initial theme for the library. |
 | `Size` | `UDim2` | `UDim2.fromOffset(620, 390)` | Initial window size. |
@@ -138,6 +143,9 @@ Parameters:
 | `Title` | `string` | `"Notification"` | Notification title. |
 | `Content` | `string` | `""` | Notification body text. |
 | `Icon` | `string` / asset id | `"sparkles"` | Notification icon. |
+| `IconThemed` | `boolean` | `true` | When true, the notification icon follows the theme. |
+| `IconColorKey` | `string` | `"Accent"` | Theme key used when `IconThemed` is true. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 | `Duration` | `number` | `5` | Auto-close delay in seconds. |
 
 Returns an object with `:Close()`.
@@ -161,6 +169,9 @@ Parameters:
 | --- | --- | --- | --- |
 | `Title` | `string` | `"Tab"` | Sidebar tab label. |
 | `Icon` | `string` / asset id | `"circle"` | Sidebar tab icon. |
+| `IconThemed` | `boolean` | `true` | When true, the tab icon follows selected/inactive theme colors. |
+| `IconColorKey` | `string` | `"Muted"` | Initial theme key used for the tab icon. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 
 ### `Window:Toggle(state)`
 
@@ -368,6 +379,9 @@ Parameters:
 | `Title` | `string` | `"Section"` | Header title. |
 | `Icon` | `string` / asset id | `"folder"` | Header icon. |
 | `WithIcon` | `boolean` | `false` | Shows the header icon when true. |
+| `IconThemed` | `boolean` | `true` | When true, the section icon follows the theme. |
+| `IconColorKey` | `string` | `"Accent"` | Theme key used when `IconThemed` is true. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 | `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Overrides icon size for this section. |
 | `Default` | `boolean` | `true` | Initial expanded state. |
 | `WithBackground` | `boolean` | `true` | Enables the section background, stroke, and inner padding. |
@@ -476,6 +490,9 @@ Parameters:
 | `Desc` | `string` | `nil` | Optional secondary text. |
 | `Icon` | `string` / asset id | `"zap"` | Icon shown on the right when `WithIcon` is true. |
 | `WithIcon` | `boolean` | `false` | Enables the button icon. |
+| `IconThemed` | `boolean` | `true` | When true, the button icon follows the theme. |
+| `IconColorKey` | `string` | `"Muted"` | Theme key used when `IconThemed` is true. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 | `IconSize` | `number` / `Vector2` / `UDim2` | `18` | Button icon size. |
 | `Locked` | `boolean` | `false` | Prevents clicks when true. |
 | `Callback` | `function()` | empty function | Fired when clicked while unlocked. |
@@ -488,6 +505,7 @@ Methods:
 | `SetDesc` | `text: string?` | Updates or hides description text. |
 | `SetIcon` | `icon: string?` | Updates the button icon. |
 | `SetWithIcon` | `value: boolean` | Shows or hides the button icon. |
+| `SetIconThemed` | `value: boolean` | Enables or disables theme color for the icon. |
 | `Lock` | none | Disables interaction. |
 | `Unlock` | none | Enables interaction. |
 | `Destroy` | none | Removes the component. |
@@ -516,6 +534,7 @@ Parameters:
 | `Desc` | `string` | `nil` | Optional secondary text. |
 | `Icon` | `string` / asset id | `nil` | Icon shown before the title when `WithIcon` is true. |
 | `WithIcon` | `boolean` | `false` | Enables the label icon. |
+| `IconThemed` | `boolean` | `true` | When true, the label icon follows the theme. |
 | `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Label icon size. |
 | `TextSize` | `number` | `14` | Title font size. |
 | `ColorKey` | `string` | `"Text"` | Theme color key used for title text. |
@@ -529,6 +548,7 @@ Methods:
 | `SetDesc` | `text: string?` | Updates or hides description text. |
 | `SetIcon` | `icon: string?` | Updates or removes the icon. |
 | `SetWithIcon` | `value: boolean` | Shows or hides the label icon. |
+| `SetIconThemed` | `value: boolean` | Enables or disables theme color for the icon. |
 | `Destroy` | none | Removes the label. |
 
 ### Divider
