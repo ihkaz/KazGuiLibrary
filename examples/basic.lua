@@ -80,7 +80,7 @@ local HeaderLabel = Main:Label({
 Main:Divider({
 	ColorKey = "Stroke",
 	Spacing = 16,
-	Thickness = 1,
+	Thickness = 2,
 })
 
 local Combat = Main:Section({
@@ -163,7 +163,7 @@ local PlainLabel = Plain:Label({
 local PlainDivider = Plain:Divider({
 	ColorKey = "Accent",
 	Spacing = 18,
-	Thickness = 1,
+	Thickness = 2,
 	Transparency = 0,
 })
 
@@ -288,7 +288,7 @@ local Appearance = Settings:Section({
 Appearance:Dropdown({
 	Title = "Theme",
 	Desc = "Switch built-in themes.",
-	Values = { "Midnight", "Emerald", "Rose" },
+	Values = { "Midnight", "Emerald", "Rose", "Aurora", "Amethyst", "Graphite" },
 	Default = "Midnight",
 	Callback = function(value)
 		KazGui:SetTheme(value)

@@ -20,24 +20,56 @@ Background=Color3.fromRGB(25,19,23),Topbar=Color3.fromRGB(34,25,31),Sidebar=
 Color3.fromRGB(30,22,28),Surface=Color3.fromRGB(43,32,40),SurfaceAlt=Color3.
 fromRGB(53,39,49),Stroke=Color3.fromRGB(78,58,70),Text=Color3.fromRGB(245,232,
 240),Muted=Color3.fromRGB(178,146,164),Accent=Color3.fromRGB(239,95,141),
-AccentSoft=Color3.fromRGB(92,36,57),Danger=Color3.fromRGB(235,87,87)}}Theme.
-CurrentName='Midnight'Theme.Current=Theme.Palettes.Midnight Theme.Bindings={}
-Theme.Watchers={}Theme.Acrylic=false Theme.AcrylicIntensity=1 Theme.
-AcrylicBindings={}Theme.GradientBindings={}function Theme:Get(key)return self.
-Current[key]end local function normalizeGradient(data)if typeof(data)~='table'
-then return nil end local colorPoints={}local transparencyPoints={}local source=
-data.Colors or data for key,point in pairs(source)do local time local color
-local transparency=0 if typeof(point)=='Color3'then time=typeof(key)=='number'
-and key or nil color=point elseif typeof(point)=='table'then time=point.Time or
-point[1]or(typeof(key)=='number'and key or nil)color=point.Color or point[2]
-transparency=point.Transparency or point.Alpha or point[3]or 0 end if typeof(
-time)=='number'and typeof(color)=='Color3'then if time>1 then time=time/100 end
-time=math.clamp(time,0,1)table.insert(colorPoints,ColorSequenceKeypoint.new(time
-,color))table.insert(transparencyPoints,NumberSequenceKeypoint.new(time,math.
-clamp(transparency,0,1)))end end table.sort(colorPoints,function(left,right)
-return left.Time<right.Time end)table.sort(transparencyPoints,function(left,
-right)return left.Time<right.Time end)if#colorPoints<2 then return nil end
-return{Color=ColorSequence.new(colorPoints),Transparency=NumberSequence.new(
+AccentSoft=Color3.fromRGB(92,36,57),Danger=Color3.fromRGB(235,87,87)},Aurora={
+Background=Color3.fromRGB(10,14,24),Topbar=Color3.fromRGB(16,22,36),Sidebar=
+Color3.fromRGB(13,19,31),Surface=Color3.fromRGB(24,33,48),SurfaceAlt=Color3.
+fromRGB(31,43,62),Stroke=Color3.fromRGB(58,82,105),Text=Color3.fromRGB(236,244,
+250),Muted=Color3.fromRGB(150,169,184),Accent=Color3.fromRGB(90,210,255),
+AccentSoft=Color3.fromRGB(28,74,96),Danger=Color3.fromRGB(242,93,108),Gradients=
+{Background={Rotation=35,Colors={{Time=0,Color=Color3.fromRGB(10,14,24)},{Time=1
+,Color=Color3.fromRGB(18,34,48)}}},Surface={Rotation=25,Colors={{Time=0,Color=
+Color3.fromRGB(24,33,48)},{Time=1,Color=Color3.fromRGB(31,49,67)}}},Accent={
+Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(90,210,255)},{Time=1,Color=
+Color3.fromRGB(92,255,188)}}},AccentSoft={Rotation=90,Colors={{Time=0,Color=
+Color3.fromRGB(22,68,94)},{Time=1,Color=Color3.fromRGB(24,86,68)}}}}},Amethyst={
+Background=Color3.fromRGB(16,12,26),Topbar=Color3.fromRGB(24,18,39),Sidebar=
+Color3.fromRGB(20,15,33),Surface=Color3.fromRGB(34,25,52),SurfaceAlt=Color3.
+fromRGB(44,33,68),Stroke=Color3.fromRGB(78,62,112),Text=Color3.fromRGB(243,236,
+255),Muted=Color3.fromRGB(168,148,196),Accent=Color3.fromRGB(183,116,255),
+AccentSoft=Color3.fromRGB(74,38,112),Danger=Color3.fromRGB(239,95,126),Gradients
+={Background={Rotation=35,Colors={{Time=0,Color=Color3.fromRGB(16,12,26)},{Time=
+1,Color=Color3.fromRGB(35,18,54)}}},Surface={Rotation=25,Colors={{Time=0,Color=
+Color3.fromRGB(34,25,52)},{Time=1,Color=Color3.fromRGB(49,32,78)}}},Accent={
+Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(112,181,255)},{Time=1,Color=
+Color3.fromRGB(210,92,255)}}},AccentSoft={Rotation=90,Colors={{Time=0,Color=
+Color3.fromRGB(45,58,118)},{Time=1,Color=Color3.fromRGB(86,34,120)}}}}},Graphite
+={Background=Color3.fromRGB(16,17,19),Topbar=Color3.fromRGB(24,25,28),Sidebar=
+Color3.fromRGB(20,21,24),Surface=Color3.fromRGB(31,33,37),SurfaceAlt=Color3.
+fromRGB(42,45,50),Stroke=Color3.fromRGB(67,72,80),Text=Color3.fromRGB(239,242,
+246),Muted=Color3.fromRGB(151,158,168),Accent=Color3.fromRGB(118,171,255),
+AccentSoft=Color3.fromRGB(42,64,103),Danger=Color3.fromRGB(237,93,93),Gradients=
+{Surface={Rotation=35,Colors={{Time=0,Color=Color3.fromRGB(31,33,37)},{Time=1,
+Color=Color3.fromRGB(42,45,50)}}},Accent={Rotation=90,Colors={{Time=0,Color=
+Color3.fromRGB(118,171,255)},{Time=1,Color=Color3.fromRGB(132,224,220)}}},
+AccentSoft={Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(35,55,96)},{Time=1,
+Color=Color3.fromRGB(38,76,84)}}}}}}Theme.CurrentName='Midnight'Theme.Current=
+Theme.Palettes.Midnight Theme.Bindings={}Theme.Watchers={}Theme.Acrylic=false
+Theme.AcrylicIntensity=1 Theme.AcrylicBindings={}Theme.GradientBindings={}
+function Theme:Get(key)return self.Current[key]end local function
+normalizeGradient(data)if typeof(data)~='table'then return nil end local
+colorPoints={}local transparencyPoints={}local source=data.Colors or data for
+key,point in pairs(source)do local time local color local transparency=0 if
+typeof(point)=='Color3'then time=typeof(key)=='number'and key or nil color=point
+elseif typeof(point)=='table'then time=point.Time or point[1]or(typeof(key)==
+'number'and key or nil)color=point.Color or point[2]transparency=point.
+Transparency or point.Alpha or point[3]or 0 end if typeof(time)=='number'and
+typeof(color)=='Color3'then if time>1 then time=time/100 end time=math.clamp(
+time,0,1)table.insert(colorPoints,ColorSequenceKeypoint.new(time,color))table.
+insert(transparencyPoints,NumberSequenceKeypoint.new(time,math.clamp(
+transparency,0,1)))end end table.sort(colorPoints,function(left,right)return
+left.Time<right.Time end)table.sort(transparencyPoints,function(left,right)
+return left.Time<right.Time end)if#colorPoints<2 then return nil end return{
+Color=ColorSequence.new(colorPoints),Transparency=NumberSequence.new(
 transparencyPoints),Rotation=data.Rotation or 0,Offset=data.Offset or Vector2.
 new(0,0)}end function Theme:GetGradient(key)local gradients=self.Current and
 self.Current.Gradients if typeof(gradients)~='table'then return nil end return
@@ -1425,7 +1457,7 @@ Disconnect()label:Destroy()end return state end function Controls.Divider(parent
 =create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or
 14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
 BackgroundTransparency=data.Transparency or 0,BorderSizePixel=0,Position=UDim2.
-new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 1)})}})divider.Parent=
+new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 2)})}})divider.Parent=
 parent local themeWatcher=Theme:Watch(function()if divider.Parent==nil then
 return false end divider.Line.BackgroundColor3=Theme:Get(state.ColorKey)or Theme
 :Get('Stroke')return true end)function state:SetColorKey(colorKey)self.ColorKey=
@@ -1912,7 +1944,7 @@ Dropdown(self.Parent,dropdownData,self.Config,self.Window)end table.insert(self.
 Tabs,tab)if not self.SelectedTab then self:SelectTab(tab)end return tab end
 function Window:Divider(data)data=data or{}local state={ColorKey=data.ColorKey
 or'Stroke'}local line=create('Frame',{BackgroundTransparency=data.Transparency
-or 0,BorderSizePixel=0,Size=UDim2.new(1,0,0,data.Thickness or 1)})line.Parent=
+or 0,BorderSizePixel=0,Size=UDim2.new(1,0,0,data.Thickness or 2)})line.Parent=
 self.SidebarList or self.Sidebar local themeWatcher=Theme:Watch(function()if
 line.Parent==nil then return false end line.BackgroundColor3=Theme:Get(state.
 ColorKey)or Theme:Get('Stroke')return true end)function state:SetColorKey(

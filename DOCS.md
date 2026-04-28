@@ -615,7 +615,7 @@ Creates a themed separator line.
 local Divider = Main:Divider({
 	Spacing = 18,
 	ColorKey = "Stroke",
-	Thickness = 1,
+	Thickness = 2,
 	Transparency = 0,
 })
 ```
@@ -626,7 +626,7 @@ Parameters:
 | --- | --- | --- | --- |
 | `Spacing` | `number` | `14` | Divider container height. |
 | `ColorKey` | `string` | `"Stroke"` | Theme color key used for the divider line. |
-| `Thickness` | `number` | `1` | Divider line height. |
+| `Thickness` | `number` | `2` | Divider line height. |
 | `Transparency` | `number` | `0` | Divider line transparency. |
 
 Methods:
@@ -833,6 +833,9 @@ Built-in themes:
 KazGui:SetTheme("Midnight")
 KazGui:SetTheme("Emerald")
 KazGui:SetTheme("Rose")
+KazGui:SetTheme("Aurora")
+KazGui:SetTheme("Amethyst")
+KazGui:SetTheme("Graphite")
 ```
 
 Custom themes can provide any subset of the theme keys. Missing keys fall back to `Midnight`.
