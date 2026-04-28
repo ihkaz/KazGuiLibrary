@@ -1306,16 +1306,21 @@ TextSize=14,TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name=
 fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,
 TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme
 :Bind(card.Title,'TextColor3','Text')Theme:Bind(card.Description,'TextColor3',
-'Muted')bindCard(card)return card end function Controls.Label(parent,data)data=
-data or{}local state={Title=data.Title or'Label',Desc=data.Desc,Icon=data.Icon,
-WithIcon=data.WithIcon==true,IconThemed=data.IconThemed~=false}local hasIcon=
-state.WithIcon and state.Icon~=nil and state.Icon~=''local textOffset=hasIcon
-and 26 or 2 local label=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(
-1,0,0,state.Desc and state.Desc~=''and 44 or 26),Children={create('ImageLabel',{
-Name='Icon',BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)
-or'',Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=
-hasIcon}),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.
-Font.GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
+'Muted')bindCard(card)local function press()if card.Parent==nil then return end
+tween(card.AccentBar,{Size=UDim2.new(0,5,1,-14)},0.08)tween(card.UIStroke,{Color
+=Theme:Get('Accent')},0.08)task.delay(0.12,function()if card.Parent~=nil then
+tween(card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.UIStroke,{Color
+=Theme:Get('Stroke')},0.14)end end)end card.MouseButton1Down:Connect(press)
+return card end function Controls.Label(parent,data)data=data or{}local state={
+Title=data.Title or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon
+==true,IconThemed=data.IconThemed~=false}local hasIcon=state.WithIcon and state.
+Icon~=nil and state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=
+create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and
+state.Desc~=''and 44 or 26),Children={create('ImageLabel',{Name='Icon',
+BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
+Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=hasIcon
+}),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
 textOffset-2,0,22),Text=state.Title,TextSize=data.TextSize or 14,TextTruncate=
 Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left}),create(
 'TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,
