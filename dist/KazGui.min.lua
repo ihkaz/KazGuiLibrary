@@ -1340,15 +1340,15 @@ return state end function Controls.Divider(parent,data)data=data or{}local state
 ={ColorKey=data.ColorKey or'Stroke'}local divider=create('Frame',{
 BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or 14),Children={
 create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
-BackgroundTransparency=data.Transparency or 0,Position=UDim2.new(0,0,0.5,0),Size
-=UDim2.new(1,0,0,data.Thickness or 1)})}})divider.Parent=parent local
-themeWatcher=Theme:Watch(function()if divider.Parent==nil then return false end
-divider.Line.BackgroundColor3=Theme:Get(state.ColorKey)or Theme:Get('Stroke')
-return true end)function state:SetColorKey(colorKey)self.ColorKey=colorKey or
-'Stroke'divider.Line.BackgroundColor3=Theme:Get(self.ColorKey)or Theme:Get(
-'Stroke')end function state:Destroy()themeWatcher:Disconnect()divider:Destroy()
-end return state end function Controls.Button(parent,data)data=data or{}local
-state={Title=data.Title or'Button',Desc=data.Desc,Icon=data.Icon or'zap',
+BackgroundTransparency=data.Transparency or 0,BorderSizePixel=0,Position=UDim2.
+new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 1)})}})divider.Parent=
+parent local themeWatcher=Theme:Watch(function()if divider.Parent==nil then
+return false end divider.Line.BackgroundColor3=Theme:Get(state.ColorKey)or Theme
+:Get('Stroke')return true end)function state:SetColorKey(colorKey)self.ColorKey=
+colorKey or'Stroke'divider.Line.BackgroundColor3=Theme:Get(self.ColorKey)or
+Theme:Get('Stroke')end function state:Destroy()themeWatcher:Disconnect()divider:
+Destroy()end return state end function Controls.Button(parent,data)data=data or{
+}local state={Title=data.Title or'Button',Desc=data.Desc,Icon=data.Icon or'zap',
 WithIcon=data.WithIcon==true,IconThemed=data.IconThemed~=false,Locked=data.
 Locked or false,Callback=data.Callback or function()end}local card=makeCard(
 state.Title,state.Desc)card.Parent=parent card.Name=state.Title local icon=
@@ -1792,11 +1792,11 @@ tab:Dropdown(dropdownData)return Controls.Dropdown(self.Parent,dropdownData,self
 .Config,self.Window)end table.insert(self.Tabs,tab)if not self.SelectedTab then
 self:SelectTab(tab)end return tab end function Window:Divider(data)data=data or{
 }local state={ColorKey=data.ColorKey or'Stroke'}local line=create('Frame',{
-BackgroundTransparency=data.Transparency or 0,Size=UDim2.new(1,0,0,data.
-Thickness or 1)})line.Parent=self.SidebarList or self.Sidebar local themeWatcher
-=Theme:Watch(function()if line.Parent==nil then return false end line.
-BackgroundColor3=Theme:Get(state.ColorKey)or Theme:Get('Stroke')return true end)
-function state:SetColorKey(colorKey)self.ColorKey=colorKey or'Stroke'line.
+BackgroundTransparency=data.Transparency or 0,BorderSizePixel=0,Size=UDim2.new(1
+,0,0,data.Thickness or 1)})line.Parent=self.SidebarList or self.Sidebar local
+themeWatcher=Theme:Watch(function()if line.Parent==nil then return false end
+line.BackgroundColor3=Theme:Get(state.ColorKey)or Theme:Get('Stroke')return true
+end)function state:SetColorKey(colorKey)self.ColorKey=colorKey or'Stroke'line.
 BackgroundColor3=Theme:Get(self.ColorKey)or Theme:Get('Stroke')end function
 state:Destroy()themeWatcher:Disconnect()line:Destroy()end return state end
 function Window:Dialog(data)local overlay=create('Frame',{BackgroundTransparency
