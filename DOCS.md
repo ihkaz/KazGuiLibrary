@@ -26,6 +26,7 @@ local Window = KazGui:CreateWindow({
 	OpenButtonIcon = "sparkles",
 	IconSize = 18,
 	Theme = "Midnight",
+	Acrylic = true,
 	Size = UDim2.fromOffset(620, 390),
 	MinSize = Vector2.new(460, 300),
 	ToggleKey = Enum.KeyCode.RightShift,
@@ -104,6 +105,7 @@ Parameters:
 | `OpenButtonIconColorKey` | `string` | `"Accent"` | Theme key used for the open button icon. |
 | `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
 | `Theme` | `string` / table | current theme | Initial theme for the library. |
+| `Acrylic` | `boolean` | `false` | Enables acrylic styling for window surfaces and all component cards. |
 | `Size` | `UDim2` | `UDim2.fromOffset(620, 390)` | Initial window size. |
 | `MinSize` | `Vector2` | `Vector2.new(460, 300)` | Minimum size for user resizing. |
 | `ToggleKey` | `Enum.KeyCode` | `Enum.KeyCode.RightShift` | Keyboard key used to hide or show the window. |
@@ -277,6 +279,23 @@ Window:SetTheme("Rose")
 ```
 
 Returns `true` when applied, otherwise `false`.
+
+### `Window:SetAcrylic(value)`
+
+Enables or disables acrylic styling for the window and registered component surfaces.
+
+```lua
+Window:SetAcrylic(true)
+Window:SetAcrylic(false)
+```
+
+Parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `value` | `boolean` | `true` enables acrylic, `false` returns surfaces to normal. |
+
+This is a window-level switch. Components do not need their own acrylic option.
 
 ### `Window:SelectTab(target)`
 
