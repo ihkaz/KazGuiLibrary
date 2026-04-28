@@ -323,6 +323,36 @@ Appearance:Button({
 			Accent = Color3.fromRGB(180, 80, 255),
 			AccentSoft = Color3.fromRGB(60, 20, 90),
 			Danger = Color3.fromRGB(200, 80, 60),
+			Gradients = {
+				Background = {
+					Rotation = 35,
+					Colors = {
+						{ Time = 0, Color = Color3.fromRGB(10, 6, 18) },
+						{ Time = 1, Color = Color3.fromRGB(25, 10, 45) },
+					},
+				},
+				Surface = {
+					Rotation = 25,
+					Colors = {
+						{ Time = 0, Color = Color3.fromRGB(34, 18, 60) },
+						{ Time = 1, Color = Color3.fromRGB(48, 24, 84) },
+					},
+				},
+				Accent = {
+					Rotation = 90,
+					Colors = {
+						{ Time = 0, Color = Color3.fromRGB(90, 180, 255) },
+						{ Time = 1, Color = Color3.fromRGB(210, 80, 255) },
+					},
+				},
+				AccentSoft = {
+					Rotation = 90,
+					Colors = {
+						{ Time = 0, Color = Color3.fromRGB(35, 55, 95) },
+						{ Time = 1, Color = Color3.fromRGB(75, 25, 105) },
+					},
+				},
+			},
 		})
 	end,
 })

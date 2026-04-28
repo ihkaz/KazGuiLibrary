@@ -127,6 +127,53 @@ KazGui:SetTheme("Emerald")
 
 Returns `true` when the theme is applied, otherwise `false`.
 
+Custom themes may include optional gradients. Gradient keys match normal theme color keys such as `Background`, `Surface`, `SurfaceAlt`, `Topbar`, `Sidebar`, `Accent`, and `AccentSoft`.
+
+```lua
+KazGui:SetTheme({
+	Name = "Aurora",
+	Background = Color3.fromRGB(10, 6, 18),
+	Topbar = Color3.fromRGB(20, 12, 35),
+	Sidebar = Color3.fromRGB(15, 9, 28),
+	Surface = Color3.fromRGB(34, 18, 60),
+	SurfaceAlt = Color3.fromRGB(52, 28, 90),
+	Stroke = Color3.fromRGB(100, 50, 160),
+	Text = Color3.fromRGB(230, 220, 255),
+	Muted = Color3.fromRGB(140, 110, 180),
+	Accent = Color3.fromRGB(180, 80, 255),
+	AccentSoft = Color3.fromRGB(60, 20, 90),
+	Danger = Color3.fromRGB(200, 80, 60),
+	Gradients = {
+		Surface = {
+			Rotation = 25,
+			Colors = {
+				{ Time = 0, Color = Color3.fromRGB(34, 18, 60) },
+				{ Time = 1, Color = Color3.fromRGB(48, 24, 84) },
+			},
+		},
+		Accent = {
+			Rotation = 90,
+			Colors = {
+				{ Time = 0, Color = Color3.fromRGB(90, 180, 255) },
+				{ Time = 1, Color = Color3.fromRGB(210, 80, 255) },
+			},
+		},
+	},
+})
+```
+
+Gradient entries also support percent keys:
+
+```lua
+Gradients = {
+	Accent = {
+		Rotation = 45,
+		[0] = { Color = Color3.fromRGB(90, 180, 255), Transparency = 0 },
+		[100] = { Color = Color3.fromRGB(210, 80, 255), Transparency = 0 },
+	},
+}
+```
+
 ### `KazGui:Notify(data)`
 
 Shows a notification on the most recently created active window.
