@@ -1306,48 +1306,50 @@ TextSize=14,TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name=
 fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,
 TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme
 :Bind(card.Title,'TextColor3','Text')Theme:Bind(card.Description,'TextColor3',
-'Muted')bindCard(card)local function press()if card.Parent==nil then return end
-tween(card.AccentBar,{Size=UDim2.new(0,5,1,-14)},0.08)tween(card.UIStroke,{Color
-=Theme:Get('Accent')},0.08)task.delay(0.12,function()if card.Parent~=nil then
-tween(card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.UIStroke,{Color
-=Theme:Get('Stroke')},0.14)end end)end card.MouseButton1Down:Connect(press)
-return card end function Controls.Label(parent,data)data=data or{}local state={
-Title=data.Title or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon
-==true,IconThemed=data.IconThemed~=false}local hasIcon=state.WithIcon and state.
-Icon~=nil and state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=
-create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and
-state.Desc~=''and 44 or 26),Children={create('ImageLabel',{Name='Icon',
-BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
-Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=hasIcon
-}),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
-GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
-textOffset-2,0,22),Text=state.Title,TextSize=data.TextSize or 14,TextTruncate=
-Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left}),create(
-'TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,
-Position=UDim2.fromOffset(textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),
-Text=state.Desc or'',TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,
-TextXAlignment=Enum.TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=
-''})}})Theme:Bind(label.Title,'TextColor3',data.ColorKey or'Text')Theme:Bind(
-label.Description,'TextColor3','Muted')label.Parent=parent local function
-paintIcon()if state.IconThemed then label.Icon.ImageColor3=Theme:Get(data.
-IconColorKey or'Accent')else label.Icon.ImageColor3=data.IconColor or
-DEFAULT_ICON_COLOR end end local themeWatcher=Theme:Watch(function()if label.
-Parent==nil then return false end paintIcon()return true end)function state:
-SetIcon(icon)self.Icon=icon hasIcon=self.WithIcon and icon~=nil and icon~=''
-textOffset=hasIcon and 26 or 2 label.Icon.Image=hasIcon and Icons.Resolve(icon)
-or''label.Icon.Visible=hasIcon label.Title.Position=UDim2.fromOffset(textOffset,
-0)label.Title.Size=UDim2.new(1,-textOffset-2,0,22)label.Description.Position=
-UDim2.fromOffset(textOffset,22)label.Description.Size=UDim2.new(1,-textOffset-2,
-0,18)end function state:SetWithIcon(value)self.WithIcon=value==true self:
-SetIcon(self.Icon)end function state:SetIconThemed(value)self.IconThemed=value~=
-false paintIcon()end function state:SetTitle(text)self.Title=text label.Title.
-Text=text end function state:SetDesc(text)self.Desc=text label.Description.Text=
-text or''label.Description.Visible=text~=nil and text~=''label.Size=UDim2.new(1,
-0,0,text and text~=''and 44 or 26)end function state:Destroy()themeWatcher:
-Disconnect()label:Destroy()end return state end function Controls.Divider(parent
-,data)data=data or{}local state={ColorKey=data.ColorKey or'Stroke'}local divider
-=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or
-14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
+'Muted')bindCard(card)local pressed=false local function press()if card.Parent==
+nil then return end pressed=true tween(card.AccentBar,{Size=UDim2.new(0,5,1,-14)
+},0.08)tween(card.UIStroke,{Color=Theme:Get('Accent')},0.08)end local function
+release()if not pressed or card.Parent==nil then return end pressed=false tween(
+card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.UIStroke,{Color=Theme
+:Get('Stroke')},0.14)end card.MouseButton1Down:Connect(press)card.MouseButton1Up
+:Connect(release)card.MouseLeave:Connect(release)return card end function
+Controls.Label(parent,data)data=data or{}local state={Title=data.Title or'Label'
+,Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,IconThemed=data.
+IconThemed~=false}local hasIcon=state.WithIcon and state.Icon~=nil and state.
+Icon~=''local textOffset=hasIcon and 26 or 2 local label=create('Frame',{
+BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc~=''and
+44 or 26),Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
+Image=hasIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.fromOffset(2,3),
+Size=toIconSize(data.IconSize,16),Visible=hasIcon}),create('TextLabel',{Name=
+'Title',BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+fromOffset(textOffset,0),Size=UDim2.new(1,-textOffset-2,0,22),Text=state.Title,
+TextSize=data.TextSize or 14,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment
+=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description',
+BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(
+textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),Text=state.Desc or'',
+TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
+TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=''})}})Theme:Bind(
+label.Title,'TextColor3',data.ColorKey or'Text')Theme:Bind(label.Description,
+'TextColor3','Muted')label.Parent=parent local function paintIcon()if state.
+IconThemed then label.Icon.ImageColor3=Theme:Get(data.IconColorKey or'Accent')
+else label.Icon.ImageColor3=data.IconColor or DEFAULT_ICON_COLOR end end local
+themeWatcher=Theme:Watch(function()if label.Parent==nil then return false end
+paintIcon()return true end)function state:SetIcon(icon)self.Icon=icon hasIcon=
+self.WithIcon and icon~=nil and icon~=''textOffset=hasIcon and 26 or 2 label.
+Icon.Image=hasIcon and Icons.Resolve(icon)or''label.Icon.Visible=hasIcon label.
+Title.Position=UDim2.fromOffset(textOffset,0)label.Title.Size=UDim2.new(1,-
+textOffset-2,0,22)label.Description.Position=UDim2.fromOffset(textOffset,22)
+label.Description.Size=UDim2.new(1,-textOffset-2,0,18)end function state:
+SetWithIcon(value)self.WithIcon=value==true self:SetIcon(self.Icon)end function
+state:SetIconThemed(value)self.IconThemed=value~=false paintIcon()end function
+state:SetTitle(text)self.Title=text label.Title.Text=text end function state:
+SetDesc(text)self.Desc=text label.Description.Text=text or''label.Description.
+Visible=text~=nil and text~=''label.Size=UDim2.new(1,0,0,text and text~=''and 44
+or 26)end function state:Destroy()themeWatcher:Disconnect()label:Destroy()end
+return state end function Controls.Divider(parent,data)data=data or{}local state
+={ColorKey=data.ColorKey or'Stroke'}local divider=create('Frame',{
+BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or 14),Children={
+create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
 BackgroundTransparency=data.Transparency or 0,BorderSizePixel=0,Position=UDim2.
 new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 1)})}})divider.Parent=
 parent local themeWatcher=Theme:Watch(function()if divider.Parent==nil then
