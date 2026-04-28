@@ -22,39 +22,42 @@ fromRGB(53,39,49),Stroke=Color3.fromRGB(78,58,70),Text=Color3.fromRGB(245,232,
 240),Muted=Color3.fromRGB(178,146,164),Accent=Color3.fromRGB(239,95,141),
 AccentSoft=Color3.fromRGB(92,36,57),Danger=Color3.fromRGB(235,87,87)}}Theme.
 CurrentName='Midnight'Theme.Current=Theme.Palettes.Midnight Theme.Bindings={}
-Theme.Watchers={}Theme.Acrylic=false Theme.AcrylicBindings={}function Theme:Get(
-key)return self.Current[key]end function Theme:Bind(instance,property,key)table.
-insert(self.Bindings,{Instance=instance,Property=property,Key=key})instance[
-property]=self:Get(key)end function Theme:BindAcrylic(instance,property,
-normalValue,acrylicValue)table.insert(self.AcrylicBindings,{Instance=instance,
-Property=property,Normal=normalValue,Acrylic=acrylicValue})instance[property]=
-self.Acrylic and acrylicValue or normalValue end function Theme:SetAcrylic(value
-)self.Acrylic=value==true for index=#self.AcrylicBindings,1,-1 do local binding=
-self.AcrylicBindings[index]if binding.Instance and binding.Instance.Parent~=nil
-then binding.Instance[binding.Property]=self.Acrylic and binding.Acrylic or
-binding.Normal else table.remove(self.AcrylicBindings,index)end end return true
-end function Theme:Watch(callback)local watcher={Callback=callback,Connected=
-true}table.insert(self.Watchers,watcher)function watcher:Disconnect()self.
-Connected=false end callback()return watcher end function Theme:Set(theme)if
-typeof(theme)=='string'then if not self.Palettes[theme]then return false end
-self.CurrentName=theme self.Current=self.Palettes[theme]elseif typeof(theme)==
-'table'then self.CurrentName=theme.Name or'Custom'self.Current=setmetatable(
-theme,{__index=self.Palettes.Midnight})else return false end for index=#self.
-Bindings,1,-1 do local binding=self.Bindings[index]if binding.Instance and
-binding.Instance.Parent~=nil then binding.Instance[binding.Property]=self:Get(
-binding.Key)else table.remove(self.Bindings,index)end end for index=#self.
-Watchers,1,-1 do local watcher=self.Watchers[index]if watcher.Connected then if
-watcher.Callback()==false then table.remove(self.Watchers,index)end else table.
-remove(self.Watchers,index)end end self:SetAcrylic(self.Acrylic)return true end
-return Theme end function __KAZGUI_MODULES.b():typeof(__modImpl())local v=
-__KAZGUI_MODULES.cache.b if not v then v={c=__modImpl()}__KAZGUI_MODULES.cache.b
-=v end return v.c end end do local function __modImpl()return{['a-arrow-down']=
-'rbxassetid://92867583610071',['a-arrow-up']='rbxassetid://132318504999733',[
-'a-large-small']='rbxassetid://111491496660216',['accessibility']=
-'rbxassetid://114029945302017',['activity']='rbxassetid://94212016861936',[
-'air-vent']='rbxassetid://81517226012329',['airplay']=
-'rbxassetid://115020759309179',['alarm-clock-check']=
-'rbxassetid://76437352099157',['alarm-clock-minus']=
+Theme.Watchers={}Theme.Acrylic=false Theme.AcrylicIntensity=1 Theme.
+AcrylicBindings={}function Theme:Get(key)return self.Current[key]end function
+Theme:Bind(instance,property,key)table.insert(self.Bindings,{Instance=instance,
+Property=property,Key=key})instance[property]=self:Get(key)end function Theme:
+BindAcrylic(instance,property,normalValue,acrylicValue)table.insert(self.
+AcrylicBindings,{Instance=instance,Property=property,Normal=normalValue,Acrylic=
+acrylicValue})local value=self.Acrylic and(normalValue+((acrylicValue-
+normalValue)*self.AcrylicIntensity))or normalValue instance[property]=value end
+function Theme:SetAcrylic(value,intensity)self.Acrylic=value==true if typeof(
+intensity)=='number'then self.AcrylicIntensity=math.clamp(intensity,0,1)end for
+index=#self.AcrylicBindings,1,-1 do local binding=self.AcrylicBindings[index]if
+binding.Instance and binding.Instance.Parent~=nil then local nextValue=binding.
+Normal if self.Acrylic then nextValue=binding.Normal+((binding.Acrylic-binding.
+Normal)*self.AcrylicIntensity)end binding.Instance[binding.Property]=nextValue
+else table.remove(self.AcrylicBindings,index)end end return true end function
+Theme:Watch(callback)local watcher={Callback=callback,Connected=true}table.
+insert(self.Watchers,watcher)function watcher:Disconnect()self.Connected=false
+end callback()return watcher end function Theme:Set(theme)if typeof(theme)==
+'string'then if not self.Palettes[theme]then return false end self.CurrentName=
+theme self.Current=self.Palettes[theme]elseif typeof(theme)=='table'then self.
+CurrentName=theme.Name or'Custom'self.Current=setmetatable(theme,{__index=self.
+Palettes.Midnight})else return false end for index=#self.Bindings,1,-1 do local
+binding=self.Bindings[index]if binding.Instance and binding.Instance.Parent~=nil
+then binding.Instance[binding.Property]=self:Get(binding.Key)else table.remove(
+self.Bindings,index)end end for index=#self.Watchers,1,-1 do local watcher=self.
+Watchers[index]if watcher.Connected then if watcher.Callback()==false then table
+.remove(self.Watchers,index)end else table.remove(self.Watchers,index)end end
+self:SetAcrylic(self.Acrylic)return true end return Theme end function
+__KAZGUI_MODULES.b():typeof(__modImpl())local v=__KAZGUI_MODULES.cache.b if not
+v then v={c=__modImpl()}__KAZGUI_MODULES.cache.b=v end return v.c end end do
+local function __modImpl()return{['a-arrow-down']='rbxassetid://92867583610071',
+['a-arrow-up']='rbxassetid://132318504999733',['a-large-small']=
+'rbxassetid://111491496660216',['accessibility']='rbxassetid://114029945302017',
+['activity']='rbxassetid://94212016861936',['air-vent']=
+'rbxassetid://81517226012329',['airplay']='rbxassetid://115020759309179',[
+'alarm-clock-check']='rbxassetid://76437352099157',['alarm-clock-minus']=
 'rbxassetid://77364179863205',['alarm-clock-off']='rbxassetid://97904885874823',
 ['alarm-clock-plus']='rbxassetid://80468822979214',['alarm-clock']=
 'rbxassetid://126259032907535',['alarm-smoke']='rbxassetid://96965448419685',[
@@ -1273,83 +1276,99 @@ ZIndex=0,Children={create('UICorner',{CornerRadius=cornerRadius or UDim.new(0,8)
 })}})Theme:BindAcrylic(layer,'ImageTransparency',1,0.9)layer.Parent=frame return
 layer end return Acrylic end function __KAZGUI_MODULES.f():typeof(__modImpl())
 local v=__KAZGUI_MODULES.cache.f if not v then v={c=__modImpl()}__KAZGUI_MODULES
-.cache.f=v end return v.c end end do local function __modImpl()local
-TweenService=game:GetService('TweenService')local function tween(instance,props,
-duration)local info=TweenInfo.new(duration or 0.18,Enum.EasingStyle.Quart,Enum.
-EasingDirection.Out)local item=TweenService:Create(instance,info,props)item:
-Play()return item end return tween end function __KAZGUI_MODULES.g():typeof(
-__modImpl())local v=__KAZGUI_MODULES.cache.g if not v then v={c=__modImpl()}
-__KAZGUI_MODULES.cache.g=v end return v.c end end do local function __modImpl()
-local create=__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Icons=
-__KAZGUI_MODULES.d()local Acrylic=__KAZGUI_MODULES.f()local tween=
-__KAZGUI_MODULES.g()local Controls={}local DEFAULT_ICON_COLOR=Color3.fromRGB(255
-,255,255)local function toIconSize(value,defaultSize)if typeof(value)=='UDim2'
-then return value elseif typeof(value)=='Vector2'then return UDim2.fromOffset(
-value.X,value.Y)elseif typeof(value)=='number'then return UDim2.fromOffset(value
-,value)end return UDim2.fromOffset(defaultSize,defaultSize)end local function
-tableToString(values)if typeof(values)~='table'then return tostring(values or'')
-end if#values==0 then return''end return table.concat(values,', ')end
-local function bindCard(card)Theme:Bind(card,'BackgroundColor3','Surface')Theme:
-BindAcrylic(card,'BackgroundTransparency',0,0.22)Theme:Bind(card.UIStroke,
-'Color','Stroke')Theme:Bind(card.AccentBar,'BackgroundColor3','Accent')Acrylic.
-Apply(card,UDim.new(0,8))end local function makeCard(title,desc)local card=
-create('ImageButton',{AutoButtonColor=false,BackgroundTransparency=0,Size=UDim2.
-new(1,0,0,desc and desc~=''and 62 or 48),Children={create('UICorner',{
-CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1}),create('Frame',{
-Name='AccentBar',AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=0,
-BorderSizePixel=0,Position=UDim2.new(1,-7,0.5,0),Size=UDim2.new(0,3,1,-18),
-Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}),create('TextLabel',
-{Name='Title',BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=
-UDim2.fromOffset(14,9),Size=UDim2.new(1,-28,0,20),Text=title or'Element',
-TextSize=14,TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name=
-'Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.
-fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,
-TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme
-:Bind(card.Title,'TextColor3','Text')Theme:Bind(card.Description,'TextColor3',
-'Muted')bindCard(card)local pressed=false local function press()if card.Parent==
-nil then return end pressed=true tween(card.AccentBar,{Size=UDim2.new(0,5,1,-14)
-},0.08)tween(card.UIStroke,{Color=Theme:Get('Accent')},0.08)end local function
-release()if not pressed or card.Parent==nil then return end pressed=false tween(
-card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.UIStroke,{Color=Theme
-:Get('Stroke')},0.14)end card.MouseButton1Down:Connect(press)card.MouseButton1Up
-:Connect(release)card.MouseLeave:Connect(release)return card end function
-Controls.Label(parent,data)data=data or{}local state={Title=data.Title or'Label'
-,Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,IconThemed=data.
-IconThemed~=false}local hasIcon=state.WithIcon and state.Icon~=nil and state.
-Icon~=''local textOffset=hasIcon and 26 or 2 local label=create('Frame',{
-BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc~=''and
-44 or 26),Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
-Image=hasIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.fromOffset(2,3),
-Size=toIconSize(data.IconSize,16),Visible=hasIcon}),create('TextLabel',{Name=
-'Title',BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
-fromOffset(textOffset,0),Size=UDim2.new(1,-textOffset-2,0,22),Text=state.Title,
-TextSize=data.TextSize or 14,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment
-=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description',
-BackgroundTransparency=1,Font=Enum.Font.Gotham,Position=UDim2.fromOffset(
-textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),Text=state.Desc or'',
-TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
-TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=''})}})Theme:Bind(
-label.Title,'TextColor3',data.ColorKey or'Text')Theme:Bind(label.Description,
-'TextColor3','Muted')label.Parent=parent local function paintIcon()if state.
-IconThemed then label.Icon.ImageColor3=Theme:Get(data.IconColorKey or'Accent')
-else label.Icon.ImageColor3=data.IconColor or DEFAULT_ICON_COLOR end end local
-themeWatcher=Theme:Watch(function()if label.Parent==nil then return false end
-paintIcon()return true end)function state:SetIcon(icon)self.Icon=icon hasIcon=
-self.WithIcon and icon~=nil and icon~=''textOffset=hasIcon and 26 or 2 label.
-Icon.Image=hasIcon and Icons.Resolve(icon)or''label.Icon.Visible=hasIcon label.
-Title.Position=UDim2.fromOffset(textOffset,0)label.Title.Size=UDim2.new(1,-
-textOffset-2,0,22)label.Description.Position=UDim2.fromOffset(textOffset,22)
-label.Description.Size=UDim2.new(1,-textOffset-2,0,18)end function state:
-SetWithIcon(value)self.WithIcon=value==true self:SetIcon(self.Icon)end function
-state:SetIconThemed(value)self.IconThemed=value~=false paintIcon()end function
-state:SetTitle(text)self.Title=text label.Title.Text=text end function state:
-SetDesc(text)self.Desc=text label.Description.Text=text or''label.Description.
-Visible=text~=nil and text~=''label.Size=UDim2.new(1,0,0,text and text~=''and 44
-or 26)end function state:Destroy()themeWatcher:Disconnect()label:Destroy()end
-return state end function Controls.Divider(parent,data)data=data or{}local state
-={ColorKey=data.ColorKey or'Stroke'}local divider=create('Frame',{
-BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or 14),Children={
-create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
+.cache.f=v end return v.c end end do local function __modImpl()local Cleanup={}
+Cleanup.__index=Cleanup function Cleanup.new()return setmetatable({Tasks={},
+Destroyed=false},Cleanup)end function Cleanup:Add(task)if self.Destroyed then if
+typeof(task)=='RBXScriptConnection'then task:Disconnect()elseif typeof(task)==
+'Instance'then task:Destroy()elseif typeof(task)=='function'then task()elseif
+typeof(task)=='table'and task.Disconnect then task:Disconnect()elseif typeof(
+task)=='table'and task.Destroy then task:Destroy()end return task end table.
+insert(self.Tasks,task)return task end function Cleanup:Destroy()if self.
+Destroyed then return end self.Destroyed=true for index=#self.Tasks,1,-1 do
+local taskItem=self.Tasks[index]pcall(function()if typeof(taskItem)==
+'RBXScriptConnection'then taskItem:Disconnect()elseif typeof(taskItem)==
+'Instance'then taskItem:Destroy()elseif typeof(taskItem)=='function'then
+taskItem()elseif typeof(taskItem)=='table'and taskItem.Disconnect then taskItem:
+Disconnect()elseif typeof(taskItem)=='table'and taskItem.Destroy then taskItem:
+Destroy()end end)self.Tasks[index]=nil end end return Cleanup end function
+__KAZGUI_MODULES.g():typeof(__modImpl())local v=__KAZGUI_MODULES.cache.g if not
+v then v={c=__modImpl()}__KAZGUI_MODULES.cache.g=v end return v.c end end do
+local function __modImpl()local TweenService=game:GetService('TweenService')
+local function tween(instance,props,duration)local info=TweenInfo.new(duration
+or 0.18,Enum.EasingStyle.Quart,Enum.EasingDirection.Out)local item=TweenService:
+Create(instance,info,props)item:Play()return item end return tween end function
+__KAZGUI_MODULES.h():typeof(__modImpl())local v=__KAZGUI_MODULES.cache.h if not
+v then v={c=__modImpl()}__KAZGUI_MODULES.cache.h=v end return v.c end end do
+local function __modImpl()local create=__KAZGUI_MODULES.a()local Theme=
+__KAZGUI_MODULES.b()local Icons=__KAZGUI_MODULES.d()local Acrylic=
+__KAZGUI_MODULES.f()local tween=__KAZGUI_MODULES.h()local Controls={}local
+DEFAULT_ICON_COLOR=Color3.fromRGB(255,255,255)local function toIconSize(value,
+defaultSize)if typeof(value)=='UDim2'then return value elseif typeof(value)==
+'Vector2'then return UDim2.fromOffset(value.X,value.Y)elseif typeof(value)==
+'number'then return UDim2.fromOffset(value,value)end return UDim2.fromOffset(
+defaultSize,defaultSize)end local function tableToString(values)if typeof(values
+)~='table'then return tostring(values or'')end if#values==0 then return''end
+return table.concat(values,', ')end local function bindCard(card)Theme:Bind(card
+,'BackgroundColor3','Surface')Theme:BindAcrylic(card,'BackgroundTransparency',0,
+0.22)Theme:Bind(card.UIStroke,'Color','Stroke')Theme:Bind(card.AccentBar,
+'BackgroundColor3','Accent')Acrylic.Apply(card,UDim.new(0,8))end local function
+makeCard(title,desc)local card=create('ImageButton',{AutoButtonColor=false,
+BackgroundTransparency=0,Size=UDim2.new(1,0,0,desc and desc~=''and 62 or 48),
+Children={create('UICorner',{CornerRadius=UDim.new(0,8)}),create('UIStroke',{
+Thickness=1}),create('Frame',{Name='AccentBar',AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2.new(1,-7,0.5,0),Size=
+UDim2.new(0,3,1,-18),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}
+),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamMedium,Position=UDim2.fromOffset(14,9),Size=UDim2.new(1,-28,0,20),Text=
+title or'Element',TextSize=14,TextXAlignment=Enum.TextXAlignment.Left}),create(
+'TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,
+Position=UDim2.fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or'',
+TextSize=12,TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and desc~=
+''})}})Theme:Bind(card.Title,'TextColor3','Text')Theme:Bind(card.Description,
+'TextColor3','Muted')bindCard(card)local pressed=false local function press()if
+card.Parent==nil then return end pressed=true tween(card.AccentBar,{Size=UDim2.
+new(0,5,1,-14)},0.08)tween(card.UIStroke,{Color=Theme:Get('Accent')},0.08)end
+local function release()if not pressed or card.Parent==nil then return end
+pressed=false tween(card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.
+UIStroke,{Color=Theme:Get('Stroke')},0.14)end card.MouseButton1Down:Connect(
+press)card.MouseButton1Up:Connect(release)card.MouseLeave:Connect(release)return
+card end function Controls.Label(parent,data)data=data or{}local state={Title=
+data.Title or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,
+IconThemed=data.IconThemed~=false}local hasIcon=state.WithIcon and state.Icon~=
+nil and state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=create(
+'Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc
+~=''and 44 or 26),Children={create('ImageLabel',{Name='Icon',
+BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
+Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=hasIcon
+}),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
+textOffset-2,0,22),Text=state.Title,TextSize=data.TextSize or 14,TextTruncate=
+Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left}),create(
+'TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.Gotham,
+Position=UDim2.fromOffset(textOffset,22),Size=UDim2.new(1,-textOffset-2,0,18),
+Text=state.Desc or'',TextSize=12,TextTruncate=Enum.TextTruncate.AtEnd,
+TextXAlignment=Enum.TextXAlignment.Left,Visible=state.Desc~=nil and state.Desc~=
+''})}})Theme:Bind(label.Title,'TextColor3',data.ColorKey or'Text')Theme:Bind(
+label.Description,'TextColor3','Muted')label.Parent=parent local function
+paintIcon()if state.IconThemed then label.Icon.ImageColor3=Theme:Get(data.
+IconColorKey or'Accent')else label.Icon.ImageColor3=data.IconColor or
+DEFAULT_ICON_COLOR end end local themeWatcher=Theme:Watch(function()if label.
+Parent==nil then return false end paintIcon()return true end)function state:
+SetIcon(icon)self.Icon=icon hasIcon=self.WithIcon and icon~=nil and icon~=''
+textOffset=hasIcon and 26 or 2 label.Icon.Image=hasIcon and Icons.Resolve(icon)
+or''label.Icon.Visible=hasIcon label.Title.Position=UDim2.fromOffset(textOffset,
+0)label.Title.Size=UDim2.new(1,-textOffset-2,0,22)label.Description.Position=
+UDim2.fromOffset(textOffset,22)label.Description.Size=UDim2.new(1,-textOffset-2,
+0,18)end function state:SetWithIcon(value)self.WithIcon=value==true self:
+SetIcon(self.Icon)end function state:SetIconThemed(value)self.IconThemed=value~=
+false paintIcon()end function state:SetTitle(text)self.Title=text label.Title.
+Text=text end function state:SetDesc(text)self.Desc=text label.Description.Text=
+text or''label.Description.Visible=text~=nil and text~=''label.Size=UDim2.new(1,
+0,0,text and text~=''and 44 or 26)end function state:Destroy()themeWatcher:
+Disconnect()label:Destroy()end return state end function Controls.Divider(parent
+,data)data=data or{}local state={ColorKey=data.ColorKey or'Stroke'}local divider
+=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,data.Spacing or
+14),Children={create('Frame',{Name='Line',AnchorPoint=Vector2.new(0,0.5),
 BackgroundTransparency=data.Transparency or 0,BorderSizePixel=0,Position=UDim2.
 new(0,0,0.5,0),Size=UDim2.new(1,0,0,data.Thickness or 1)})}})divider.Parent=
 parent local themeWatcher=Theme:Watch(function()if divider.Parent==nil then
@@ -1492,91 +1511,96 @@ self.Title=text card.Title.Text=text end function state:SetDesc(text)card.
 Description.Text=text or''card.Description.Visible=text~=nil and text~=''end
 function state:Lock()self.Locked=true end function state:Unlock()self.Locked=
 false end function state:Destroy()card:Destroy()end state.Callback(state.Value)
-return state end return Controls end function __KAZGUI_MODULES.h():typeof(
-__modImpl())local v=__KAZGUI_MODULES.cache.h if not v then v={c=__modImpl()}
-__KAZGUI_MODULES.cache.h=v end return v.c end end do local function __modImpl()
+return state end return Controls end function __KAZGUI_MODULES.i():typeof(
+__modImpl())local v=__KAZGUI_MODULES.cache.i if not v then v={c=__modImpl()}
+__KAZGUI_MODULES.cache.i=v end return v.c end end do local function __modImpl()
 local create=__KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Icons=
 __KAZGUI_MODULES.d()local Exploit=__KAZGUI_MODULES.e()local Acrylic=
-__KAZGUI_MODULES.f()local tween=__KAZGUI_MODULES.g()local Controls=
-__KAZGUI_MODULES.h()local Window={}Window.__index=Window local
-DEFAULT_ICON_COLOR=Color3.fromRGB(255,255,255)local function toIconSize(value,
-defaultSize)if typeof(value)=='UDim2'then return value elseif typeof(value)==
-'Vector2'then return UDim2.fromOffset(value.X,value.Y)elseif typeof(value)==
-'number'then return UDim2.fromOffset(value,value)end return UDim2.fromOffset(
-defaultSize,defaultSize)end local function createSignal()local callbacks={}
-return{Connect=function(_,callback)table.insert(callbacks,callback)return{
-Disconnect=function()local index=table.find(callbacks,callback)if index then
-table.remove(callbacks,index)end end}end,Fire=function(_,...)for _,callback in
-ipairs(callbacks)do callback(...)end end,Clear=function()table.clear(callbacks)
-end}end local function makeConfig(path,autoSave)local store=Exploit.ReadJson(
-path)or{}return{Get=function(_,key,default)if store[key]==nil then store[key]=
-default end return store[key]end,Set=function(_,key,value)store[key]=value if
-autoSave then Exploit.WriteJson(path,store)end end}end local function draggable(
-topbar,object)local inputService=game:GetService('UserInputService')local
-dragging=false local dragStart local startPosition local dragInput local enabled
-=true topbar.InputBegan:Connect(function(input)if enabled and(input.
-UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.
-UserInputType.Touch)then dragging=true dragStart=input.Position startPosition=
-object.Position input.Changed:Connect(function()if input.UserInputState==Enum.
-UserInputState.End then dragging=false end end)end end)topbar.InputChanged:
-Connect(function(input)if enabled and(input.UserInputType==Enum.UserInputType.
-MouseMovement or input.UserInputType==Enum.UserInputType.Touch)then dragInput=
-input end end)inputService.InputChanged:Connect(function(input)if dragging and
-input==dragInput then local delta=input.Position-dragStart object.Position=UDim2
-.new(startPosition.X.Scale,startPosition.X.Offset+delta.X,startPosition.Y.Scale,
-startPosition.Y.Offset+delta.Y)end end)return{SetAllowDragging=function(_,value)
-enabled=value end}end local function resizable(handle,object,minSize)local
-inputService=game:GetService('UserInputService')local resizing=false local
-resizeInput local startPosition local startSize handle.InputBegan:Connect(
-function(input)if input.UserInputType==Enum.UserInputType.MouseButton1 or input.
-UserInputType==Enum.UserInputType.Touch then resizing=true resizeInput=input
-startPosition=input.Position startSize=object.AbsoluteSize if object.AnchorPoint
-~=Vector2.new(0,0)then object.Position=UDim2.fromOffset(object.AbsolutePosition.
-X,object.AbsolutePosition.Y)object.AnchorPoint=Vector2.new(0,0)end input.Changed
-:Connect(function()if input.UserInputState==Enum.UserInputState.End then
-resizing=false end end)end end)handle.InputChanged:Connect(function(input)if
-input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==
-Enum.UserInputType.Touch then resizeInput=input end end)inputService.
+__KAZGUI_MODULES.f()local Cleanup=__KAZGUI_MODULES.g()local tween=
+__KAZGUI_MODULES.h()local Controls=__KAZGUI_MODULES.i()local Window={}Window.
+__index=Window local DEFAULT_ICON_COLOR=Color3.fromRGB(255,255,255)
+local function toIconSize(value,defaultSize)if typeof(value)=='UDim2'then return
+value elseif typeof(value)=='Vector2'then return UDim2.fromOffset(value.X,value.
+Y)elseif typeof(value)=='number'then return UDim2.fromOffset(value,value)end
+return UDim2.fromOffset(defaultSize,defaultSize)end local function createSignal(
+)local callbacks={}return{Connect=function(_,callback)table.insert(callbacks,
+callback)return{Disconnect=function()local index=table.find(callbacks,callback)
+if index then table.remove(callbacks,index)end end}end,Fire=function(_,...)for _
+,callback in ipairs(callbacks)do callback(...)end end,Clear=function()table.
+clear(callbacks)end}end local function makeConfig(path,autoSave)local store=
+Exploit.ReadJson(path)or{}return{Get=function(_,key,default)if store[key]==nil
+then store[key]=default end return store[key]end,Set=function(_,key,value)store[
+key]=value if autoSave then Exploit.WriteJson(path,store)end end}end
+local function draggable(topbar,object)local inputService=game:GetService(
+'UserInputService')local cleaner=Cleanup.new()local dragging=false local
+dragStart local startPosition local dragInput local enabled=true cleaner:Add(
+topbar.InputBegan:Connect(function(input)if enabled and(input.UserInputType==
+Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch
+)then dragging=true dragStart=input.Position startPosition=object.Position
+cleaner:Add(input.Changed:Connect(function()if input.UserInputState==Enum.
+UserInputState.End then dragging=false end end))end end))cleaner:Add(topbar.
+InputChanged:Connect(function(input)if enabled and(input.UserInputType==Enum.
+UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch)
+then dragInput=input end end))cleaner:Add(inputService.InputChanged:Connect(
+function(input)if dragging and input==dragInput then local delta=input.Position-
+dragStart object.Position=UDim2.new(startPosition.X.Scale,startPosition.X.Offset
++delta.X,startPosition.Y.Scale,startPosition.Y.Offset+delta.Y)end end))return{
+SetAllowDragging=function(_,value)enabled=value end,Destroy=function()cleaner:
+Destroy()end}end local function resizable(handle,object,minSize)local
+inputService=game:GetService('UserInputService')local cleaner=Cleanup.new()local
+resizing=false local resizeInput local startPosition local startSize cleaner:
+Add(handle.InputBegan:Connect(function(input)if input.UserInputType==Enum.
+UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+resizing=true resizeInput=input startPosition=input.Position startSize=object.
+AbsoluteSize if object.AnchorPoint~=Vector2.new(0,0)then object.Position=UDim2.
+fromOffset(object.AbsolutePosition.X,object.AbsolutePosition.Y)object.
+AnchorPoint=Vector2.new(0,0)end cleaner:Add(input.Changed:Connect(function()if
+input.UserInputState==Enum.UserInputState.End then resizing=false end end))end
+end))cleaner:Add(handle.InputChanged:Connect(function(input)if input.
+UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.
+UserInputType.Touch then resizeInput=input end end))cleaner:Add(inputService.
 InputChanged:Connect(function(input)if resizing and input==resizeInput then
 local delta=input.Position-startPosition local width=math.max(minSize.X,
 startSize.X+delta.X)local height=math.max(minSize.Y,startSize.Y+delta.Y)object.
-Size=UDim2.fromOffset(width,height)end end)end function Window.new(library,data)
-local self=setmetatable({},Window)self.Library=library self.Title=data.Title or
-'KazGui'self.Author=data.Author or data.Version or'v1.0'self.Icon=data.Icon or
-'layout'self.IconSize=data.IconSize or 18 self.IconThemed=data.IconThemed~=false
-self.OpenButtonIcon=data.OpenButtonIcon or data.OpenIcon or(data.OpenButton and
-data.OpenButton.Icon)or self.Icon self.OpenButtonIconThemed=data.
-OpenButtonIconThemed~=false and not(data.OpenButton and data.OpenButton.
-IconThemed==false)self.Acrylic=data.Acrylic==true self.Size=data.Size or UDim2.
-fromOffset(620,390)self.MinSize=data.MinSize or Vector2.new(460,300)self.
-ToggleKey=data.ToggleKey or Enum.KeyCode.RightShift self.AutoSave=data.AutoSave
-~=false self.Config=makeConfig(data.FileSaveName or(self.Title..'.json'),self.
-AutoSave)self.Tabs={}self.TabObjects={}self.SelectedTab=nil self.Destroyed=false
-self.Signals={Open=createSignal(),Close=createSignal(),Destroy=createSignal()}if
-data.OnOpen then self.Signals.Open:Connect(data.OnOpen)end if data.OnClose then
-self.Signals.Close:Connect(data.OnClose)end if data.OnDestroy then self.Signals.
-Destroy:Connect(data.OnDestroy)end if data.Theme then Theme:Set(data.Theme)end
-Theme:SetAcrylic(self.Acrylic)local gui=create('ScreenGui',{Name='KazGui',
-ResetOnSpawn=false,ZIndexBehavior=Enum.ZIndexBehavior.Sibling})Exploit.Protect(
-gui)self.Gui=gui local main=create('Frame',{AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),Size=self.Size,Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('UIStroke',{Thickness=1})}})Theme:Bind(main
-,'BackgroundColor3','Background')Theme:BindAcrylic(main,'BackgroundTransparency'
-,0,0.1)Theme:Bind(main.UIStroke,'Color','Stroke')Acrylic.Apply(main,UDim.new(0,
-10))main.Parent=gui self.Main=main local openButton=create('ImageButton',{Name=
-'OpenButton',AnchorPoint=Vector2.new(0,0.5),AutoButtonColor=false,
-BackgroundTransparency=1,Image=Icons.Resolve(self.OpenButtonIcon),ImageColor3=
-data.OpenButtonIconColor or DEFAULT_ICON_COLOR,Position=UDim2.new(0,24,0.5,0),
-Size=UDim2.fromOffset(54,54),Visible=false})if self.OpenButtonIconThemed then
-Theme:Bind(openButton,'ImageColor3',data.OpenButtonIconColorKey or'Accent')end
-openButton.Parent=gui self.OpenButton=openButton local topbar=create('Frame',{
-Name='Topbar',BackgroundTransparency=0,Size=UDim2.new(1,0,0,44),Children={
-create('UICorner',{CornerRadius=UDim.new(0,10)}),create('Frame',{Name=
-'CornerFix',AnchorPoint=Vector2.new(0,1),BorderSizePixel=0,Position=UDim2.new(0,
-0,1,0),Size=UDim2.new(1,0,0,10)})}})Theme:Bind(topbar,'BackgroundColor3',
-'Topbar')Theme:BindAcrylic(topbar,'BackgroundTransparency',0,0.12)Theme:Bind(
-topbar.CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=
-topbar local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+Size=UDim2.fromOffset(width,height)end end))return cleaner end function Window.
+new(library,data)local self=setmetatable({},Window)self.Library=library self.
+Title=data.Title or'KazGui'self.Author=data.Author or data.Version or'v1.0'self.
+Icon=data.Icon or'layout'self.IconSize=data.IconSize or 18 self.IconThemed=data.
+IconThemed~=false self.OpenButtonIcon=data.OpenButtonIcon or data.OpenIcon or(
+data.OpenButton and data.OpenButton.Icon)or self.Icon self.OpenButtonIconThemed=
+data.OpenButtonIconThemed~=false and not(data.OpenButton and data.OpenButton.
+IconThemed==false)self.Acrylic=data.Acrylic==true self.AcrylicIntensity=data.
+AcrylicIntensity or 1 self.Size=data.Size or UDim2.fromOffset(620,390)self.
+MinSize=data.MinSize or Vector2.new(460,300)self.ToggleKey=data.ToggleKey or
+Enum.KeyCode.RightShift self.AutoSave=data.AutoSave~=false self.Config=
+makeConfig(data.FileSaveName or(self.Title..'.json'),self.AutoSave)self.Tabs={}
+self.TabObjects={}self.SelectedTab=nil self.Destroyed=false self.Cleanup=Cleanup
+.new()self.Signals={Open=createSignal(),Close=createSignal(),Destroy=
+createSignal()}if data.OnOpen then self.Signals.Open:Connect(data.OnOpen)end if
+data.OnClose then self.Signals.Close:Connect(data.OnClose)end if data.OnDestroy
+then self.Signals.Destroy:Connect(data.OnDestroy)end if data.Theme then Theme:
+Set(data.Theme)end Theme:SetAcrylic(self.Acrylic,self.AcrylicIntensity)local gui
+=create('ScreenGui',{Name='KazGui',ResetOnSpawn=false,ZIndexBehavior=Enum.
+ZIndexBehavior.Sibling})Exploit.Protect(gui)self.Gui=gui local main=create(
+'Frame',{AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size
+=self.Size,Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),create(
+'UIStroke',{Thickness=1})}})Theme:Bind(main,'BackgroundColor3','Background')
+Theme:BindAcrylic(main,'BackgroundTransparency',0,0.1)Theme:Bind(main.UIStroke,
+'Color','Stroke')Acrylic.Apply(main,UDim.new(0,10))main.Parent=gui self.Main=
+main local openButton=create('ImageButton',{Name='OpenButton',AnchorPoint=
+Vector2.new(0,0.5),AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.
+Resolve(self.OpenButtonIcon),ImageColor3=data.OpenButtonIconColor or
+DEFAULT_ICON_COLOR,Position=UDim2.new(0,24,0.5,0),Size=UDim2.fromOffset(54,54),
+Visible=false})if self.OpenButtonIconThemed then Theme:Bind(openButton,
+'ImageColor3',data.OpenButtonIconColorKey or'Accent')end openButton.Parent=gui
+self.OpenButton=openButton local topbar=create('Frame',{Name='Topbar',
+BackgroundTransparency=0,Size=UDim2.new(1,0,0,44),Children={create('UICorner',{
+CornerRadius=UDim.new(0,10)}),create('Frame',{Name='CornerFix',AnchorPoint=
+Vector2.new(0,1),BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,
+0,0,10)})}})Theme:Bind(topbar,'BackgroundColor3','Topbar')Theme:BindAcrylic(
+topbar,'BackgroundTransparency',0,0.12)Theme:Bind(topbar.CornerFix,
+'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar local
+brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
 BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=data.
 IconColor or DEFAULT_ICON_COLOR,Position=UDim2.new(0,13,0.5,0),Size=toIconSize(
 self.IconSize,18)})if self.IconThemed then Theme:Bind(brandIcon,'ImageColor3',
@@ -1612,32 +1636,33 @@ BackgroundTransparency=1,Size=UDim2.fromScale(1,1),Children={create(
 create('UIPadding',{PaddingLeft=UDim.new(0,10),PaddingRight=UDim.new(0,10),
 PaddingTop=UDim.new(0,12)})}})self.SidebarList.Parent=self.Sidebar self.Content=
 create('Frame',{Name='Content',BackgroundTransparency=1,Position=UDim2.
-fromOffset(150,44),Size=UDim2.new(1,-150,1,-44)})self.Content.Parent=main
-draggable(topbar,main)draggable(openButton,openButton)local resizeHandle=create(
-'TextButton',{Name='ResizeHandle',AnchorPoint=Vector2.new(1,1),AutoButtonColor=
-false,BackgroundTransparency=1,Position=UDim2.new(1,-4,1,-4),Size=UDim2.
-fromOffset(22,22),Text='',ZIndex=30})resizeHandle.Parent=main resizable(
-resizeHandle,main,self.MinSize)hide.MouseButton1Click:Connect(function()self:
-Toggle(false)end)openButton.MouseButton1Click:Connect(function()self:Toggle(true
-)end)close.MouseButton1Click:Connect(function()self:Destroy()end)self.
-ToggleConnection=game:GetService('UserInputService').InputBegan:Connect(function
-(input,processed)if not processed and input.KeyCode==self.ToggleKey then self:
-Toggle()end end)return self end function Window:Toggle(state)if self.Destroyed
-then return false end if state==nil then state=not self.Main.Visible end local
-changed=self.Main.Visible~=state self.Main.Visible=state if self.OpenButton then
-self.OpenButton.Visible=not state end if changed then if state then self.Signals
-.Open:Fire(self)else self.Signals.Close:Fire(self)end end return true end
-function Window:Open()return self:Toggle(true)end function Window:Close()return
-self:Toggle(false)end function Window:OnOpen(callback)return self.Signals.Open:
-Connect(callback)end function Window:OnClose(callback)return self.Signals.Close:
-Connect(callback)end function Window:OnDestroy(callback)return self.Signals.
-Destroy:Connect(callback)end function Window:Destroy()if self.Destroyed then
-return false end if self.Main and self.Main.Visible then self.Signals.Close:
-Fire(self)end self.Destroyed=true self.Signals.Destroy:Fire(self)if self.
-ToggleConnection then self.ToggleConnection:Disconnect()self.ToggleConnection=
-nil end if self.Library and self.Library.Windows then local index=table.find(
-self.Library.Windows,self)if index then table.remove(self.Library.Windows,index)
-end end if self.DropdownOverlay then self.DropdownOverlay:Destroy()self.
+fromOffset(150,44),Size=UDim2.new(1,-150,1,-44)})self.Content.Parent=main self.
+Cleanup:Add(draggable(topbar,main))self.Cleanup:Add(draggable(openButton,
+openButton))local resizeHandle=create('TextButton',{Name='ResizeHandle',
+AnchorPoint=Vector2.new(1,1),AutoButtonColor=false,BackgroundTransparency=1,
+Position=UDim2.new(1,-4,1,-4),Size=UDim2.fromOffset(22,22),Text='',ZIndex=30})
+resizeHandle.Parent=main self.Cleanup:Add(resizable(resizeHandle,main,self.
+MinSize))self.Cleanup:Add(hide.MouseButton1Click:Connect(function()self:Toggle(
+false)end))self.Cleanup:Add(openButton.MouseButton1Click:Connect(function()self:
+Toggle(true)end))self.Cleanup:Add(close.MouseButton1Click:Connect(function()self
+:Destroy()end))self.ToggleConnection=self.Cleanup:Add(game:GetService(
+'UserInputService').InputBegan:Connect(function(input,processed)if not processed
+and input.KeyCode==self.ToggleKey then self:Toggle()end end))return self end
+function Window:Toggle(state)if self.Destroyed then return false end if state==
+nil then state=not self.Main.Visible end local changed=self.Main.Visible~=state
+self.Main.Visible=state if self.OpenButton then self.OpenButton.Visible=not
+state end if changed then if state then self.Signals.Open:Fire(self)else self.
+Signals.Close:Fire(self)end end return true end function Window:Open()return
+self:Toggle(true)end function Window:Close()return self:Toggle(false)end
+function Window:OnOpen(callback)return self.Signals.Open:Connect(callback)end
+function Window:OnClose(callback)return self.Signals.Close:Connect(callback)end
+function Window:OnDestroy(callback)return self.Signals.Destroy:Connect(callback)
+end function Window:Destroy()if self.Destroyed then return false end if self.
+Main and self.Main.Visible then self.Signals.Close:Fire(self)end self.Destroyed=
+true self.Signals.Destroy:Fire(self)self.Cleanup:Destroy()self.ToggleConnection=
+nil if self.Library and self.Library.Windows then local index=table.find(self.
+Library.Windows,self)if index then table.remove(self.Library.Windows,index)end
+end if self.DropdownOverlay then self.DropdownOverlay:Destroy()self.
 DropdownOverlay=nil end if self.Gui then self.Gui:Destroy()end self.Signals.Open
 :Clear()self.Signals.Close:Clear()self.Signals.Destroy:Clear()return true end
 function Window:SetToggleKey(key)self.ToggleKey=typeof(key)=='string'and Enum.
@@ -1645,63 +1670,65 @@ KeyCode[key]or key end function Window:SetTheme(theme)if Theme:Set(theme)then if
 self.Library and self.Library.Windows then for _,window in ipairs(self.Library.
 Windows)do if window.RefreshThemeState then window:RefreshThemeState()end end
 else self:RefreshThemeState()end return true end return false end function
-Window:SetAcrylic(value)self.Acrylic=value==true Theme:SetAcrylic(self.Acrylic)
-return true end function Window:RefreshThemeState()if self.SelectedTab then self
-:SelectTab(self.SelectedTab)end end function Window:SelectTab(target)local tab=
-typeof(target)=='number'and self.Tabs[target]or target if not tab then return
-end for _,tabItem in ipairs(self.Tabs)do local item=self.TabObjects[tabItem]
-local selected=tabItem==tab local iconColor=selected and Theme:Get('Accent')or
-Theme:Get('Muted')local textColor=selected and Theme:Get('Text')or Theme:Get(
-'Muted')if item and typeof(item.Page)=='Instance'then item.Page.Visible=selected
-end if item and typeof(item.SidebarButton)=='Instance'then item.SidebarButton.
-BackgroundTransparency=selected and 0 or 1 end if item and typeof(item.Icon)==
-'Instance'and tabItem.IconThemed then item.Icon.ImageColor3=iconColor end if
-item and typeof(item.Label)=='Instance'then item.Label.TextColor3=textColor end
-end self.SelectedTab=tab end function Window:ShowDropdown(dropdown)if self.
-DropdownOverlay then self.DropdownOverlay:Destroy()self.DropdownOverlay=nil end
-local values=dropdown.Values or{}local itemHeight=30 local searchHeight=dropdown
-.Search~=false and 34 or 0 local listHeight=math.min(math.max(#values,1)*
-itemHeight,180)local panelHeight=58+searchHeight+listHeight local overlay=
-create('TextButton',{Name='DropdownOverlay',AutoButtonColor=false,
-BackgroundTransparency=0.45,Size=UDim2.fromScale(1,1),Text='',ZIndex=60})Theme:
-Bind(overlay,'BackgroundColor3','Background')overlay.Parent=self.Main self.
-DropdownOverlay=overlay local panel=create('Frame',{Name='Panel',AnchorPoint=
-Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=UDim2.fromOffset(330
-,panelHeight),ZIndex=61,Children={create('UICorner',{CornerRadius=UDim.new(0,9)}
-),create('UIStroke',{Thickness=1}),create('TextLabel',{Name='Title',
-BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
-fromOffset(14,10),Size=UDim2.new(1,-56,0,26),Text=dropdown.Title or'Dropdown',
-TextSize=15,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=62}),create(
-'ImageButton',{Name='Close',AnchorPoint=Vector2.new(1,0),AutoButtonColor=false,
-BackgroundTransparency=1,Image=Icons.Resolve('x'),Position=UDim2.new(1,-10,0,8),
-Size=UDim2.fromOffset(18,18),ZIndex=62})}})Theme:Bind(panel,'BackgroundColor3',
-'Surface')Theme:BindAcrylic(panel,'BackgroundTransparency',0,0.18)Theme:Bind(
-panel.UIStroke,'Color','Stroke')Theme:Bind(panel.Title,'TextColor3','Text')Theme
-:Bind(panel.Close,'ImageColor3','Muted')Acrylic.Apply(panel,UDim.new(0,9))panel.
-Parent=overlay local searchBox if dropdown.Search~=false then searchBox=create(
-'TextBox',{Name='Search',BackgroundTransparency=0,ClearTextOnFocus=false,Font=
-Enum.Font.Gotham,PlaceholderText='Search...',Position=UDim2.fromOffset(10,44),
-Size=UDim2.new(1,-20,0,28),Text='',TextSize=13,TextXAlignment=Enum.
-TextXAlignment.Left,ZIndex=62,Children={create('UICorner',{CornerRadius=UDim.
-new(0,6)}),create('UIStroke',{Thickness=1}),create('UIPadding',{PaddingLeft=UDim
-.new(0,9),PaddingRight=UDim.new(0,9)})}})Theme:Bind(searchBox,'BackgroundColor3'
-,'SurfaceAlt')Theme:BindAcrylic(searchBox,'BackgroundTransparency',0,0.2)Theme:
-Bind(searchBox,'TextColor3','Text')Theme:Bind(searchBox,'PlaceholderColor3',
-'Muted')Theme:Bind(searchBox.UIStroke,'Color','Stroke')searchBox.Parent=panel
-end local list=create('ScrollingFrame',{Name='List',AutomaticCanvasSize=Enum.
-AutomaticSize.Y,BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.new(
-),Position=UDim2.fromOffset(10,46+searchHeight),ScrollingDirection=Enum.
-ScrollingDirection.Y,ScrollBarThickness=3,Size=UDim2.new(1,-20,0,listHeight),
-ZIndex=62,Children={create('UIListLayout',{Padding=UDim.new(0,5),SortOrder=Enum.
-SortOrder.LayoutOrder}),create('UIPadding',{PaddingBottom=UDim.new(0,2),
-PaddingLeft=UDim.new(0,2),PaddingRight=UDim.new(0,6),PaddingTop=UDim.new(0,2)})}
-})list.Parent=panel local function close()if self.DropdownOverlay then self.
-DropdownOverlay:Destroy()self.DropdownOverlay=nil end end panel.Close.
-MouseButton1Click:Connect(close)overlay.MouseButton1Click:Connect(close)local
-optionButtons={}local function isSelected(value)if dropdown.Multi then return
-typeof(dropdown.Value)=='table'and table.find(dropdown.Value,value)~=nil end
-return dropdown.Value==value end local function paintOption(option,selected)
-option.BackgroundColor3=Theme:Get(selected and'AccentSoft'or'SurfaceAlt')option.
+Window:SetAcrylic(value,intensity)self.Acrylic=value==true if intensity~=nil
+then self.AcrylicIntensity=intensity end Theme:SetAcrylic(self.Acrylic,self.
+AcrylicIntensity)return true end function Window:RefreshThemeState()if self.
+SelectedTab then self:SelectTab(self.SelectedTab)end end function Window:
+SelectTab(target)local tab=typeof(target)=='number'and self.Tabs[target]or
+target if not tab then return end for _,tabItem in ipairs(self.Tabs)do local
+item=self.TabObjects[tabItem]local selected=tabItem==tab local iconColor=
+selected and Theme:Get('Accent')or Theme:Get('Muted')local textColor=selected
+and Theme:Get('Text')or Theme:Get('Muted')if item and typeof(item.Page)==
+'Instance'then item.Page.Visible=selected end if item and typeof(item.
+SidebarButton)=='Instance'then item.SidebarButton.BackgroundTransparency=
+selected and 0 or 1 end if item and typeof(item.Icon)=='Instance'and tabItem.
+IconThemed then item.Icon.ImageColor3=iconColor end if item and typeof(item.
+Label)=='Instance'then item.Label.TextColor3=textColor end end self.SelectedTab=
+tab end function Window:ShowDropdown(dropdown)if self.DropdownOverlay then self.
+DropdownOverlay:Destroy()self.DropdownOverlay=nil end local values=dropdown.
+Values or{}local itemHeight=30 local searchHeight=dropdown.Search~=false and 34
+or 0 local listHeight=math.min(math.max(#values,1)*itemHeight,180)local
+panelHeight=58+searchHeight+listHeight local overlay=create('TextButton',{Name=
+'DropdownOverlay',AutoButtonColor=false,BackgroundTransparency=0.45,Size=UDim2.
+fromScale(1,1),Text='',ZIndex=60})Theme:Bind(overlay,'BackgroundColor3',
+'Background')overlay.Parent=self.Main self.DropdownOverlay=overlay local panel=
+create('Frame',{Name='Panel',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.
+fromScale(0.5,0.5),Size=UDim2.fromOffset(330,panelHeight),ZIndex=61,Children={
+create('UICorner',{CornerRadius=UDim.new(0,9)}),create('UIStroke',{Thickness=1})
+,create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+GothamSemibold,Position=UDim2.fromOffset(14,10),Size=UDim2.new(1,-56,0,26),Text=
+dropdown.Title or'Dropdown',TextSize=15,TextXAlignment=Enum.TextXAlignment.Left,
+ZIndex=62}),create('ImageButton',{Name='Close',AnchorPoint=Vector2.new(1,0),
+AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve('x'),Position
+=UDim2.new(1,-10,0,8),Size=UDim2.fromOffset(18,18),ZIndex=62})}})Theme:Bind(
+panel,'BackgroundColor3','Surface')Theme:BindAcrylic(panel,
+'BackgroundTransparency',0,0.18)Theme:Bind(panel.UIStroke,'Color','Stroke')Theme
+:Bind(panel.Title,'TextColor3','Text')Theme:Bind(panel.Close,'ImageColor3',
+'Muted')Acrylic.Apply(panel,UDim.new(0,9))panel.Parent=overlay local searchBox
+if dropdown.Search~=false then searchBox=create('TextBox',{Name='Search',
+BackgroundTransparency=0,ClearTextOnFocus=false,Font=Enum.Font.Gotham,
+PlaceholderText='Search...',Position=UDim2.fromOffset(10,44),Size=UDim2.new(1,-
+20,0,28),Text='',TextSize=13,TextXAlignment=Enum.TextXAlignment.Left,ZIndex=62,
+Children={create('UICorner',{CornerRadius=UDim.new(0,6)}),create('UIStroke',{
+Thickness=1}),create('UIPadding',{PaddingLeft=UDim.new(0,9),PaddingRight=UDim.
+new(0,9)})}})Theme:Bind(searchBox,'BackgroundColor3','SurfaceAlt')Theme:
+BindAcrylic(searchBox,'BackgroundTransparency',0,0.2)Theme:Bind(searchBox,
+'TextColor3','Text')Theme:Bind(searchBox,'PlaceholderColor3','Muted')Theme:Bind(
+searchBox.UIStroke,'Color','Stroke')searchBox.Parent=panel end local list=
+create('ScrollingFrame',{Name='List',AutomaticCanvasSize=Enum.AutomaticSize.Y,
+BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2
+.fromOffset(10,46+searchHeight),ScrollingDirection=Enum.ScrollingDirection.Y,
+ScrollBarThickness=3,Size=UDim2.new(1,-20,0,listHeight),ZIndex=62,Children={
+create('UIListLayout',{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.
+LayoutOrder}),create('UIPadding',{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.
+new(0,2),PaddingRight=UDim.new(0,6),PaddingTop=UDim.new(0,2)})}})list.Parent=
+panel local function close()if self.DropdownOverlay then self.DropdownOverlay:
+Destroy()self.DropdownOverlay=nil end end panel.Close.MouseButton1Click:Connect(
+close)overlay.MouseButton1Click:Connect(close)local optionButtons={}
+local function isSelected(value)if dropdown.Multi then return typeof(dropdown.
+Value)=='table'and table.find(dropdown.Value,value)~=nil end return dropdown.
+Value==value end local function paintOption(option,selected)option.
+BackgroundColor3=Theme:Get(selected and'AccentSoft'or'SurfaceAlt')option.
 TextColor3=Theme:Get(selected and'Accent'or'Text')end local function
 refreshOptions()for value,option in pairs(optionButtons)do paintOption(option,
 isSelected(value))end end local function filterOptions(text)local query=string.
@@ -1833,12 +1860,12 @@ Position=UDim2.new(1,-16-((#buttons-index+1)*90),1,-44),Size=UDim2.fromOffset(82
 index==#buttons and'Accent'or'SurfaceAlt')Theme:Bind(btn,'TextColor3','Text')btn
 .Parent=box btn.MouseButton1Click:Connect(function()if info.Callback then info.
 Callback()end overlay:Destroy()end)end end function Window:Notify(data)return
-self.Library:Notify(data)end return Window end function __KAZGUI_MODULES.i():
-typeof(__modImpl())local v=__KAZGUI_MODULES.cache.i if not v then v={c=
-__modImpl()}__KAZGUI_MODULES.cache.i=v end return v.c end end end local create=
+self.Library:Notify(data)end return Window end function __KAZGUI_MODULES.j():
+typeof(__modImpl())local v=__KAZGUI_MODULES.cache.j if not v then v={c=
+__modImpl()}__KAZGUI_MODULES.cache.j=v end return v.c end end end local create=
 __KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Window=
-__KAZGUI_MODULES.i()local Icons=__KAZGUI_MODULES.d()local Acrylic=
-__KAZGUI_MODULES.f()local tween=__KAZGUI_MODULES.g()local KazGui={Version=
+__KAZGUI_MODULES.j()local Icons=__KAZGUI_MODULES.d()local Acrylic=
+__KAZGUI_MODULES.f()local tween=__KAZGUI_MODULES.h()local KazGui={Version=
 '0.1.0',Themes=Theme.Palettes,Windows={}}function KazGui:SetTheme(theme)local
 applied=Theme:Set(theme)if not applied then return false end for _,window in
 ipairs(self.Windows)do if window.RefreshThemeState then window:

@@ -10,6 +10,7 @@ local Window = KazGui:CreateWindow({
 	OpenButtonIconThemed = false,
 	Theme = "Midnight",
 	Acrylic = true,
+	AcrylicIntensity = 0.9,
 	Size = UDim2.fromOffset(640, 420),
 	MinSize = Vector2.new(480, 320),
 	ToggleKey = Enum.KeyCode.RightShift,
@@ -299,7 +300,7 @@ Appearance:Toggle({
 	Desc = "Enable or disable acrylic styling for the whole window.",
 	Default = true,
 	Callback = function(value)
-		Window:SetAcrylic(value)
+		Window:SetAcrylic(value, 0.9)
 	end,
 })
 
