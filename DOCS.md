@@ -293,19 +293,6 @@ Parameters:
 | --- | --- | --- |
 | `target` | `number` / `Tab` | Tab index or tab object returned by `Window:Tab()`. |
 
-### `Window:Divider()`
-
-Adds a thin divider line to the sidebar.
-
-```lua
-Window:Divider()
-Window:Divider({
-	ColorKey = "Stroke",
-	Thickness = 1,
-	Transparency = 0,
-})
-```
-
 ### `Window:Dialog(data)`
 
 Shows a modal dialog inside the window.

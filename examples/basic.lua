@@ -45,8 +45,6 @@ local Settings = Window:Tab({
 	Icon = "settings-2",
 })
 
-Window:Divider()
-
 Main:Label({
 	Title = "Dashboard",
 	Desc = "Direct tab label without a section.",
