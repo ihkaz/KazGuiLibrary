@@ -1302,13 +1302,11 @@ create('TextLabel',{Name='Description',BackgroundTransparency=1,Font=Enum.Font.
 Gotham,Position=UDim2.fromOffset(14,31),Size=UDim2.new(1,-28,0,18),Text=desc or
 '',TextSize=12,TextXAlignment=Enum.TextXAlignment.Left,Visible=desc~=nil and
 desc~=''})}})Theme:Bind(card.Title,'TextColor3','Text')Theme:Bind(card.
-Description,'TextColor3','Muted')bindCard(card)card.MouseEnter:Connect(function(
-)tween(card.UIStroke,{Color=Theme:Get('Accent')})end)card.MouseLeave:Connect(
-function()tween(card.UIStroke,{Color=Theme:Get('Stroke')})end)return card end
-function Controls.Label(parent,data)data=data or{}local state={Title=data.Title
-or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,IconThemed=
-data.IconThemed~=false}local hasIcon=state.WithIcon and state.Icon~=nil and
-state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=create('Frame',{
+Description,'TextColor3','Muted')bindCard(card)return card end function Controls
+.Label(parent,data)data=data or{}local state={Title=data.Title or'Label',Desc=
+data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,IconThemed=data.IconThemed
+~=false}local hasIcon=state.WithIcon and state.Icon~=nil and state.Icon~=''local
+textOffset=hasIcon and 26 or 2 local label=create('Frame',{
 BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc~=''and
 44 or 26),Children={create('ImageLabel',{Name='Icon',BackgroundTransparency=1,
 Image=hasIcon and Icons.Resolve(state.Icon)or'',Position=UDim2.fromOffset(2,3),
