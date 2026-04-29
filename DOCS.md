@@ -28,7 +28,6 @@ local Window = KazGui:CreateWindow({
 	Theme = "Midnight",
 	Acrylic = true,
 	AcrylicIntensity = 0.9,
-	AcrylicBlur = false,
 	Size = UDim2.fromOffset(620, 390),
 	MinSize = Vector2.new(460, 300),
 	ToggleKey = Enum.KeyCode.RightShift,
@@ -107,9 +106,8 @@ Parameters:
 | `OpenButtonIconColorKey` | `string` | `"Accent"` | Theme key used for the open button icon. |
 | `OpenIcon` | `string` / asset id | `Icon` | Alias for `OpenButtonIcon`. |
 | `Theme` | `string` / table | current theme | Initial theme for the library. |
-| `Acrylic` | `boolean` | `false` | Enables glass, highlight, and noise layers for the window surfaces and component cards. |
+| `Acrylic` | `boolean` | `false` | Enables acrylic styling for window surfaces and all component cards. |
 | `AcrylicIntensity` | `number` | `1` | Acrylic strength from `0` to `1`. |
-| `AcrylicBlur` | `boolean` | `false` | Enables Roblox global blur while the window is visible. This is off by default because Roblox blur is not clipped to the window. |
 | `Size` | `UDim2` | `UDim2.fromOffset(620, 390)` | Initial window size. |
 | `MinSize` | `Vector2` | `Vector2.new(460, 300)` | Minimum size for user resizing. |
 | `ToggleKey` | `Enum.KeyCode` | `Enum.KeyCode.RightShift` | Keyboard key used to hide or show the window. |
@@ -331,13 +329,12 @@ Window:SetTheme("Rose")
 
 Returns `true` when applied, otherwise `false`.
 
-### `Window:SetAcrylic(value, intensity, blur)`
+### `Window:SetAcrylic(value, intensity)`
 
-Enables or disables acrylic styling for the window and registered component surfaces. KazGui applies clean glass, highlight, and noise layers by default. Pass `true` as the third argument only when you want Roblox global blur while the window is visible.
+Enables or disables acrylic styling for the window and registered component surfaces.
 
 ```lua
 Window:SetAcrylic(true, 0.9)
-Window:SetAcrylic(true, 0.9, true)
 Window:SetAcrylic(false)
 ```
 

@@ -11,7 +11,6 @@ local Window = KazGui:CreateWindow({
 	Theme = "Midnight",
 	Acrylic = true,
 	AcrylicIntensity = 0.9,
-	AcrylicBlur = false,
 	Size = UDim2.fromOffset(640, 420),
 	MinSize = Vector2.new(480, 320),
 	ToggleKey = Enum.KeyCode.RightShift,
