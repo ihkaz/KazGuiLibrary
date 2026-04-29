@@ -1743,46 +1743,45 @@ BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,0,0,10)})}})Theme
 :Bind(topbar,'BackgroundColor3','Topbar')Theme:BindGradient(topbar,'Topbar')
 Theme:BindAcrylic(topbar,'BackgroundTransparency',0,0.12,self)Theme:Bind(topbar.
 CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar
-local brandIconWrap=create('Frame',{AnchorPoint=Vector2.new(0,0.5),
-BackgroundTransparency=0,Position=UDim2.new(0,12,0.5,0),Size=UDim2.fromOffset(30
-,30),Children={create('UICorner',{CornerRadius=UDim.new(0,8)})}})Theme:Bind(
-brandIconWrap,'BackgroundColor3','AccentSoft')Theme:BindGradient(brandIconWrap,
-'AccentSoft')brandIconWrap.Parent=topbar local brandIcon=create('ImageLabel',{
-AnchorPoint=Vector2.new(0.5,0.5),BackgroundTransparency=1,Image=Icons.Resolve(
-self.Icon),ImageColor3=data.IconColor or DEFAULT_ICON_COLOR,Position=UDim2.
-fromScale(0.5,0.5),Size=toIconSize(self.IconSize,18)})if self.IconThemed then
-Theme:Bind(brandIcon,'ImageColor3',data.IconColorKey or'Accent')end brandIcon.
-Parent=brandIconWrap local title=create('TextLabel',{BackgroundTransparency=1,
-Font=Enum.Font.GothamBold,Position=UDim2.fromOffset(52,8),Size=UDim2.new(1,-150,
-0,19),Text=self.Title,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=15,
-TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(title,'TextColor3','Text')
-title.Parent=topbar local version=create('TextLabel',{BackgroundTransparency=1,
-Font=Enum.Font.GothamMedium,Position=UDim2.fromOffset(52,27),Size=UDim2.new(1,-
-150,0,15),Text=self.Author,TextTruncate=Enum.TextTruncate.AtEnd,TextSize=11,
-TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(version,'TextColor3','Muted'
-)version.Parent=topbar local close=create('ImageButton',{AnchorPoint=Vector2.
-new(1,0.5),AutoButtonColor=false,BackgroundTransparency=0,Image=Icons.Resolve(
-'x'),Position=UDim2.new(1,-12,0.5,0),Size=UDim2.fromOffset(28,28),Children={
-create('UICorner',{CornerRadius=UDim.new(0,7)})}})Theme:Bind(close,
-'BackgroundColor3','SurfaceAlt')Theme:Bind(close,'ImageColor3','Muted')close.
-Parent=topbar local hide=create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),
-AutoButtonColor=false,BackgroundTransparency=0,Image=Icons.Resolve('minus'),
+local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=data.
+IconColor or DEFAULT_ICON_COLOR,Position=UDim2.new(0,14,0.5,0),Size=toIconSize(
+self.IconSize,18)})if self.IconThemed then Theme:Bind(brandIcon,'ImageColor3',
+data.IconColorKey or'Accent')end brandIcon.Parent=topbar local title=create(
+'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamBold,Position=UDim2.
+fromOffset(44,8),Size=UDim2.new(1,-142,0,19),Text=self.Title,TextTruncate=Enum.
+TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.TextXAlignment.Left})Theme:
+Bind(title,'TextColor3','Text')title.Parent=topbar local version=create(
+'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2
+.fromOffset(44,27),Size=UDim2.new(1,-142,0,15),Text=self.Author,TextTruncate=
+Enum.TextTruncate.AtEnd,TextSize=11,TextXAlignment=Enum.TextXAlignment.Left})
+Theme:Bind(version,'TextColor3','Muted')version.Parent=topbar local close=
+create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,
+BackgroundTransparency=1,Image=Icons.Resolve('x'),Position=UDim2.new(1,-12,0.5,0
+),Size=UDim2.fromOffset(28,28),Children={create('UICorner',{CornerRadius=UDim.
+new(0,7)}),create('UIStroke',{Thickness=1,Transparency=0.45})}})Theme:Bind(close
+.UIStroke,'Color','Stroke')Theme:Bind(close,'ImageColor3','Muted')close.Parent=
+topbar local hide=create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),
+AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve('minus'),
 Position=UDim2.new(1,-48,0.5,0),Size=UDim2.fromOffset(28,28),Children={create(
-'UICorner',{CornerRadius=UDim.new(0,7)})}})Theme:Bind(hide,'BackgroundColor3',
-'SurfaceAlt')Theme:Bind(hide,'ImageColor3','Muted')hide.Parent=topbar
-local function bindTopbarAction(button)self.Cleanup:Add(button.MouseEnter:
-Connect(function()tween(button,{BackgroundColor3=Theme:Get('AccentSoft')},0.12)
-tween(button,{ImageColor3=Theme:Get('Text')},0.12)end))self.Cleanup:Add(button.
-MouseLeave:Connect(function()tween(button,{BackgroundColor3=Theme:Get(
-'SurfaceAlt')},0.12)tween(button,{ImageColor3=Theme:Get('Muted')},0.12)end))self
-.Cleanup:Add(button.MouseButton1Down:Connect(function()tween(button,{Size=UDim2.
-fromOffset(26,26)},0.08)end))self.Cleanup:Add(button.MouseButton1Up:Connect(
-function()tween(button,{Size=UDim2.fromOffset(28,28)},0.08)end))end
-bindTopbarAction(hide)bindTopbarAction(close)self.Sidebar=create('Frame',{Name=
-'Sidebar',BackgroundTransparency=0,Position=UDim2.fromOffset(0,50),Size=UDim2.
-new(0,150,1,-50),Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),
-create('Frame',{Name='AntiCornerTop',BorderSizePixel=0,Size=UDim2.new(1,0,0,10)}
-),create('Frame',{Name='AntiCornerRight',AnchorPoint=Vector2.new(1,0),
+'UICorner',{CornerRadius=UDim.new(0,7)}),create('UIStroke',{Thickness=1,
+Transparency=0.45})}})Theme:Bind(hide.UIStroke,'Color','Stroke')Theme:Bind(hide,
+'ImageColor3','Muted')hide.Parent=topbar local function bindTopbarAction(button)
+self.Cleanup:Add(button.MouseEnter:Connect(function()tween(button.UIStroke,{
+Color=Theme:Get('Accent'),Transparency=0.15},0.12)tween(button,{ImageColor3=
+Theme:Get('Text')},0.12)end))self.Cleanup:Add(button.MouseLeave:Connect(function
+()tween(button.UIStroke,{Color=Theme:Get('Stroke'),Transparency=0.45},0.12)
+tween(button,{ImageColor3=Theme:Get('Muted')},0.12)tween(button,{Size=UDim2.
+fromOffset(28,28)},0.08)end))self.Cleanup:Add(button.MouseButton1Down:Connect(
+function()tween(button,{Size=UDim2.fromOffset(26,26)},0.08)tween(button.UIStroke
+,{Color=Theme:Get('Accent'),Transparency=0},0.08)end))self.Cleanup:Add(button.
+MouseButton1Up:Connect(function()tween(button,{Size=UDim2.fromOffset(28,28)},
+0.08)tween(button.UIStroke,{Color=Theme:Get('Accent'),Transparency=0.15},0.08)
+end))end bindTopbarAction(hide)bindTopbarAction(close)self.Sidebar=create(
+'Frame',{Name='Sidebar',BackgroundTransparency=0,Position=UDim2.fromOffset(0,50)
+,Size=UDim2.new(0,150,1,-50),Children={create('UICorner',{CornerRadius=UDim.new(
+0,10)}),create('Frame',{Name='AntiCornerTop',BorderSizePixel=0,Size=UDim2.new(1,
+0,0,10)}),create('Frame',{Name='AntiCornerRight',AnchorPoint=Vector2.new(1,0),
 BorderSizePixel=0,Position=UDim2.new(1,0,0,0),Size=UDim2.new(0,10,1,0)})}})Theme
 :Bind(self.Sidebar,'BackgroundColor3','Sidebar')Theme:BindGradient(self.Sidebar,
 'Sidebar')Theme:BindAcrylic(self.Sidebar,'BackgroundTransparency',0,0.18,self)
