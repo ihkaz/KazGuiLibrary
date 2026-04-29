@@ -1600,21 +1600,21 @@ Cleanup.new()local state={Title=data.Title or'Input',Desc=data.Desc,Text=config
 and config:Get(data.Title or'Input',data.Default or data.Value or'')or data.
 Default or data.Value or'',Placeholder=data.Placeholder or'',Locked=data.Locked
 or false,Callback=data.Callback or function()end}local card=makeCard(state.Title
-,state.Desc,cleaner,owner)card.Size=UDim2.new(1,0,0,82)card.Parent=parent card.
+,state.Desc,cleaner,owner)card.Size=UDim2.new(1,0,0,84)card.Parent=parent card.
 Name=state.Title local box=create('TextBox',{BackgroundTransparency=0,
-ClearTextOnFocus=data.ClearTextOnFocus or false,Font=Enum.Font.Gotham,
-PlaceholderText=state.Placeholder,Position=UDim2.new(0,14,1,-34),Size=UDim2.new(
-1,-28,0,25),Text=state.Text,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left,
+ClearTextOnFocus=data.ClearTextOnFocus or false,Font=Enum.Font.GothamMedium,
+PlaceholderText=state.Placeholder,Position=UDim2.new(0,14,1,-36),Size=UDim2.new(
+1,-28,0,28),Text=state.Text,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left,
 Children={create('UICorner',{CornerRadius=UDim.new(0,6)}),create('UIStroke',{
-Thickness=1}),create('UIPadding',{PaddingLeft=UDim.new(0,8),PaddingRight=UDim.
-new(0,8)})}})Theme:Bind(box,'BackgroundColor3','SurfaceAlt')Theme:BindGradient(
+Thickness=1}),create('UIPadding',{PaddingLeft=UDim.new(0,10),PaddingRight=UDim.
+new(0,10)})}})Theme:Bind(box,'BackgroundColor3','SurfaceAlt')Theme:BindGradient(
 box,'SurfaceAlt')Theme:BindAcrylic(box,'BackgroundTransparency',0,0.2,owner)
 Theme:Bind(box,'TextColor3','Text')Theme:Bind(box,'PlaceholderColor3','Muted')
 Theme:Bind(box.UIStroke,'Color','Stroke')box.Parent=card cleaner:Add(box.
 FocusLost:Connect(function()state:Set(box.Text)end))function state:Set(text)self
 .Text=text box.Text=text if config then config:Set(self.Title,self.Text)end self
 .Callback(self.Text)end function state:SetTitle(text)self.Title=text card.Title.
-Text=text end function state:SetDesc(text)setCardDesc(card,text,82,82)end
+Text=text end function state:SetDesc(text)setCardDesc(card,text,84,84)end
 function state:SetPlaceholder(text)box.PlaceholderText=text end function state:
 Lock()self.Locked=true box.TextEditable=false end function state:Unlock()self.
 Locked=false box.TextEditable=true end function state:Destroy()cleaner:Destroy()
@@ -1870,37 +1870,39 @@ panel,'BackgroundColor3','Surface')Theme:BindGradient(panel,'Surface')Theme:
 BindAcrylic(panel,'BackgroundTransparency',0,0.18,self)Theme:Bind(panel.UIStroke
 ,'Color','Stroke')Theme:Bind(panel.Title,'TextColor3','Text')Theme:Bind(panel.
 Close,'ImageColor3','Muted')Acrylic.Apply(panel,UDim.new(0,9),self)panel.Parent=
-overlay local searchBox if dropdown.Search~=false then searchBox=create(
-'TextBox',{Name='Search',BackgroundTransparency=0,ClearTextOnFocus=false,Font=
-Enum.Font.Gotham,PlaceholderText='Search...',Position=UDim2.fromOffset(10,43),
-Size=UDim2.new(1,-20,0,30),Text='',TextSize=13,TextXAlignment=Enum.
-TextXAlignment.Left,ZIndex=62,Children={create('UICorner',{CornerRadius=UDim.
-new(0,6)}),create('UIStroke',{Thickness=1}),create('UIPadding',{PaddingLeft=UDim
-.new(0,9),PaddingRight=UDim.new(0,28)})}})Theme:Bind(searchBox,
-'BackgroundColor3','SurfaceAlt')Theme:BindGradient(searchBox,'SurfaceAlt')Theme:
-BindAcrylic(searchBox,'BackgroundTransparency',0,0.2,self)Theme:Bind(searchBox,
-'TextColor3','Text')Theme:Bind(searchBox,'PlaceholderColor3','Muted')Theme:Bind(
-searchBox.UIStroke,'Color','Stroke')searchBox.Parent=panel local searchIcon=
-create('ImageLabel',{AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=1,
-Image=Icons.Resolve('search'),Position=UDim2.new(1,-18,0.5,0),Size=UDim2.
-fromOffset(14,14),ZIndex=63})Theme:Bind(searchIcon,'ImageColor3','Muted')
-searchIcon.Parent=searchBox end local list=create('ScrollingFrame',{Name='List',
-AutomaticCanvasSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
-BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2.fromOffset(10,46+
-searchHeight),ScrollingDirection=Enum.ScrollingDirection.Y,ScrollBarThickness=3,
-Size=UDim2.new(1,-20,0,listHeight),ZIndex=62,Children={create('UIListLayout',{
-Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder}),create('UIPadding',
-{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.new(0,2),PaddingRight=UDim.new(0,6
-),PaddingTop=UDim.new(0,2)})}})list.Parent=panel local function close()if self.
-DropdownOverlay then if self.DropdownCleanup then self.DropdownCleanup:Destroy()
-self.DropdownCleanup=nil end self.DropdownOverlay:Destroy()self.DropdownOverlay=
-nil end end dropdownCleanup:Add(panel.Close.MouseButton1Click:Connect(close))
-dropdownCleanup:Add(overlay.MouseButton1Click:Connect(close))local optionButtons
-={}local function isSelected(value)if dropdown.Multi then return typeof(dropdown
-.Value)=='table'and table.find(dropdown.Value,value)~=nil end return dropdown.
-Value==value end local function paintOption(option,selected)local colorKey=
-selected and'AccentSoft'or'SurfaceAlt'option.BackgroundColor3=Theme:Get(colorKey
-)option.Label.TextColor3=Theme:Get(selected and'Accent'or'Text')option.Check.
+overlay local searchBox if dropdown.Search~=false then local searchFrame=create(
+'Frame',{Name='SearchFrame',BackgroundTransparency=0,Position=UDim2.fromOffset(
+10,43),Size=UDim2.new(1,-20,0,30),ZIndex=62,Children={create('UICorner',{
+CornerRadius=UDim.new(0,6)}),create('UIStroke',{Thickness=1})}})Theme:Bind(
+searchFrame,'BackgroundColor3','SurfaceAlt')Theme:BindGradient(searchFrame,
+'SurfaceAlt')Theme:BindAcrylic(searchFrame,'BackgroundTransparency',0,0.2,self)
+Theme:Bind(searchFrame.UIStroke,'Color','Stroke')searchFrame.Parent=panel local
+searchIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve('search'),Position=UDim2.new(0,10,
+0.5,0),Size=UDim2.fromOffset(14,14),ZIndex=63})Theme:Bind(searchIcon,
+'ImageColor3','Muted')searchIcon.Parent=searchFrame searchBox=create('TextBox',{
+Name='Search',BackgroundTransparency=1,ClearTextOnFocus=false,Font=Enum.Font.
+GothamMedium,PlaceholderText='Search options',Position=UDim2.fromOffset(30,0),
+Size=UDim2.new(1,-40,1,0),Text='',TextSize=13,TextXAlignment=Enum.TextXAlignment
+.Left,ZIndex=63})Theme:Bind(searchBox,'TextColor3','Text')Theme:Bind(searchBox,
+'PlaceholderColor3','Muted')searchBox.Parent=searchFrame end local list=create(
+'ScrollingFrame',{Name='List',AutomaticCanvasSize=Enum.AutomaticSize.Y,
+BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2
+.fromOffset(10,46+searchHeight),ScrollingDirection=Enum.ScrollingDirection.Y,
+ScrollBarThickness=3,Size=UDim2.new(1,-20,0,listHeight),ZIndex=62,Children={
+create('UIListLayout',{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.
+LayoutOrder}),create('UIPadding',{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.
+new(0,2),PaddingRight=UDim.new(0,6),PaddingTop=UDim.new(0,2)})}})list.Parent=
+panel local function close()if self.DropdownOverlay then if self.DropdownCleanup
+then self.DropdownCleanup:Destroy()self.DropdownCleanup=nil end self.
+DropdownOverlay:Destroy()self.DropdownOverlay=nil end end dropdownCleanup:Add(
+panel.Close.MouseButton1Click:Connect(close))dropdownCleanup:Add(overlay.
+MouseButton1Click:Connect(close))local optionButtons={}local function isSelected
+(value)if dropdown.Multi then return typeof(dropdown.Value)=='table'and table.
+find(dropdown.Value,value)~=nil end return dropdown.Value==value end
+local function paintOption(option,selected)local colorKey=selected and
+'AccentSoft'or'SurfaceAlt'option.BackgroundColor3=Theme:Get(colorKey)option.
+Label.TextColor3=Theme:Get(selected and'Accent'or'Text')option.Check.
 ImageTransparency=selected and 0 or 1 option.Indicator.BackgroundTransparency=
 selected and 0 or 1 Theme:SetGradientKey(option,colorKey)end local function
 refreshOptions()for value,option in pairs(optionButtons)do paintOption(option,
