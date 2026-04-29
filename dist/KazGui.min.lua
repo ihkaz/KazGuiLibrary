@@ -1851,8 +1851,8 @@ ShowDropdown(dropdown)if self.DropdownOverlay then if self.DropdownCleanup then
 self.DropdownCleanup:Destroy()self.DropdownCleanup=nil end self.DropdownOverlay:
 Destroy()self.DropdownOverlay=nil end local dropdownCleanup=Cleanup.new()self.
 DropdownCleanup=dropdownCleanup local values=dropdown.Values or{}local
-itemHeight=30 local searchHeight=dropdown.Search~=false and 34 or 0 local
-listHeight=math.min(math.max(#values,1)*itemHeight,180)local panelHeight=58+
+itemHeight=32 local searchHeight=dropdown.Search~=false and 38 or 0 local
+listHeight=math.min(math.max(#values,1)*itemHeight,192)local panelHeight=60+
 searchHeight+listHeight local overlay=create('TextButton',{Name=
 'DropdownOverlay',AutoButtonColor=false,BackgroundTransparency=0.45,Size=UDim2.
 fromScale(1,1),Text='',ZIndex=60})Theme:Bind(overlay,'BackgroundColor3',
@@ -1861,8 +1861,8 @@ create('Frame',{Name='Panel',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.
 fromScale(0.5,0.5),Size=UDim2.fromOffset(330,panelHeight),ZIndex=61,Children={
 create('UICorner',{CornerRadius=UDim.new(0,9)}),create('UIStroke',{Thickness=1})
 ,create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
-GothamSemibold,Position=UDim2.fromOffset(14,10),Size=UDim2.new(1,-56,0,26),Text=
-dropdown.Title or'Dropdown',TextSize=15,TextXAlignment=Enum.TextXAlignment.Left,
+GothamBold,Position=UDim2.fromOffset(14,10),Size=UDim2.new(1,-56,0,26),Text=
+dropdown.Title or'Dropdown',TextSize=14,TextXAlignment=Enum.TextXAlignment.Left,
 ZIndex=62}),create('ImageButton',{Name='Close',AnchorPoint=Vector2.new(1,0),
 AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve('x'),Position
 =UDim2.new(1,-10,0,8),Size=UDim2.fromOffset(18,18),ZIndex=62})}})Theme:Bind(
@@ -1872,65 +1872,80 @@ BindAcrylic(panel,'BackgroundTransparency',0,0.18,self)Theme:Bind(panel.UIStroke
 Close,'ImageColor3','Muted')Acrylic.Apply(panel,UDim.new(0,9),self)panel.Parent=
 overlay local searchBox if dropdown.Search~=false then searchBox=create(
 'TextBox',{Name='Search',BackgroundTransparency=0,ClearTextOnFocus=false,Font=
-Enum.Font.Gotham,PlaceholderText='Search...',Position=UDim2.fromOffset(10,44),
-Size=UDim2.new(1,-20,0,28),Text='',TextSize=13,TextXAlignment=Enum.
+Enum.Font.Gotham,PlaceholderText='Search...',Position=UDim2.fromOffset(10,43),
+Size=UDim2.new(1,-20,0,30),Text='',TextSize=13,TextXAlignment=Enum.
 TextXAlignment.Left,ZIndex=62,Children={create('UICorner',{CornerRadius=UDim.
 new(0,6)}),create('UIStroke',{Thickness=1}),create('UIPadding',{PaddingLeft=UDim
-.new(0,9),PaddingRight=UDim.new(0,9)})}})Theme:Bind(searchBox,'BackgroundColor3'
-,'SurfaceAlt')Theme:BindGradient(searchBox,'SurfaceAlt')Theme:BindAcrylic(
-searchBox,'BackgroundTransparency',0,0.2,self)Theme:Bind(searchBox,'TextColor3',
-'Text')Theme:Bind(searchBox,'PlaceholderColor3','Muted')Theme:Bind(searchBox.
-UIStroke,'Color','Stroke')searchBox.Parent=panel end local list=create(
-'ScrollingFrame',{Name='List',AutomaticCanvasSize=Enum.AutomaticSize.Y,
-BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2
-.fromOffset(10,46+searchHeight),ScrollingDirection=Enum.ScrollingDirection.Y,
-ScrollBarThickness=3,Size=UDim2.new(1,-20,0,listHeight),ZIndex=62,Children={
-create('UIListLayout',{Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.
-LayoutOrder}),create('UIPadding',{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.
-new(0,2),PaddingRight=UDim.new(0,6),PaddingTop=UDim.new(0,2)})}})list.Parent=
-panel local function close()if self.DropdownOverlay then if self.DropdownCleanup
-then self.DropdownCleanup:Destroy()self.DropdownCleanup=nil end self.
-DropdownOverlay:Destroy()self.DropdownOverlay=nil end end dropdownCleanup:Add(
-panel.Close.MouseButton1Click:Connect(close))dropdownCleanup:Add(overlay.
-MouseButton1Click:Connect(close))local optionButtons={}local function isSelected
-(value)if dropdown.Multi then return typeof(dropdown.Value)=='table'and table.
-find(dropdown.Value,value)~=nil end return dropdown.Value==value end
-local function paintOption(option,selected)local colorKey=selected and
-'AccentSoft'or'SurfaceAlt'option.BackgroundColor3=Theme:Get(colorKey)option.
-TextColor3=Theme:Get(selected and'Accent'or'Text')Theme:SetGradientKey(option,
-colorKey)end local function refreshOptions()for value,option in pairs(
-optionButtons)do paintOption(option,isSelected(value))end end local function
-filterOptions(text)local query=string.lower(text or'')for value,option in pairs(
-optionButtons)do option.Visible=query==''or string.find(string.lower(tostring(
-value)),query,1,true)~=nil end end if#values==0 then local empty=create(
-'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.Gotham,Size=UDim2.new(1,0,0
-,28),Text='No options',TextSize=13,ZIndex=63})Theme:Bind(empty,'TextColor3',
-'Muted')empty.Parent=list return end for _,value in ipairs(values)do local
-selected=isSelected(value)local option=create('TextButton',{AutoButtonColor=
-false,BackgroundTransparency=0,Font=Enum.Font.GothamMedium,Size=UDim2.new(1,0,0,
-28),Text=tostring(value),TextSize=13,ZIndex=63,Children={create('UICorner',{
-CornerRadius=UDim.new(0,6)})}})paintOption(option,selected)Theme:BindGradient(
-option,selected and'AccentSoft'or'SurfaceAlt')option.Parent=list optionButtons[
-value]=option dropdownCleanup:Add(option.MouseButton1Click:Connect(function()
-dropdown:Select(value)if dropdown.Multi then refreshOptions()else close()end end
-))end if searchBox then dropdownCleanup:Add(searchBox:GetPropertyChangedSignal(
-'Text'):Connect(function()filterOptions(searchBox.Text)end))end end function
-Window:Tab(data)data=data or{}local tab={Title=data.Title or'Tab',IconName=data.
-Icon or'circle',IconThemed=data.IconThemed~=false,Window=self}local button=
-create('TextButton',{AutoButtonColor=false,BackgroundTransparency=1,Size=UDim2.
-new(1,0,0,36),Text='',Children={create('UICorner',{CornerRadius=UDim.new(0,7)}),
-create('UIStroke',{Thickness=1,Transparency=1}),create('Frame',{Name='Indicator'
-,AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=1,BorderSizePixel=0,
-Position=UDim2.new(0,5,0.5,0),Size=UDim2.new(0,3,1,-18),Children={create(
-'UICorner',{CornerRadius=UDim.new(1,0)})}})}})Theme:Bind(button,
-'BackgroundColor3','AccentSoft')Theme:BindGradient(button,'AccentSoft')Theme:
-Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.Indicator,
-'BackgroundColor3','Accent')Theme:BindGradient(button.Indicator,'Accent')button.
-Parent=self.SidebarList local icon=create('ImageLabel',{BackgroundTransparency=1
-,Image=Icons.Resolve(tab.IconName),ImageColor3=data.IconColor or
-DEFAULT_ICON_COLOR,Position=UDim2.fromOffset(15,9),Size=UDim2.fromOffset(18,18)}
-)if tab.IconThemed then Theme:Bind(icon,'ImageColor3',data.IconColorKey or
-'Muted')end icon.Parent=button local label=create('TextLabel',{
+.new(0,9),PaddingRight=UDim.new(0,28)})}})Theme:Bind(searchBox,
+'BackgroundColor3','SurfaceAlt')Theme:BindGradient(searchBox,'SurfaceAlt')Theme:
+BindAcrylic(searchBox,'BackgroundTransparency',0,0.2,self)Theme:Bind(searchBox,
+'TextColor3','Text')Theme:Bind(searchBox,'PlaceholderColor3','Muted')Theme:Bind(
+searchBox.UIStroke,'Color','Stroke')searchBox.Parent=panel local searchIcon=
+create('ImageLabel',{AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=1,
+Image=Icons.Resolve('search'),Position=UDim2.new(1,-18,0.5,0),Size=UDim2.
+fromOffset(14,14),ZIndex=63})Theme:Bind(searchIcon,'ImageColor3','Muted')
+searchIcon.Parent=searchBox end local list=create('ScrollingFrame',{Name='List',
+AutomaticCanvasSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
+BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2.fromOffset(10,46+
+searchHeight),ScrollingDirection=Enum.ScrollingDirection.Y,ScrollBarThickness=3,
+Size=UDim2.new(1,-20,0,listHeight),ZIndex=62,Children={create('UIListLayout',{
+Padding=UDim.new(0,5),SortOrder=Enum.SortOrder.LayoutOrder}),create('UIPadding',
+{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.new(0,2),PaddingRight=UDim.new(0,6
+),PaddingTop=UDim.new(0,2)})}})list.Parent=panel local function close()if self.
+DropdownOverlay then if self.DropdownCleanup then self.DropdownCleanup:Destroy()
+self.DropdownCleanup=nil end self.DropdownOverlay:Destroy()self.DropdownOverlay=
+nil end end dropdownCleanup:Add(panel.Close.MouseButton1Click:Connect(close))
+dropdownCleanup:Add(overlay.MouseButton1Click:Connect(close))local optionButtons
+={}local function isSelected(value)if dropdown.Multi then return typeof(dropdown
+.Value)=='table'and table.find(dropdown.Value,value)~=nil end return dropdown.
+Value==value end local function paintOption(option,selected)local colorKey=
+selected and'AccentSoft'or'SurfaceAlt'option.BackgroundColor3=Theme:Get(colorKey
+)option.Label.TextColor3=Theme:Get(selected and'Accent'or'Text')option.Check.
+ImageTransparency=selected and 0 or 1 option.Indicator.BackgroundTransparency=
+selected and 0 or 1 Theme:SetGradientKey(option,colorKey)end local function
+refreshOptions()for value,option in pairs(optionButtons)do paintOption(option,
+isSelected(value))end end local function filterOptions(text)local query=string.
+lower(text or'')for value,option in pairs(optionButtons)do option.Visible=query
+==''or string.find(string.lower(tostring(value)),query,1,true)~=nil end end if#
+values==0 then local empty=create('TextLabel',{BackgroundTransparency=1,Font=
+Enum.Font.Gotham,Size=UDim2.new(1,0,0,28),Text='No options',TextSize=13,ZIndex=
+63})Theme:Bind(empty,'TextColor3','Muted')empty.Parent=list return end for _,
+value in ipairs(values)do local selected=isSelected(value)local option=create(
+'TextButton',{AutoButtonColor=false,BackgroundTransparency=0,Size=UDim2.new(1,0,
+0,30),Text='',ZIndex=63,Children={create('UICorner',{CornerRadius=UDim.new(0,6)}
+),create('Frame',{Name='Indicator',AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.new(0,7,0.5,0),Size=
+UDim2.new(0,3,1,-16),ZIndex=64,Children={create('UICorner',{CornerRadius=UDim.
+new(1,0)})}}),create('TextLabel',{Name='Label',BackgroundTransparency=1,Font=
+Enum.Font.GothamMedium,Position=UDim2.fromOffset(16,0),Size=UDim2.new(1,-48,1,0)
+,Text=tostring(value),TextSize=13,TextTruncate=Enum.TextTruncate.AtEnd,
+TextXAlignment=Enum.TextXAlignment.Left,ZIndex=64}),create('ImageLabel',{Name=
+'Check',AnchorPoint=Vector2.new(1,0.5),BackgroundTransparency=1,Image=Icons.
+Resolve(dropdown.Multi and'check'or'check'),ImageTransparency=1,Position=UDim2.
+new(1,-10,0.5,0),Size=UDim2.fromOffset(16,16),ZIndex=64})}})Theme:Bind(option.
+Indicator,'BackgroundColor3','Accent')Theme:BindGradient(option.Indicator,
+'Accent')Theme:Bind(option.Check,'ImageColor3','Accent')paintOption(option,
+selected)Theme:BindGradient(option,selected and'AccentSoft'or'SurfaceAlt')option
+.Parent=list optionButtons[value]=option dropdownCleanup:Add(option.
+MouseButton1Click:Connect(function()dropdown:Select(value)if dropdown.Multi then
+refreshOptions()else close()end end))end if searchBox then dropdownCleanup:Add(
+searchBox:GetPropertyChangedSignal('Text'):Connect(function()filterOptions(
+searchBox.Text)end))end end function Window:Tab(data)data=data or{}local tab={
+Title=data.Title or'Tab',IconName=data.Icon or'circle',IconThemed=data.
+IconThemed~=false,Window=self}local button=create('TextButton',{AutoButtonColor=
+false,BackgroundTransparency=1,Size=UDim2.new(1,0,0,36),Text='',Children={
+create('UICorner',{CornerRadius=UDim.new(0,7)}),create('UIStroke',{Thickness=1,
+Transparency=1}),create('Frame',{Name='Indicator',AnchorPoint=Vector2.new(0,0.5)
+,BackgroundTransparency=1,BorderSizePixel=0,Position=UDim2.new(0,5,0.5,0),Size=
+UDim2.new(0,3,1,-18),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}
+)}})Theme:Bind(button,'BackgroundColor3','AccentSoft')Theme:BindGradient(button,
+'AccentSoft')Theme:Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.
+Indicator,'BackgroundColor3','Accent')Theme:BindGradient(button.Indicator,
+'Accent')button.Parent=self.SidebarList local icon=create('ImageLabel',{
+BackgroundTransparency=1,Image=Icons.Resolve(tab.IconName),ImageColor3=data.
+IconColor or DEFAULT_ICON_COLOR,Position=UDim2.fromOffset(15,9),Size=UDim2.
+fromOffset(18,18)})if tab.IconThemed then Theme:Bind(icon,'ImageColor3',data.
+IconColorKey or'Muted')end icon.Parent=button local label=create('TextLabel',{
 BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
 fromOffset(41,0),Size=UDim2.new(1,-49,1,0),Text=tab.Title,TextSize=13,
 TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left})
