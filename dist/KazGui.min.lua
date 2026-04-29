@@ -1401,46 +1401,47 @@ Exploit end function __KAZGUI_MODULES.e():typeof(__modImpl())local v=
 __KAZGUI_MODULES.cache.e if not v then v={c=__modImpl()}__KAZGUI_MODULES.cache.e
 =v end return v.c end end do local function __modImpl()local create=
 __KAZGUI_MODULES.a()local Theme=__KAZGUI_MODULES.b()local Acrylic={}local
-NOISE_IMAGE='rbxassetid://9968344227'local GLASS_IMAGE=
-'rbxassetid://97324581055162'local BLUR_NAME='KazAcrylicBlur'local function
-getLighting()return game:GetService('Lighting')end local function getBlur(owner)
-if owner.KazAcrylicBlur and owner.KazAcrylicBlur.Parent then return owner.
-KazAcrylicBlur end local blur=Instance.new('BlurEffect')blur.Name=BLUR_NAME blur
-.Size=0 blur.Enabled=false blur.Parent=getLighting()owner.KazAcrylicBlur=blur if
-owner.Cleanup then owner.Cleanup:Add(blur)end return blur end local function
-acrylicEnabled(owner)if not owner then return Theme.Acrylic==true,Theme.
-AcrylicIntensity or 1 end return owner.Acrylic==true,typeof(owner.
+NOISE_IMAGE='rbxassetid://9968344227'local BLUR_NAME='KazAcrylicBlur'
+local function getLighting()return game:GetService('Lighting')end local function
+getBlur(owner)if owner.KazAcrylicBlur and owner.KazAcrylicBlur.Parent then
+return owner.KazAcrylicBlur end local blur=Instance.new('BlurEffect')blur.Name=
+BLUR_NAME blur.Size=0 blur.Enabled=false blur.Parent=getLighting()owner.
+KazAcrylicBlur=blur if owner.Cleanup then owner.Cleanup:Add(blur)end return blur
+end local function acrylicEnabled(owner)if not owner then return Theme.Acrylic==
+true,Theme.AcrylicIntensity or 1 end return owner.Acrylic==true,typeof(owner.
 AcrylicIntensity)=='number'and math.clamp(owner.AcrylicIntensity,0,1)or 1 end
 function Acrylic.RefreshWindow(owner,visible)if not owner then return end local
 enabled,intensity=acrylicEnabled(owner)if visible==false then enabled=false end
-local blur=getBlur(owner)blur.Enabled=enabled blur.Size=enabled and(12+(12*
-intensity))or 0 end function Acrylic.Apply(frame,cornerRadius,owner)local
-existing=frame:FindFirstChild('KazAcrylic')if existing then return existing end
-local layer=create('Frame',{Name='KazAcrylic',BackgroundTransparency=1,Size=
-UDim2.fromScale(1,1),ZIndex=0,Children={create('UICorner',{CornerRadius=
-cornerRadius or UDim.new(0,8)}),create('ImageLabel',{Name='Glass',
-BackgroundTransparency=1,Image=GLASS_IMAGE,ImageColor3=Color3.fromRGB(255,255,
-255),ImageTransparency=1,ScaleType=Enum.ScaleType.Stretch,Size=UDim2.fromScale(1
-,1),ZIndex=0,Children={create('UICorner',{CornerRadius=cornerRadius or UDim.new(
-0,8)})}}),create('ImageLabel',{Name='Noise',BackgroundTransparency=1,Image=
-NOISE_IMAGE,ImageColor3=Color3.fromRGB(255,255,255),ImageTransparency=1,
-ScaleType=Enum.ScaleType.Tile,TileSize=UDim2.fromOffset(96,96),Size=UDim2.
-fromScale(1,1),ZIndex=0,Children={create('UICorner',{CornerRadius=cornerRadius
-or UDim.new(0,8)})}})}})Theme:BindAcrylic(layer.Glass,'ImageTransparency',1,0.42
-,owner)Theme:BindAcrylic(layer.Noise,'ImageTransparency',1,0.72,owner)layer.
-Parent=frame return layer end return Acrylic end function __KAZGUI_MODULES.f():
-typeof(__modImpl())local v=__KAZGUI_MODULES.cache.f if not v then v={c=
-__modImpl()}__KAZGUI_MODULES.cache.f=v end return v.c end end do local function
-__modImpl()local Cleanup={}Cleanup.__index=Cleanup function Cleanup.new()return
-setmetatable({Tasks={},Destroyed=false},Cleanup)end function Cleanup:Add(task)if
-self.Destroyed then if typeof(task)=='RBXScriptConnection'then task:Disconnect()
-elseif typeof(task)=='Instance'then task:Destroy()elseif typeof(task)==
-'function'then task()elseif typeof(task)=='table'and task.Disconnect then task:
-Disconnect()elseif typeof(task)=='table'and task.Destroy then task:Destroy()end
-return task end table.insert(self.Tasks,task)return task end function Cleanup:
-Destroy()if self.Destroyed then return end self.Destroyed=true for index=#self.
-Tasks,1,-1 do local taskItem=self.Tasks[index]pcall(function()if typeof(taskItem
-)=='RBXScriptConnection'then taskItem:Disconnect()elseif typeof(taskItem)==
+local blur=getBlur(owner)blur.Enabled=enabled and owner.AcrylicBlur==true blur.
+Size=blur.Enabled and(4+(8*intensity))or 0 end function Acrylic.Apply(frame,
+cornerRadius,owner)local existing=frame:FindFirstChild('KazAcrylic')if existing
+then return existing end local layer=create('Frame',{Name='KazAcrylic',
+BackgroundTransparency=1,Size=UDim2.fromScale(1,1),ZIndex=0,Children={create(
+'UICorner',{CornerRadius=cornerRadius or UDim.new(0,8)}),create('ImageLabel',{
+Name='Glass',BackgroundColor3=Color3.fromRGB(255,255,255),BackgroundTransparency
+=1,Size=UDim2.fromScale(1,1),ZIndex=0,Children={create('UICorner',{CornerRadius=
+cornerRadius or UDim.new(0,8)}),create('UIGradient',{Rotation=35,Transparency=
+NumberSequence.new({NumberSequenceKeypoint.new(0,0.18),NumberSequenceKeypoint.
+new(0.45,0.92),NumberSequenceKeypoint.new(1,0.72)})})}}),create('ImageLabel',{
+Name='Noise',BackgroundTransparency=1,Image=NOISE_IMAGE,ImageColor3=Color3.
+fromRGB(255,255,255),ImageTransparency=1,ScaleType=Enum.ScaleType.Tile,TileSize=
+UDim2.fromOffset(96,96),Size=UDim2.fromScale(1,1),ZIndex=0,Children={create(
+'UICorner',{CornerRadius=cornerRadius or UDim.new(0,8)})}})}})Theme:BindAcrylic(
+layer.Glass,'BackgroundTransparency',1,0.88,owner)Theme:BindAcrylic(layer.Noise,
+'ImageTransparency',1,0.86,owner)layer.Parent=frame return layer end return
+Acrylic end function __KAZGUI_MODULES.f():typeof(__modImpl())local v=
+__KAZGUI_MODULES.cache.f if not v then v={c=__modImpl()}__KAZGUI_MODULES.cache.f
+=v end return v.c end end do local function __modImpl()local Cleanup={}Cleanup.
+__index=Cleanup function Cleanup.new()return setmetatable({Tasks={},Destroyed=
+false},Cleanup)end function Cleanup:Add(task)if self.Destroyed then if typeof(
+task)=='RBXScriptConnection'then task:Disconnect()elseif typeof(task)==
+'Instance'then task:Destroy()elseif typeof(task)=='function'then task()elseif
+typeof(task)=='table'and task.Disconnect then task:Disconnect()elseif typeof(
+task)=='table'and task.Destroy then task:Destroy()end return task end table.
+insert(self.Tasks,task)return task end function Cleanup:Destroy()if self.
+Destroyed then return end self.Destroyed=true for index=#self.Tasks,1,-1 do
+local taskItem=self.Tasks[index]pcall(function()if typeof(taskItem)==
+'RBXScriptConnection'then taskItem:Disconnect()elseif typeof(taskItem)==
 'Instance'then taskItem:Destroy()elseif typeof(taskItem)=='function'then
 taskItem()elseif typeof(taskItem)=='table'and taskItem.Disconnect then taskItem:
 Disconnect()elseif typeof(taskItem)=='table'and taskItem.Destroy then taskItem:
@@ -1789,39 +1790,40 @@ IconThemed~=false self.OpenButtonIcon=data.OpenButtonIcon or data.OpenIcon or(
 data.OpenButton and data.OpenButton.Icon)or self.Icon self.OpenButtonIconThemed=
 data.OpenButtonIconThemed~=false and not(data.OpenButton and data.OpenButton.
 IconThemed==false)self.Acrylic=data.Acrylic==true self.AcrylicIntensity=data.
-AcrylicIntensity or 1 self.Size=data.Size or UDim2.fromOffset(620,390)self.
-MinSize=data.MinSize or Vector2.new(460,300)self.ToggleKey=data.ToggleKey or
-Enum.KeyCode.RightShift self.AutoSave=data.AutoSave~=false self.Config=
-makeConfig(data.FileSaveName or(self.Title..'.json'),self.AutoSave)self.Tabs={}
-self.TabObjects={}self.SelectedTab=nil self.Destroyed=false self.Cleanup=Cleanup
-.new()self.Signals={Open=createSignal(),Close=createSignal(),Destroy=
-createSignal()}if data.OnOpen then self.Signals.Open:Connect(data.OnOpen)end if
-data.OnClose then self.Signals.Close:Connect(data.OnClose)end if data.OnDestroy
-then self.Signals.Destroy:Connect(data.OnDestroy)end if data.Theme then Theme:
-Set(data.Theme)end Theme:SetAcrylic(self.Acrylic,self.AcrylicIntensity,self)
-Acrylic.RefreshWindow(self)local gui=create('ScreenGui',{Name='KazGui',
-ResetOnSpawn=false,ZIndexBehavior=Enum.ZIndexBehavior.Sibling})Exploit.Protect(
-gui)self.Gui=gui local main=create('Frame',{AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),Size=self.Size,Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('UIStroke',{Thickness=1})}})Theme:Bind(main
-,'BackgroundColor3','Background')Theme:BindGradient(main,'Background')Theme:
-BindAcrylic(main,'BackgroundTransparency',0,0.1,self)Theme:Bind(main.UIStroke,
-'Color','Stroke')Acrylic.Apply(main,UDim.new(0,10),self)main.Parent=gui self.
-Main=main local openButton=create('ImageButton',{Name='OpenButton',AnchorPoint=
-Vector2.new(0,0.5),AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.
-Resolve(self.OpenButtonIcon),ImageColor3=data.OpenButtonIconColor or
-DEFAULT_ICON_COLOR,Position=UDim2.new(0,24,0.5,0),Size=UDim2.fromOffset(54,54),
-Visible=false})if self.OpenButtonIconThemed then Theme:Bind(openButton,
-'ImageColor3',data.OpenButtonIconColorKey or'Accent')end openButton.Parent=gui
-self.OpenButton=openButton local topbar=create('Frame',{Name='Topbar',
-BackgroundTransparency=0,Size=UDim2.new(1,0,0,50),Children={create('UICorner',{
-CornerRadius=UDim.new(0,10)}),create('Frame',{Name='CornerFix',AnchorPoint=
-Vector2.new(0,1),BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,
-0,0,10)})}})Theme:Bind(topbar,'BackgroundColor3','Topbar')Theme:BindGradient(
-topbar,'Topbar')Theme:BindAcrylic(topbar,'BackgroundTransparency',0,0.12,self)
-Theme:Bind(topbar.CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.
-Topbar=topbar local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5
-),BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=data.
+AcrylicIntensity or 1 self.AcrylicBlur=data.AcrylicBlur==true self.Size=data.
+Size or UDim2.fromOffset(620,390)self.MinSize=data.MinSize or Vector2.new(460,
+300)self.ToggleKey=data.ToggleKey or Enum.KeyCode.RightShift self.AutoSave=data.
+AutoSave~=false self.Config=makeConfig(data.FileSaveName or(self.Title..'.json')
+,self.AutoSave)self.Tabs={}self.TabObjects={}self.SelectedTab=nil self.Destroyed
+=false self.Cleanup=Cleanup.new()self.Signals={Open=createSignal(),Close=
+createSignal(),Destroy=createSignal()}if data.OnOpen then self.Signals.Open:
+Connect(data.OnOpen)end if data.OnClose then self.Signals.Close:Connect(data.
+OnClose)end if data.OnDestroy then self.Signals.Destroy:Connect(data.OnDestroy)
+end if data.Theme then Theme:Set(data.Theme)end Theme:SetAcrylic(self.Acrylic,
+self.AcrylicIntensity,self)Acrylic.RefreshWindow(self)local gui=create(
+'ScreenGui',{Name='KazGui',ResetOnSpawn=false,ZIndexBehavior=Enum.ZIndexBehavior
+.Sibling})Exploit.Protect(gui)self.Gui=gui local main=create('Frame',{
+AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.fromScale(0.5,0.5),Size=self.
+Size,Children={create('UICorner',{CornerRadius=UDim.new(0,10)}),create(
+'UIStroke',{Thickness=1})}})Theme:Bind(main,'BackgroundColor3','Background')
+Theme:BindGradient(main,'Background')Theme:BindAcrylic(main,
+'BackgroundTransparency',0,0.1,self)Theme:Bind(main.UIStroke,'Color','Stroke')
+Acrylic.Apply(main,UDim.new(0,10),self)main.Parent=gui self.Main=main local
+openButton=create('ImageButton',{Name='OpenButton',AnchorPoint=Vector2.new(0,0.5
+),AutoButtonColor=false,BackgroundTransparency=1,Image=Icons.Resolve(self.
+OpenButtonIcon),ImageColor3=data.OpenButtonIconColor or DEFAULT_ICON_COLOR,
+Position=UDim2.new(0,24,0.5,0),Size=UDim2.fromOffset(54,54),Visible=false})if
+self.OpenButtonIconThemed then Theme:Bind(openButton,'ImageColor3',data.
+OpenButtonIconColorKey or'Accent')end openButton.Parent=gui self.OpenButton=
+openButton local topbar=create('Frame',{Name='Topbar',BackgroundTransparency=0,
+Size=UDim2.new(1,0,0,50),Children={create('UICorner',{CornerRadius=UDim.new(0,10
+)}),create('Frame',{Name='CornerFix',AnchorPoint=Vector2.new(0,1),
+BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,0,0,10)})}})Theme
+:Bind(topbar,'BackgroundColor3','Topbar')Theme:BindGradient(topbar,'Topbar')
+Theme:BindAcrylic(topbar,'BackgroundTransparency',0,0.12,self)Theme:Bind(topbar.
+CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar
+local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=data.
 IconColor or DEFAULT_ICON_COLOR,Position=UDim2.new(0,14,0.5,0),Size=toIconSize(
 self.IconSize,18)})if self.IconThemed then Theme:Bind(brandIcon,'ImageColor3',
 data.IconColorKey or'Accent')end brandIcon.Parent=topbar local title=create(
@@ -1905,21 +1907,22 @@ ToggleKey=typeof(key)=='string'and Enum.KeyCode[key]or key end function Window:
 SetTheme(theme)if Theme:Set(theme)then if self.Library and self.Library.Windows
 then for _,window in ipairs(self.Library.Windows)do if window.RefreshThemeState
 then window:RefreshThemeState()end end else self:RefreshThemeState()end return
-true end return false end function Window:SetAcrylic(value,intensity)self.
+true end return false end function Window:SetAcrylic(value,intensity,blur)self.
 Acrylic=value==true if intensity~=nil then self.AcrylicIntensity=intensity end
-Theme:SetAcrylic(self.Acrylic,self.AcrylicIntensity,self)Acrylic.RefreshWindow(
-self,not self.Main or self.Main.Visible)return true end function Window:
-RefreshThemeState()if self.SelectedTab then self:SelectTab(self.SelectedTab)end
-end function Window:SelectTab(target)local tab=typeof(target)=='number'and self.
-Tabs[target]or target if not tab then return end for _,tabItem in ipairs(self.
-Tabs)do local item=self.TabObjects[tabItem]local selected=tabItem==tab local
-iconColor=selected and Theme:Get('Accent')or Theme:Get('Muted')local textColor=
-selected and Theme:Get('Text')or Theme:Get('Muted')if item and typeof(item.Page)
-=='Instance'then item.Page.Visible=selected end if item and typeof(item.
-SidebarButton)=='Instance'then local idleTransparency=item.Hovered and 0.72 or 1
-item.SidebarButton.BackgroundTransparency=selected and 0 or idleTransparency
-item.SidebarButton.UIStroke.Transparency=selected and 0.35 or(item.Hovered and
-0.72 or 1)end if item and typeof(item.Indicator)=='Instance'then item.Indicator.
+if blur~=nil then self.AcrylicBlur=blur==true end Theme:SetAcrylic(self.Acrylic,
+self.AcrylicIntensity,self)Acrylic.RefreshWindow(self,not self.Main or self.Main
+.Visible)return true end function Window:RefreshThemeState()if self.SelectedTab
+then self:SelectTab(self.SelectedTab)end end function Window:SelectTab(target)
+local tab=typeof(target)=='number'and self.Tabs[target]or target if not tab then
+return end for _,tabItem in ipairs(self.Tabs)do local item=self.TabObjects[
+tabItem]local selected=tabItem==tab local iconColor=selected and Theme:Get(
+'Accent')or Theme:Get('Muted')local textColor=selected and Theme:Get('Text')or
+Theme:Get('Muted')if item and typeof(item.Page)=='Instance'then item.Page.
+Visible=selected end if item and typeof(item.SidebarButton)=='Instance'then
+local idleTransparency=item.Hovered and 0.72 or 1 item.SidebarButton.
+BackgroundTransparency=selected and 0 or idleTransparency item.SidebarButton.
+UIStroke.Transparency=selected and 0.35 or(item.Hovered and 0.72 or 1)end if
+item and typeof(item.Indicator)=='Instance'then item.Indicator.
 BackgroundTransparency=selected and 0 or 1 item.Indicator.Size=selected and
 UDim2.new(0,3,1,-16)or UDim2.new(0,3,1,-22)end if item and typeof(item.Icon)==
 'Instance'and tabItem.IconThemed then item.Icon.ImageColor3=iconColor end if
