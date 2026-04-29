@@ -1391,13 +1391,14 @@ hasDesc=desc~=nil and desc~=''card.Description.Text=desc or''card.Description.
 Visible=hasDesc card.Size=UDim2.new(1,0,0,hasDesc and heightWithDesc or
 heightWithoutDesc)end local function setCardRightPadding(card,padding)card.Title
 .Size=UDim2.new(1,-padding,0,20)card.Description.Size=UDim2.new(1,-padding,0,18)
-end local function bindCard(card,owner)Theme:Bind(card,'BackgroundColor3',
-'Surface')Theme:BindGradient(card,'Surface')Theme:BindAcrylic(card,
-'BackgroundTransparency',0,0.22,owner)Theme:Bind(card.UIStroke,'Color','Stroke')
-Theme:Bind(card.AccentBar,'BackgroundColor3','Accent')Theme:BindGradient(card.
-AccentBar,'Accent')Acrylic.Apply(card,UDim.new(0,8),owner)end local function
-makeCard(title,desc,cleaner,owner)local card=create('ImageButton',{
-AutoButtonColor=false,BackgroundTransparency=0,Size=UDim2.new(1,0,0,desc and
+end local function bindCard(card,owner,accentColorKey,colorKey)Theme:Bind(card,
+'BackgroundColor3',colorKey or'Surface')Theme:BindGradient(card,colorKey or
+'Surface')Theme:BindAcrylic(card,'BackgroundTransparency',0,0.22,owner)Theme:
+Bind(card.UIStroke,'Color','Stroke')Theme:Bind(card.AccentBar,'BackgroundColor3'
+,accentColorKey or'Accent')Theme:BindGradient(card.AccentBar,accentColorKey or
+'Accent')Acrylic.Apply(card,UDim.new(0,8),owner)end local function makeCard(
+title,desc,cleaner,owner,accentColorKey,colorKey)local card=create('ImageButton'
+,{AutoButtonColor=false,BackgroundTransparency=0,Size=UDim2.new(1,0,0,desc and
 desc~=''and 62 or 48),Children={create('UICorner',{CornerRadius=UDim.new(0,8)}),
 create('UIStroke',{Thickness=1}),create('Frame',{Name='AccentBar',AnchorPoint=
 Vector2.new(1,0.5),BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2.
@@ -1410,22 +1411,22 @@ TextXAlignment=Enum.TextXAlignment.Left}),create('TextLabel',{Name='Description'
 ,Size=UDim2.new(1,-28,0,18),Text=desc or'',TextSize=12,TextXAlignment=Enum.
 TextXAlignment.Left,Visible=desc~=nil and desc~=''})}})Theme:Bind(card.Title,
 'TextColor3','Text')Theme:Bind(card.Description,'TextColor3','Muted')bindCard(
-card,owner)local pressed=false local function press()if card.Parent==nil then
-return end pressed=true tween(card.AccentBar,{Size=UDim2.new(0,5,1,-14)},0.08)
-tween(card.UIStroke,{Color=Theme:Get('Accent')},0.08)end local function release(
-)if not pressed or card.Parent==nil then return end pressed=false tween(card.
-AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.UIStroke,{Color=Theme:Get(
-'Stroke')},0.14)end if cleaner then cleaner:Add(card.MouseButton1Down:Connect(
-press))cleaner:Add(card.MouseButton1Up:Connect(release))cleaner:Add(card.
-MouseLeave:Connect(release))else card.MouseButton1Down:Connect(press)card.
-MouseButton1Up:Connect(release)card.MouseLeave:Connect(release)end return card
-end function Controls.Label(parent,data)data=data or{}local state={Title=data.
-Title or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=data.WithIcon==true,
-IconThemed=data.IconThemed~=false}local hasIcon=state.WithIcon and state.Icon~=
-nil and state.Icon~=''local textOffset=hasIcon and 26 or 2 local label=create(
-'Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,state.Desc and state.Desc
-~=''and 44 or 26),Children={create('ImageLabel',{Name='Icon',
-BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
+card,owner,accentColorKey,colorKey)local pressed=false local function press()if
+card.Parent==nil then return end pressed=true tween(card.AccentBar,{Size=UDim2.
+new(0,5,1,-14)},0.08)tween(card.UIStroke,{Color=Theme:Get('Accent')},0.08)end
+local function release()if not pressed or card.Parent==nil then return end
+pressed=false tween(card.AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(card.
+UIStroke,{Color=Theme:Get('Stroke')},0.14)end if cleaner then cleaner:Add(card.
+MouseButton1Down:Connect(press))cleaner:Add(card.MouseButton1Up:Connect(release)
+)cleaner:Add(card.MouseLeave:Connect(release))else card.MouseButton1Down:
+Connect(press)card.MouseButton1Up:Connect(release)card.MouseLeave:Connect(
+release)end return card end function Controls.Label(parent,data)data=data or{}
+local state={Title=data.Title or'Label',Desc=data.Desc,Icon=data.Icon,WithIcon=
+data.WithIcon==true,IconThemed=data.IconThemed~=false}local hasIcon=state.
+WithIcon and state.Icon~=nil and state.Icon~=''local textOffset=hasIcon and 26
+or 2 local label=create('Frame',{BackgroundTransparency=1,Size=UDim2.new(1,0,0,
+state.Desc and state.Desc~=''and 44 or 26),Children={create('ImageLabel',{Name=
+'Icon',BackgroundTransparency=1,Image=hasIcon and Icons.Resolve(state.Icon)or'',
 Position=UDim2.fromOffset(2,3),Size=toIconSize(data.IconSize,16),Visible=hasIcon
 }),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
 GothamSemibold,Position=UDim2.fromOffset(textOffset,0),Size=UDim2.new(1,-
@@ -1497,51 +1498,30 @@ Enum.SortOrder.LayoutOrder})}})group.Parent=parent local function
 createGroupButton(info,index)info=info or{}local buttonState={Title=info.Title
 or('Button '..tostring(index)),Icon=info.Icon,WithIcon=info.WithIcon==true,
 IconThemed=info.IconThemed~=false,Locked=info.Locked or false,Callback=info.
-Callback or function()end}local button=create('TextButton',{AutoButtonColor=
-false,BackgroundTransparency=0,Size=UDim2.new(1/math.max(#buttons,1),-((gap*(#
-buttons-1))/math.max(#buttons,1)),1,0),Text='',LayoutOrder=index,Children={
-create('UICorner',{CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1})
-,create('Frame',{Name='AccentBar',AnchorPoint=Vector2.new(1,0.5),
-BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2.new(1,-7,0.5,0),Size=
-UDim2.new(0,3,1,-18),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}
-),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
-GothamMedium,Position=UDim2.fromOffset(buttonState.WithIcon and 38 or 12,0),Size
-=UDim2.new(1,buttonState.WithIcon and-66 or-40,1,0),Text=buttonState.Title,
-TextSize=13,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
-TextXAlignment.Left}),create('ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(0
-,0.5),BackgroundTransparency=1,Image=buttonState.WithIcon and Icons.Resolve(
-buttonState.Icon or'zap')or'',Position=UDim2.new(0,14,0.5,0),Size=toIconSize(
-info.IconSize,16),Visible=buttonState.WithIcon})}})Theme:Bind(button,
-'BackgroundColor3',info.ColorKey or'Surface')Theme:BindGradient(button,info.
-ColorKey or'Surface')Theme:BindAcrylic(button,'BackgroundTransparency',0,0.22,
-owner)Theme:Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.AccentBar,
-'BackgroundColor3',info.AccentColorKey or'Accent')Theme:BindGradient(button.
-AccentBar,info.AccentColorKey or'Accent')Theme:Bind(button.Title,'TextColor3',
-'Text')Acrylic.Apply(button,UDim.new(0,8),owner)button.Parent=group
-local function paintIcon()if buttonState.IconThemed then button.Icon.ImageColor3
-=Theme:Get(info.IconColorKey or'Muted')else button.Icon.ImageColor3=info.
-IconColor or DEFAULT_ICON_COLOR end end local iconWatcher=Theme:Watch(function()
-if button.Parent==nil then return false end paintIcon()return true end)local
-pressed=false local function press()if button.Parent==nil then return end
-pressed=true tween(button.AccentBar,{Size=UDim2.new(0,5,1,-14)},0.08)tween(
-button.UIStroke,{Color=Theme:Get('Accent')},0.08)end local function release()if
-not pressed or button.Parent==nil then return end pressed=false tween(button.
-AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(button.UIStroke,{Color=Theme:
-Get('Stroke')},0.14)end cleaner:Add(button.MouseButton1Down:Connect(press))
-cleaner:Add(button.MouseButton1Up:Connect(release))cleaner:Add(button.MouseLeave
-:Connect(release))cleaner:Add(button.MouseButton1Click:Connect(function()if not
-state.Locked and not buttonState.Locked then buttonState.Callback()end end))
-function buttonState:SetTitle(text)self.Title=text button.Title.Text=text end
-function buttonState:SetIcon(icon)self.Icon=icon button.Icon.Image=self.WithIcon
-and Icons.Resolve(icon or'zap')or''end function buttonState:SetWithIcon(value)
-self.WithIcon=value==true button.Icon.Visible=self.WithIcon button.Icon.Image=
-self.WithIcon and Icons.Resolve(self.Icon or'zap')or''button.Title.Position=
-UDim2.fromOffset(self.WithIcon and 38 or 12,0)button.Title.Size=UDim2.new(1,self
-.WithIcon and-66 or-40,1,0)end function buttonState:SetIconThemed(value)self.
-IconThemed=value~=false paintIcon()end function buttonState:Lock()self.Locked=
-true end function buttonState:Unlock()self.Locked=false end function buttonState
-:Destroy()iconWatcher:Disconnect()button:Destroy()end table.insert(state.Buttons
-,buttonState)return buttonState end for index,info in ipairs(buttons)do
+Callback or function()end}local button=makeCard(buttonState.Title,nil,cleaner,
+owner,info.AccentColorKey,info.ColorKey)button.Size=UDim2.new(1/math.max(#
+buttons,1),-((gap*(#buttons-1))/math.max(#buttons,1)),1,0)button.LayoutOrder=
+index setCardRightPadding(button,buttonState.WithIcon and 58 or 34)local icon=
+create('ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=1,Image=buttonState.WithIcon and Icons.Resolve(
+buttonState.Icon or'zap')or'',Position=UDim2.new(1,-26,0.5,0),Size=toIconSize(
+info.IconSize,16),Visible=buttonState.WithIcon})icon.Parent=button button.Parent
+=group local function paintIcon()if buttonState.IconThemed then button.Icon.
+ImageColor3=Theme:Get(info.IconColorKey or'Muted')else button.Icon.ImageColor3=
+info.IconColor or DEFAULT_ICON_COLOR end end local iconWatcher=Theme:Watch(
+function()if button.Parent==nil then return false end paintIcon()return true end
+)cleaner:Add(button.MouseButton1Click:Connect(function()if not state.Locked and
+not buttonState.Locked then buttonState.Callback()end end))function buttonState:
+SetTitle(text)self.Title=text button.Title.Text=text end function buttonState:
+SetIcon(icon)self.Icon=icon button.Icon.Image=self.WithIcon and Icons.Resolve(
+icon or'zap')or''end function buttonState:SetWithIcon(value)self.WithIcon=value
+==true button.Icon.Visible=self.WithIcon button.Icon.Image=self.WithIcon and
+Icons.Resolve(self.Icon or'zap')or''setCardRightPadding(button,self.WithIcon and
+58 or 34)end function buttonState:SetIconThemed(value)self.IconThemed=value~=
+false paintIcon()end function buttonState:Lock()self.Locked=true end function
+buttonState:Unlock()self.Locked=false end function buttonState:Destroy()
+iconWatcher:Disconnect()button:Destroy()end table.insert(state.Buttons,
+buttonState)return buttonState end for index,info in ipairs(buttons)do
 createGroupButton(info,index)end function state:AddButton(info)return
 createGroupButton(info,#self.Buttons+1)end function state:Lock()self.Locked=true
 end function state:Unlock()self.Locked=false end function state:Destroy()cleaner
