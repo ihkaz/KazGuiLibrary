@@ -566,6 +566,63 @@ Methods:
 | `Unlock` | none | Enables interaction. |
 | `Destroy` | none | Removes the component. |
 
+### ButtonGroup
+
+Creates two or more compact buttons in one horizontal line.
+
+```lua
+local Group = Main:ButtonGroup({
+	Buttons = {
+		{
+			Title = "Save",
+			Icon = "save",
+			WithIcon = true,
+			Callback = function() end,
+		},
+		{
+			Title = "Load",
+			Icon = "folder-open",
+			WithIcon = true,
+			Callback = function() end,
+		},
+	},
+})
+```
+
+Parameters:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Buttons` | `{ table }` | `{}` | Button definitions shown in the row. |
+| `Items` | `{ table }` | `Buttons` | Alias for `Buttons`. |
+| `Height` | `number` | `42` | Row height. |
+| `Gap` | `number` | `8` | Horizontal spacing between buttons. |
+| `Locked` | `boolean` | `false` | Prevents all group buttons from firing callbacks. |
+
+Button fields:
+
+| Field | Type | Default | Description |
+| --- | --- | --- | --- |
+| `Title` | `string` | `"Button <index>"` | Button text. |
+| `Icon` | `string` / asset id | `nil` | Optional icon shown before the title. |
+| `WithIcon` | `boolean` | `false` | Enables the icon. |
+| `IconThemed` | `boolean` | `true` | When true, the icon follows the theme. |
+| `IconColorKey` | `string` | `"Muted"` | Theme key used when `IconThemed` is true. |
+| `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
+| `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Button icon size. |
+| `ColorKey` | `string` | `"Surface"` | Theme key used for the button background. |
+| `Locked` | `boolean` | `false` | Prevents this button from firing callbacks. |
+| `Callback` | `function()` | empty function | Fired when clicked while unlocked. |
+
+Methods:
+
+| Method | Parameters | Description |
+| --- | --- | --- |
+| `AddButton` | `info: table` | Adds another button to the row. |
+| `Lock` | none | Locks the whole group. |
+| `Unlock` | none | Unlocks the whole group. |
+| `Destroy` | none | Removes the group. |
+
 ### Label
 
 Creates static text with an optional icon.

@@ -108,6 +108,37 @@ local RunButton = Combat:Button({
 	end,
 })
 
+Combat:ButtonGroup({
+	Buttons = {
+		{
+			Title = "Save",
+			Icon = "save",
+			WithIcon = true,
+			Callback = function()
+				Window:Notify({
+					Title = "Preset",
+					Content = "Settings saved.",
+					Icon = "save",
+					Duration = 2,
+				})
+			end,
+		},
+		{
+			Title = "Load",
+			Icon = "folder-open",
+			WithIcon = true,
+			Callback = function()
+				Window:Notify({
+					Title = "Preset",
+					Content = "Settings loaded.",
+					Icon = "folder-open",
+					Duration = 2,
+				})
+			end,
+		},
+	},
+})
+
 local AutoFarm = Combat:Toggle({
 	Title = "Auto Farm",
 	Desc = "Saved automatically when AutoSave is enabled.",
