@@ -1,6 +1,6 @@
 # KazGui
 
-Roblox Luau GUI library for executor environments.
+Roblox GUI library.
 
 ## Loader
 
