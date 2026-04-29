@@ -1838,19 +1838,24 @@ in ipairs(self.Tabs)do local item=self.TabObjects[tabItem]local selected=tabItem
 ==tab local iconColor=selected and Theme:Get('Accent')or Theme:Get('Muted')local
 textColor=selected and Theme:Get('Text')or Theme:Get('Muted')if item and typeof(
 item.Page)=='Instance'then item.Page.Visible=selected end if item and typeof(
-item.SidebarButton)=='Instance'then item.SidebarButton.BackgroundTransparency=
-selected and 0 or 1 end if item and typeof(item.Icon)=='Instance'and tabItem.
-IconThemed then item.Icon.ImageColor3=iconColor end if item and typeof(item.
-Label)=='Instance'then item.Label.TextColor3=textColor end end self.SelectedTab=
-tab end function Window:ShowDropdown(dropdown)if self.DropdownOverlay then if
-self.DropdownCleanup then self.DropdownCleanup:Destroy()self.DropdownCleanup=nil
-end self.DropdownOverlay:Destroy()self.DropdownOverlay=nil end local
-dropdownCleanup=Cleanup.new()self.DropdownCleanup=dropdownCleanup local values=
-dropdown.Values or{}local itemHeight=30 local searchHeight=dropdown.Search~=
-false and 34 or 0 local listHeight=math.min(math.max(#values,1)*itemHeight,180)
-local panelHeight=58+searchHeight+listHeight local overlay=create('TextButton',{
-Name='DropdownOverlay',AutoButtonColor=false,BackgroundTransparency=0.45,Size=
-UDim2.fromScale(1,1),Text='',ZIndex=60})Theme:Bind(overlay,'BackgroundColor3',
+item.SidebarButton)=='Instance'then local idleTransparency=item.Hovered and 0.72
+or 1 item.SidebarButton.BackgroundTransparency=selected and 0 or
+idleTransparency item.SidebarButton.UIStroke.Transparency=selected and 0.35 or(
+item.Hovered and 0.72 or 1)end if item and typeof(item.Indicator)=='Instance'
+then item.Indicator.BackgroundTransparency=selected and 0 or 1 item.Indicator.
+Size=selected and UDim2.new(0,3,1,-16)or UDim2.new(0,3,1,-22)end if item and
+typeof(item.Icon)=='Instance'and tabItem.IconThemed then item.Icon.ImageColor3=
+iconColor end if item and typeof(item.Label)=='Instance'then item.Label.
+TextColor3=textColor end end self.SelectedTab=tab end function Window:
+ShowDropdown(dropdown)if self.DropdownOverlay then if self.DropdownCleanup then
+self.DropdownCleanup:Destroy()self.DropdownCleanup=nil end self.DropdownOverlay:
+Destroy()self.DropdownOverlay=nil end local dropdownCleanup=Cleanup.new()self.
+DropdownCleanup=dropdownCleanup local values=dropdown.Values or{}local
+itemHeight=30 local searchHeight=dropdown.Search~=false and 34 or 0 local
+listHeight=math.min(math.max(#values,1)*itemHeight,180)local panelHeight=58+
+searchHeight+listHeight local overlay=create('TextButton',{Name=
+'DropdownOverlay',AutoButtonColor=false,BackgroundTransparency=0.45,Size=UDim2.
+fromScale(1,1),Text='',ZIndex=60})Theme:Bind(overlay,'BackgroundColor3',
 'Background')overlay.Parent=self.Main self.DropdownOverlay=overlay local panel=
 create('Frame',{Name='Panel',AnchorPoint=Vector2.new(0.5,0.5),Position=UDim2.
 fromScale(0.5,0.5),Size=UDim2.fromOffset(330,panelHeight),ZIndex=61,Children={
@@ -1913,31 +1918,45 @@ dropdown:Select(value)if dropdown.Multi then refreshOptions()else close()end end
 Window:Tab(data)data=data or{}local tab={Title=data.Title or'Tab',IconName=data.
 Icon or'circle',IconThemed=data.IconThemed~=false,Window=self}local button=
 create('TextButton',{AutoButtonColor=false,BackgroundTransparency=1,Size=UDim2.
-new(1,0,0,34),Text='',Children={create('UICorner',{CornerRadius=UDim.new(0,7)})}
-})Theme:Bind(button,'BackgroundColor3','AccentSoft')button.Parent=self.
-SidebarList local icon=create('ImageLabel',{BackgroundTransparency=1,Image=Icons
-.Resolve(tab.IconName),ImageColor3=data.IconColor or DEFAULT_ICON_COLOR,Position
-=UDim2.fromOffset(10,8),Size=UDim2.fromOffset(18,18)})if tab.IconThemed then
-Theme:Bind(icon,'ImageColor3',data.IconColorKey or'Muted')end icon.Parent=button
-local label=create('TextLabel',{BackgroundTransparency=1,Font=Enum.Font.
-GothamMedium,Position=UDim2.fromOffset(36,0),Size=UDim2.new(1,-42,1,0),Text=tab.
-Title,TextSize=13,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(label,
-'TextColor3','Muted')label.Parent=button local page=create('ScrollingFrame',{
-AutomaticCanvasSize=Enum.AutomaticSize.Y,BackgroundTransparency=1,
-BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2.fromOffset(14,14),
-ScrollingDirection=Enum.ScrollingDirection.Y,ScrollBarThickness=3,Size=UDim2.
-new(1,-28,1,-28),Visible=false,Children={create('UIListLayout',{Padding=UDim.
-new(0,8),SortOrder=Enum.SortOrder.LayoutOrder}),create('UIPadding',{
-PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.new(0,2),PaddingRight=UDim.new(0,6)
-,PaddingTop=UDim.new(0,2)})}})page.Parent=self.Content tab.Parent=page tab.
-Config=self.Config self.TabObjects[tab]={SidebarButton=button,Icon=icon,Label=
-label,Page=page}self.Cleanup:Add(button.MouseButton1Click:Connect(function()self
-:SelectTab(tab)end))function tab:Section(sectionData)sectionData=sectionData or{
-}local withBackground=sectionData.WithBackground~=false local withIcon=
-sectionData.WithIcon==true local iconThemed=sectionData.IconThemed~=false local
-sectionTextOffset=withIcon and 24 or 0 local section=create('Frame',{
-BackgroundTransparency=withBackground and 0 or 1,AutomaticSize=Enum.
-AutomaticSize.Y,Size=UDim2.new(1,0,0,0),Children={create('UICorner',{
+new(1,0,0,36),Text='',Children={create('UICorner',{CornerRadius=UDim.new(0,7)}),
+create('UIStroke',{Thickness=1,Transparency=1}),create('Frame',{Name='Indicator'
+,AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=1,BorderSizePixel=0,
+Position=UDim2.new(0,5,0.5,0),Size=UDim2.new(0,3,1,-18),Children={create(
+'UICorner',{CornerRadius=UDim.new(1,0)})}})}})Theme:Bind(button,
+'BackgroundColor3','AccentSoft')Theme:BindGradient(button,'AccentSoft')Theme:
+Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.Indicator,
+'BackgroundColor3','Accent')Theme:BindGradient(button.Indicator,'Accent')button.
+Parent=self.SidebarList local icon=create('ImageLabel',{BackgroundTransparency=1
+,Image=Icons.Resolve(tab.IconName),ImageColor3=data.IconColor or
+DEFAULT_ICON_COLOR,Position=UDim2.fromOffset(15,9),Size=UDim2.fromOffset(18,18)}
+)if tab.IconThemed then Theme:Bind(icon,'ImageColor3',data.IconColorKey or
+'Muted')end icon.Parent=button local label=create('TextLabel',{
+BackgroundTransparency=1,Font=Enum.Font.GothamSemibold,Position=UDim2.
+fromOffset(41,0),Size=UDim2.new(1,-49,1,0),Text=tab.Title,TextSize=13,
+TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.TextXAlignment.Left})
+Theme:Bind(label,'TextColor3','Muted')label.Parent=button local page=create(
+'ScrollingFrame',{AutomaticCanvasSize=Enum.AutomaticSize.Y,
+BackgroundTransparency=1,BorderSizePixel=0,CanvasSize=UDim2.new(),Position=UDim2
+.fromOffset(14,14),ScrollingDirection=Enum.ScrollingDirection.Y,
+ScrollBarThickness=3,Size=UDim2.new(1,-28,1,-28),Visible=false,Children={create(
+'UIListLayout',{Padding=UDim.new(0,8),SortOrder=Enum.SortOrder.LayoutOrder}),
+create('UIPadding',{PaddingBottom=UDim.new(0,2),PaddingLeft=UDim.new(0,2),
+PaddingRight=UDim.new(0,6),PaddingTop=UDim.new(0,2)})}})page.Parent=self.Content
+tab.Parent=page tab.Config=self.Config self.TabObjects[tab]={SidebarButton=
+button,Icon=icon,Indicator=button.Indicator,Label=label,Page=page,Hovered=false}
+self.Cleanup:Add(button.MouseButton1Click:Connect(function()self:SelectTab(tab)
+end))self.Cleanup:Add(button.MouseEnter:Connect(function()local item=self.
+TabObjects[tab]if item then item.Hovered=true end if self.SelectedTab~=tab then
+tween(button,{BackgroundTransparency=0.72},0.12)tween(button.UIStroke,{
+Transparency=0.72},0.12)end end))self.Cleanup:Add(button.MouseLeave:Connect(
+function()local item=self.TabObjects[tab]if item then item.Hovered=false end if
+self.SelectedTab~=tab then tween(button,{BackgroundTransparency=1},0.12)tween(
+button.UIStroke,{Transparency=1},0.12)end end))function tab:Section(sectionData)
+sectionData=sectionData or{}local withBackground=sectionData.WithBackground~=
+false local withIcon=sectionData.WithIcon==true local iconThemed=sectionData.
+IconThemed~=false local sectionTextOffset=withIcon and 24 or 0 local section=
+create('Frame',{BackgroundTransparency=withBackground and 0 or 1,AutomaticSize=
+Enum.AutomaticSize.Y,Size=UDim2.new(1,0,0,0),Children={create('UICorner',{
 CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1}),create('UIPadding'
 ,{PaddingBottom=UDim.new(0,withBackground and 10 or 0),PaddingLeft=UDim.new(0,
 withBackground and 10 or 0),PaddingRight=UDim.new(0,withBackground and 10 or 0),
