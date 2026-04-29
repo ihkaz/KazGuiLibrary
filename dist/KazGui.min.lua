@@ -1800,27 +1800,20 @@ BorderSizePixel=0,Position=UDim2.new(0,0,1,0),Size=UDim2.new(1,0,0,10)})}})Theme
 :Bind(topbar,'BackgroundColor3','Topbar')Theme:BindGradient(topbar,'Topbar')
 Theme:BindAcrylic(topbar,'BackgroundTransparency',0,0.12,self)Theme:Bind(topbar.
 CornerFix,'BackgroundColor3','Topbar')topbar.Parent=main self.Topbar=topbar
-local brandIsland=create('Frame',{Name='BrandIsland',AnchorPoint=Vector2.new(0,
-0.5),BackgroundTransparency=0.18,Position=UDim2.new(0,12,0.5,0),Size=UDim2.new(1
-,-106,0,34),Children={create('UICorner',{CornerRadius=UDim.new(1,0)}),create(
-'UIStroke',{Thickness=1,Transparency=0.42})}})Theme:Bind(brandIsland,
-'BackgroundColor3','Surface')Theme:BindGradient(brandIsland,'Surface')Theme:
-BindAcrylic(brandIsland,'BackgroundTransparency',0.18,0.3,self)Theme:Bind(
-brandIsland.UIStroke,'Color','Stroke')brandIsland.Parent=topbar local brandIcon=
-create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),BackgroundTransparency=1,
-Image=Icons.Resolve(self.Icon),ImageColor3=data.IconColor or DEFAULT_ICON_COLOR,
-Position=UDim2.new(0,12,0.5,0),Size=toIconSize(self.IconSize,18)})if self.
-IconThemed then Theme:Bind(brandIcon,'ImageColor3',data.IconColorKey or'Accent')
-end brandIcon.Parent=brandIsland local title=create('TextLabel',{
-BackgroundTransparency=1,Font=Enum.Font.GothamBold,Position=UDim2.fromOffset(39,
-4),Size=UDim2.new(1,-55,0,17),Text=self.Title,TextTruncate=Enum.TextTruncate.
-AtEnd,TextSize=15,TextXAlignment=Enum.TextXAlignment.Left})Theme:Bind(title,
-'TextColor3','Text')title.Parent=brandIsland local version=create('TextLabel',{
-BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2.fromOffset(
-39,20),Size=UDim2.new(1,-55,0,12),Text=self.Author,TextTruncate=Enum.
-TextTruncate.AtEnd,TextSize=10,TextXAlignment=Enum.TextXAlignment.Left})Theme:
-Bind(version,'TextColor3','Muted')version.Parent=brandIsland local close=create(
-'ImageButton',{AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,
+local brandIcon=create('ImageLabel',{AnchorPoint=Vector2.new(0,0.5),
+BackgroundTransparency=1,Image=Icons.Resolve(self.Icon),ImageColor3=data.
+IconColor or DEFAULT_ICON_COLOR,Position=UDim2.new(0,16,0.5,0),Size=toIconSize(
+self.IconSize,18)})if self.IconThemed then Theme:Bind(brandIcon,'ImageColor3',
+data.IconColorKey or'Accent')end brandIcon.Parent=topbar local title=create(
+'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamBold,Position=UDim2.
+fromOffset(46,7),Size=UDim2.new(1,-142,0,17),Text=self.Title,TextTruncate=Enum.
+TextTruncate.AtEnd,TextSize=15,TextXAlignment=Enum.TextXAlignment.Left})Theme:
+Bind(title,'TextColor3','Text')title.Parent=topbar local version=create(
+'TextLabel',{BackgroundTransparency=1,Font=Enum.Font.GothamMedium,Position=UDim2
+.fromOffset(46,24),Size=UDim2.new(1,-142,0,13),Text=self.Author,TextTruncate=
+Enum.TextTruncate.AtEnd,TextSize=10,TextXAlignment=Enum.TextXAlignment.Left})
+Theme:Bind(version,'TextColor3','Muted')version.Parent=topbar local close=
+create('ImageButton',{AnchorPoint=Vector2.new(1,0.5),AutoButtonColor=false,
 BackgroundTransparency=0.3,Image=Icons.Resolve('x'),Position=UDim2.new(1,-12,0.5
 ,0),Size=UDim2.fromOffset(ACTION_BUTTON_SIZE,ACTION_BUTTON_SIZE),Children={
 create('UICorner',{CornerRadius=UDim.new(1,0)}),create('UIStroke',{Thickness=1,
