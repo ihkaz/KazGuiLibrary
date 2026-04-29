@@ -894,6 +894,13 @@ KazGui:SetTheme("Rose")
 KazGui:SetTheme("Aurora")
 KazGui:SetTheme("Amethyst")
 KazGui:SetTheme("Graphite")
+KazGui:SetTheme("Daylight")
+KazGui:SetTheme("Cloud")
+KazGui:SetTheme("Mint")
+KazGui:SetTheme("Lavender")
+KazGui:SetTheme("Coral")
+KazGui:SetTheme("Sunset")
+KazGui:SetTheme("Azure")
 ```
 
 Custom themes can provide any subset of the theme keys. Missing keys fall back to `Midnight`.

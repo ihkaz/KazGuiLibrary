@@ -319,7 +319,21 @@ local Appearance = Settings:Section({
 Appearance:Dropdown({
 	Title = "Theme",
 	Desc = "Switch built-in themes.",
-	Values = { "Midnight", "Emerald", "Rose", "Aurora", "Amethyst", "Graphite" },
+	Values = {
+		"Midnight",
+		"Emerald",
+		"Rose",
+		"Aurora",
+		"Amethyst",
+		"Graphite",
+		"Daylight",
+		"Cloud",
+		"Mint",
+		"Lavender",
+		"Coral",
+		"Sunset",
+		"Azure",
+	},
 	Default = "Midnight",
 	Callback = function(value)
 		KazGui:SetTheme(value)

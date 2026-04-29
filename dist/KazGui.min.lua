@@ -52,24 +52,81 @@ AccentSoft=Color3.fromRGB(42,64,103),Danger=Color3.fromRGB(237,93,93),Gradients=
 Color=Color3.fromRGB(42,45,50)}}},Accent={Rotation=90,Colors={{Time=0,Color=
 Color3.fromRGB(118,171,255)},{Time=1,Color=Color3.fromRGB(132,224,220)}}},
 AccentSoft={Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(35,55,96)},{Time=1,
-Color=Color3.fromRGB(38,76,84)}}}}}}Theme.CurrentName='Midnight'Theme.Current=
-Theme.Palettes.Midnight Theme.Bindings={}Theme.Watchers={}Theme.Acrylic=false
-Theme.AcrylicIntensity=1 Theme.AcrylicBindings={}Theme.GradientBindings={}
-function Theme:Get(key)return self.Current[key]end local function
-normalizeGradient(data)if typeof(data)~='table'then return nil end local
-colorPoints={}local transparencyPoints={}local source=data.Colors or data for
-key,point in pairs(source)do local time local color local transparency=0 if
-typeof(point)=='Color3'then time=typeof(key)=='number'and key or nil color=point
-elseif typeof(point)=='table'then time=point.Time or point[1]or(typeof(key)==
-'number'and key or nil)color=point.Color or point[2]transparency=point.
-Transparency or point.Alpha or point[3]or 0 end if typeof(time)=='number'and
-typeof(color)=='Color3'then if time>1 then time=time/100 end time=math.clamp(
-time,0,1)table.insert(colorPoints,ColorSequenceKeypoint.new(time,color))table.
-insert(transparencyPoints,NumberSequenceKeypoint.new(time,math.clamp(
-transparency,0,1)))end end table.sort(colorPoints,function(left,right)return
-left.Time<right.Time end)table.sort(transparencyPoints,function(left,right)
-return left.Time<right.Time end)if#colorPoints<2 then return nil end return{
-Color=ColorSequence.new(colorPoints),Transparency=NumberSequence.new(
+Color=Color3.fromRGB(38,76,84)}}}}},Daylight={Background=Color3.fromRGB(238,242,
+247),Topbar=Color3.fromRGB(248,250,252),Sidebar=Color3.fromRGB(232,237,244),
+Surface=Color3.fromRGB(255,255,255),SurfaceAlt=Color3.fromRGB(226,233,242),
+Stroke=Color3.fromRGB(197,207,220),Text=Color3.fromRGB(30,39,53),Muted=Color3.
+fromRGB(104,117,135),Accent=Color3.fromRGB(58,123,255),AccentSoft=Color3.
+fromRGB(207,224,255),Danger=Color3.fromRGB(224,72,83),Gradients={Background={
+Rotation=30,Colors={{Time=0,Color=Color3.fromRGB(238,242,247)},{Time=1,Color=
+Color3.fromRGB(224,235,248)}}},Accent={Rotation=90,Colors={{Time=0,Color=Color3.
+fromRGB(58,123,255)},{Time=1,Color=Color3.fromRGB(56,189,248)}}}}},Cloud={
+Background=Color3.fromRGB(224,235,247),Topbar=Color3.fromRGB(236,244,252),
+Sidebar=Color3.fromRGB(214,228,242),Surface=Color3.fromRGB(246,250,254),
+SurfaceAlt=Color3.fromRGB(215,229,243),Stroke=Color3.fromRGB(178,196,216),Text=
+Color3.fromRGB(32,48,66),Muted=Color3.fromRGB(92,112,132),Accent=Color3.fromRGB(
+39,147,214),AccentSoft=Color3.fromRGB(190,225,245),Danger=Color3.fromRGB(220,76,
+96),Gradients={Background={Rotation=45,Colors={{Time=0,Color=Color3.fromRGB(224,
+235,247)},{Time=1,Color=Color3.fromRGB(206,226,244)}}},Surface={Rotation=20,
+Colors={{Time=0,Color=Color3.fromRGB(246,250,254)},{Time=1,Color=Color3.fromRGB(
+232,242,252)}}}}},Mint={Background=Color3.fromRGB(222,245,236),Topbar=Color3.
+fromRGB(237,252,245),Sidebar=Color3.fromRGB(211,237,226),Surface=Color3.fromRGB(
+248,255,251),SurfaceAlt=Color3.fromRGB(210,235,224),Stroke=Color3.fromRGB(162,
+204,186),Text=Color3.fromRGB(28,56,46),Muted=Color3.fromRGB(84,123,108),Accent=
+Color3.fromRGB(20,166,112),AccentSoft=Color3.fromRGB(180,235,213),Danger=Color3.
+fromRGB(222,78,84),Gradients={Background={Rotation=35,Colors={{Time=0,Color=
+Color3.fromRGB(222,245,236)},{Time=1,Color=Color3.fromRGB(204,239,225)}}},Accent
+={Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(20,166,112)},{Time=1,Color=
+Color3.fromRGB(68,200,158)}}}}},Lavender={Background=Color3.fromRGB(238,232,250)
+,Topbar=Color3.fromRGB(249,246,255),Sidebar=Color3.fromRGB(228,219,244),Surface=
+Color3.fromRGB(255,252,255),SurfaceAlt=Color3.fromRGB(226,216,244),Stroke=Color3
+.fromRGB(195,179,224),Text=Color3.fromRGB(47,36,67),Muted=Color3.fromRGB(111,94,
+139),Accent=Color3.fromRGB(139,92,246),AccentSoft=Color3.fromRGB(218,205,250),
+Danger=Color3.fromRGB(224,77,112),Gradients={Background={Rotation=35,Colors={{
+Time=0,Color=Color3.fromRGB(238,232,250)},{Time=1,Color=Color3.fromRGB(226,216,
+246)}}},Accent={Rotation=90,Colors={{Time=0,Color=Color3.fromRGB(139,92,246)},{
+Time=1,Color=Color3.fromRGB(199,102,241)}}}}},Coral={Background=Color3.fromRGB(
+252,235,229),Topbar=Color3.fromRGB(255,246,242),Sidebar=Color3.fromRGB(245,223,
+216),Surface=Color3.fromRGB(255,251,249),SurfaceAlt=Color3.fromRGB(242,219,211),
+Stroke=Color3.fromRGB(220,181,169),Text=Color3.fromRGB(65,39,33),Muted=Color3.
+fromRGB(135,93,82),Accent=Color3.fromRGB(239,104,82),AccentSoft=Color3.fromRGB(
+255,211,201),Danger=Color3.fromRGB(210,68,75),Gradients={Background={Rotation=30
+,Colors={{Time=0,Color=Color3.fromRGB(252,235,229)},{Time=1,Color=Color3.
+fromRGB(250,220,212)}}},Accent={Rotation=90,Colors={{Time=0,Color=Color3.
+fromRGB(239,104,82)},{Time=1,Color=Color3.fromRGB(248,143,92)}}}}},Sunset={
+Background=Color3.fromRGB(38,24,42),Topbar=Color3.fromRGB(54,31,50),Sidebar=
+Color3.fromRGB(47,28,48),Surface=Color3.fromRGB(70,42,62),SurfaceAlt=Color3.
+fromRGB(88,53,69),Stroke=Color3.fromRGB(128,82,91),Text=Color3.fromRGB(255,241,
+232),Muted=Color3.fromRGB(213,169,158),Accent=Color3.fromRGB(255,156,84),
+AccentSoft=Color3.fromRGB(115,67,64),Danger=Color3.fromRGB(238,84,102),Gradients
+={Background={Rotation=35,Colors={{Time=0,Color=Color3.fromRGB(38,24,42)},{Time=
+1,Color=Color3.fromRGB(92,48,54)}}},Accent={Rotation=90,Colors={{Time=0,Color=
+Color3.fromRGB(255,156,84)},{Time=1,Color=Color3.fromRGB(255,92,132)}}}}},Azure=
+{Background=Color3.fromRGB(215,240,251),Topbar=Color3.fromRGB(235,249,255),
+Sidebar=Color3.fromRGB(199,228,244),Surface=Color3.fromRGB(248,253,255),
+SurfaceAlt=Color3.fromRGB(205,232,248),Stroke=Color3.fromRGB(154,194,220),Text=
+Color3.fromRGB(24,50,70),Muted=Color3.fromRGB(76,112,135),Accent=Color3.fromRGB(
+0,149,218),AccentSoft=Color3.fromRGB(176,226,250),Danger=Color3.fromRGB(217,75,
+92),Gradients={Background={Rotation=40,Colors={{Time=0,Color=Color3.fromRGB(215,
+240,251)},{Time=1,Color=Color3.fromRGB(190,226,246)}}},Accent={Rotation=90,
+Colors={{Time=0,Color=Color3.fromRGB(0,149,218)},{Time=1,Color=Color3.fromRGB(58
+,190,255)}}}}}}Theme.CurrentName='Midnight'Theme.Current=Theme.Palettes.Midnight
+Theme.Bindings={}Theme.Watchers={}Theme.Acrylic=false Theme.AcrylicIntensity=1
+Theme.AcrylicBindings={}Theme.GradientBindings={}function Theme:Get(key)return
+self.Current[key]end local function normalizeGradient(data)if typeof(data)~=
+'table'then return nil end local colorPoints={}local transparencyPoints={}local
+source=data.Colors or data for key,point in pairs(source)do local time local
+color local transparency=0 if typeof(point)=='Color3'then time=typeof(key)==
+'number'and key or nil color=point elseif typeof(point)=='table'then time=point.
+Time or point[1]or(typeof(key)=='number'and key or nil)color=point.Color or
+point[2]transparency=point.Transparency or point.Alpha or point[3]or 0 end if
+typeof(time)=='number'and typeof(color)=='Color3'then if time>1 then time=time/
+100 end time=math.clamp(time,0,1)table.insert(colorPoints,ColorSequenceKeypoint.
+new(time,color))table.insert(transparencyPoints,NumberSequenceKeypoint.new(time,
+math.clamp(transparency,0,1)))end end table.sort(colorPoints,function(left,right
+)return left.Time<right.Time end)table.sort(transparencyPoints,function(left,
+right)return left.Time<right.Time end)if#colorPoints<2 then return nil end
+return{Color=ColorSequence.new(colorPoints),Transparency=NumberSequence.new(
 transparencyPoints),Rotation=data.Rotation or 0,Offset=data.Offset or Vector2.
 new(0,0)}end function Theme:GetGradient(key)local gradients=self.Current and
 self.Current.Gradients if typeof(gradients)~='table'then return nil end return
