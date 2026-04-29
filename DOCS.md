@@ -595,7 +595,7 @@ Parameters:
 | --- | --- | --- | --- |
 | `Buttons` | `{ table }` | `{}` | Button definitions shown in the row. |
 | `Items` | `{ table }` | `Buttons` | Alias for `Buttons`. |
-| `Height` | `number` | `42` | Row height. |
+| `Height` | `number` | `48` | Row height. |
 | `Gap` | `number` | `8` | Horizontal spacing between buttons. |
 | `Locked` | `boolean` | `false` | Prevents all group buttons from firing callbacks. |
 
@@ -611,6 +611,7 @@ Button fields:
 | `IconColor` | `Color3` | white | Static icon color used when `IconThemed` is false. |
 | `IconSize` | `number` / `Vector2` / `UDim2` | `16` | Button icon size. |
 | `ColorKey` | `string` | `"Surface"` | Theme key used for the button background. |
+| `AccentColorKey` | `string` | `"Accent"` | Theme key used for the right accent marker. |
 | `Locked` | `boolean` | `false` | Prevents this button from firing callbacks. |
 | `Callback` | `function()` | empty function | Fired when clicked while unlocked. |
 

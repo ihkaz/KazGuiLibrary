@@ -1489,7 +1489,7 @@ function state:Unlock()self.Locked=false card.Active=true end function state:
 Destroy()cleaner:Destroy()iconThemeWatcher:Disconnect()card:Destroy()end return
 state end function Controls.ButtonGroup(parent,data,owner)data=data or{}local
 cleaner=Cleanup.new()local buttons=data.Buttons or data.Items or{}local
-buttonHeight=data.Height or 42 local gap=data.Gap or 8 local state={Buttons={},
+buttonHeight=data.Height or 48 local gap=data.Gap or 8 local state={Buttons={},
 Locked=data.Locked or false}local group=create('Frame',{BackgroundTransparency=1
 ,Size=UDim2.new(1,0,0,buttonHeight),Children={create('UIListLayout',{
 FillDirection=Enum.FillDirection.Horizontal,Padding=UDim.new(0,gap),SortOrder=
@@ -1501,9 +1501,12 @@ Callback or function()end}local button=create('TextButton',{AutoButtonColor=
 false,BackgroundTransparency=0,Size=UDim2.new(1/math.max(#buttons,1),-((gap*(#
 buttons-1))/math.max(#buttons,1)),1,0),Text='',LayoutOrder=index,Children={
 create('UICorner',{CornerRadius=UDim.new(0,8)}),create('UIStroke',{Thickness=1})
-,create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
+,create('Frame',{Name='AccentBar',AnchorPoint=Vector2.new(1,0.5),
+BackgroundTransparency=0,BorderSizePixel=0,Position=UDim2.new(1,-7,0.5,0),Size=
+UDim2.new(0,3,1,-18),Children={create('UICorner',{CornerRadius=UDim.new(1,0)})}}
+),create('TextLabel',{Name='Title',BackgroundTransparency=1,Font=Enum.Font.
 GothamMedium,Position=UDim2.fromOffset(buttonState.WithIcon and 38 or 12,0),Size
-=UDim2.new(1,buttonState.WithIcon and-50 or-24,1,0),Text=buttonState.Title,
+=UDim2.new(1,buttonState.WithIcon and-66 or-40,1,0),Text=buttonState.Title,
 TextSize=13,TextTruncate=Enum.TextTruncate.AtEnd,TextXAlignment=Enum.
 TextXAlignment.Left}),create('ImageLabel',{Name='Icon',AnchorPoint=Vector2.new(0
 ,0.5),BackgroundTransparency=1,Image=buttonState.WithIcon and Icons.Resolve(
@@ -1511,31 +1514,34 @@ buttonState.Icon or'zap')or'',Position=UDim2.new(0,14,0.5,0),Size=toIconSize(
 info.IconSize,16),Visible=buttonState.WithIcon})}})Theme:Bind(button,
 'BackgroundColor3',info.ColorKey or'Surface')Theme:BindGradient(button,info.
 ColorKey or'Surface')Theme:BindAcrylic(button,'BackgroundTransparency',0,0.22,
-owner)Theme:Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.Title,
-'TextColor3','Text')Acrylic.Apply(button,UDim.new(0,8),owner)button.Parent=group
+owner)Theme:Bind(button.UIStroke,'Color','Stroke')Theme:Bind(button.AccentBar,
+'BackgroundColor3',info.AccentColorKey or'Accent')Theme:BindGradient(button.
+AccentBar,info.AccentColorKey or'Accent')Theme:Bind(button.Title,'TextColor3',
+'Text')Acrylic.Apply(button,UDim.new(0,8),owner)button.Parent=group
 local function paintIcon()if buttonState.IconThemed then button.Icon.ImageColor3
 =Theme:Get(info.IconColorKey or'Muted')else button.Icon.ImageColor3=info.
 IconColor or DEFAULT_ICON_COLOR end end local iconWatcher=Theme:Watch(function()
 if button.Parent==nil then return false end paintIcon()return true end)local
 pressed=false local function press()if button.Parent==nil then return end
-pressed=true tween(button.UIStroke,{Color=Theme:Get('Accent')},0.08)end
-local function release()if not pressed or button.Parent==nil then return end
-pressed=false tween(button.UIStroke,{Color=Theme:Get('Stroke')},0.14)end cleaner
-:Add(button.MouseButton1Down:Connect(press))cleaner:Add(button.MouseButton1Up:
-Connect(release))cleaner:Add(button.MouseLeave:Connect(release))cleaner:Add(
-button.MouseButton1Click:Connect(function()if not state.Locked and not
-buttonState.Locked then buttonState.Callback()end end))function buttonState:
-SetTitle(text)self.Title=text button.Title.Text=text end function buttonState:
-SetIcon(icon)self.Icon=icon button.Icon.Image=self.WithIcon and Icons.Resolve(
-icon or'zap')or''end function buttonState:SetWithIcon(value)self.WithIcon=value
-==true button.Icon.Visible=self.WithIcon button.Icon.Image=self.WithIcon and
-Icons.Resolve(self.Icon or'zap')or''button.Title.Position=UDim2.fromOffset(self.
-WithIcon and 38 or 12,0)button.Title.Size=UDim2.new(1,self.WithIcon and-50 or-24
-,1,0)end function buttonState:SetIconThemed(value)self.IconThemed=value~=false
-paintIcon()end function buttonState:Lock()self.Locked=true end function
-buttonState:Unlock()self.Locked=false end function buttonState:Destroy()
-iconWatcher:Disconnect()button:Destroy()end table.insert(state.Buttons,
-buttonState)return buttonState end for index,info in ipairs(buttons)do
+pressed=true tween(button.AccentBar,{Size=UDim2.new(0,5,1,-14)},0.08)tween(
+button.UIStroke,{Color=Theme:Get('Accent')},0.08)end local function release()if
+not pressed or button.Parent==nil then return end pressed=false tween(button.
+AccentBar,{Size=UDim2.new(0,3,1,-18)},0.14)tween(button.UIStroke,{Color=Theme:
+Get('Stroke')},0.14)end cleaner:Add(button.MouseButton1Down:Connect(press))
+cleaner:Add(button.MouseButton1Up:Connect(release))cleaner:Add(button.MouseLeave
+:Connect(release))cleaner:Add(button.MouseButton1Click:Connect(function()if not
+state.Locked and not buttonState.Locked then buttonState.Callback()end end))
+function buttonState:SetTitle(text)self.Title=text button.Title.Text=text end
+function buttonState:SetIcon(icon)self.Icon=icon button.Icon.Image=self.WithIcon
+and Icons.Resolve(icon or'zap')or''end function buttonState:SetWithIcon(value)
+self.WithIcon=value==true button.Icon.Visible=self.WithIcon button.Icon.Image=
+self.WithIcon and Icons.Resolve(self.Icon or'zap')or''button.Title.Position=
+UDim2.fromOffset(self.WithIcon and 38 or 12,0)button.Title.Size=UDim2.new(1,self
+.WithIcon and-66 or-40,1,0)end function buttonState:SetIconThemed(value)self.
+IconThemed=value~=false paintIcon()end function buttonState:Lock()self.Locked=
+true end function buttonState:Unlock()self.Locked=false end function buttonState
+:Destroy()iconWatcher:Disconnect()button:Destroy()end table.insert(state.Buttons
+,buttonState)return buttonState end for index,info in ipairs(buttons)do
 createGroupButton(info,index)end function state:AddButton(info)return
 createGroupButton(info,#self.Buttons+1)end function state:Lock()self.Locked=true
 end function state:Unlock()self.Locked=false end function state:Destroy()cleaner
